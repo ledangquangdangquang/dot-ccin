@@ -13,17 +13,12 @@
   };
 
   outputs = inputs @ {
-    self,
     nixpkgs,
     home-manager,
     ...
   }: let
     system = "x86_64-linux";
-    envUser = builtins.getEnv "USER";
-    user =
-      if envUser != ""
-      then envUser
-      else "quang";
+    user = "quang";
 
     hostMain = {
       hostname = "ubuntu-nix"; # Tên định danh cấu hình (không ảnh hưởng hostname thật của Ubuntu)
@@ -54,7 +49,6 @@
       # Truyền các tham số đặc biệt vào file home.nix y hệt cấu hình cũ của anh
       extraSpecialArgs = {
         inherit inputs hostMain user;
-        catppuccin = inputs.catppuccin;
       };
 
       modules = [

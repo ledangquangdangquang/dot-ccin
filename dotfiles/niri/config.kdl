@@ -3,7 +3,7 @@ spawn-at-startup "fcitx5"
 spawn-at-startup "foot"
 spawn-at-startup "firefox"
 spawn-at-startup "vicinae" "server"
-spawn-sh-at-startup "swaybg -i ~/A_Setting_File/Wallpapers/wallpaper.png -m fill"
+spawn-sh-at-startup "swaybg -i ~/UbuntuConfig/Wallpapers/wallpaper.png -m fill"
 spawn-sh-at-startup "~/.config/niri/auto_center_col.sh"
 // This config is in the KDL format: https://kdl.dev
 // "/-" comments out the following node.

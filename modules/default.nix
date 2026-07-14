@@ -2,6 +2,7 @@
   imports = [
     # --- File ---
     ./gtk.nix
+    ./input-method.nix
     ./git.nix
     ./zsh.nix
     ./bash.nix

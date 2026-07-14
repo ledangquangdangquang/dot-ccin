@@ -188,3 +188,16 @@ User-specific values live in `flake.nix` and `home.nix`, including `user`, `host
 - Keyboard shortcuts are mainly in `dotfiles/niri/config.kdl`, `dotfiles/kitty/kitty.conf`, and the Neovim config.
 - Shell aliases are managed in `modules/zsh.nix`.
 - Do not commit secrets, SSH private keys, browser sessions, or generated logs.
+
+### Register Sway on Ubuntu
+
+```sh
+sudo tee /usr/share/wayland-sessions/sway-nix.desktop >/dev/null <<'EOF'
+[Desktop Entry]
+Name=Sway (Nix)
+Comment=Sway with Nix applications
+Exec=/usr/bin/env PATH=/home/quang/.nix-profile/bin:/nix/var/nix/profiles/default/bin:/usr/local/bin:/usr/bin:/bin XDG_DATA_DIRS=/home/quang/.nix-profile/share:/nix/var/nix/profiles/default/share:/usr/local/share:/usr/share /usr/bin/sway --unsupported-gpu
+Type=Application
+DesktopNames=sway
+EOF
+```

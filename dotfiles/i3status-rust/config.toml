@@ -1,0 +1,36 @@
+[theme]
+theme = "native"
+
+[icons]
+icons = "awesome6"
+
+[[block]]
+block = "cpu"
+interval = 2
+format = " CPU $utilization "
+info_cpu = 30
+warning_cpu = 60
+critical_cpu = 90
+
+[[block]]
+block = "memory"
+interval = 5
+format = " RAM $mem_used_percents.eng(w:2) "
+warning_mem = 80
+critical_mem = 95
+
+[[block]]
+block = "battery"
+interval = 10
+format = " $icon $percentage "
+full_format = " $icon $percentage "
+missing_format = ""
+
+[[block]]
+block = "sound"
+format = " $icon $volume "
+
+[[block]]
+block = "time"
+interval = 1
+format = " $timestamp.datetime(f:'%d-%m-%Y %H:%M') "

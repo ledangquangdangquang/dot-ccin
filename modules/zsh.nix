@@ -1,21 +1,14 @@
 {...}: {
   programs.zsh = {
     enable = true;
-    enableCompletion = true; # Đang bị comment, giữ nguyên
+    enableCompletion = true;
     completionInit = "autoload -U compinit && compinit -C";
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
 
     initContent = ''
       fastfetch
-      export PATH="$PATH:/home/quang/.local/bin"
-      export PATH="$HOME/bin:$PATH"
-
-      export GTK_IM_MODULE=fcitx
-      export QT_IM_MODULE=fcitx
-      export XMODIFIERS=@im=fcitx
-      export SDL_IM_MODULE=fcitx
-      export GLFW_IM_MODULE=ibus
+      export PATH="$HOME/bin:$HOME/.local/bin:$PATH"
 
       eval "$(starship init zsh)"
       export EDITOR=nvim
@@ -49,8 +42,6 @@
       ZSH_HIGHLIGHT_STYLES[builtin]='fg=#cba6f7,bold'
       ZSH_HIGHLIGHT_STYLES[function]='fg=#cba6f7,bold'
       ZSH_HIGHLIGHT_STYLES[hashed-command]='fg=#cba6f7,bold'
-      ZSH_HIGHLIGHT_STYLES[arg0]='fg=#cba6f7,bold'
-
       # Arguments / strings
       ZSH_HIGHLIGHT_STYLES[single-quoted-argument]='fg=#f9e2af'      # yellow
       ZSH_HIGHLIGHT_STYLES[double-quoted-argument]='fg=#f9e2af'      # yellow
@@ -87,19 +78,16 @@
       # Sửa lại function y() cho Yazi: cd vào thư mục đã chọn
       # =========================================================
       function y() {
-      local tmp_file=$(mktemp -t "yazi-cwd.XXXXXX")
-      # Đảm bảo file tạm được xóa khi hàm kết thúc (kể cả khi yazi crash)
-      trap "rm -f $tmp_file" EXIT
+        local tmp_file cwd
+        tmp_file=$(mktemp -t "yazi-cwd.XXXXXX") || return
 
-      yazi "$@" --cwd-file="$tmp_file"
+        yazi "$@" --cwd-file="$tmp_file"
+        cwd=$(<"$tmp_file")
+        rm -f -- "$tmp_file"
 
-      # Đọc nội dung từ file tạm
-      local cwd=$(<"$tmp_file")
-
-      # Đổi thư mục nếu $cwd hợp lệ và khác thư mục hiện tại
-      if [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
-        builtin cd -- "$cwd"
-      fi
+        if [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+          builtin cd -- "$cwd"
+        fi
       }
 
       fuzzyvim-widget() {
@@ -165,11 +153,11 @@
       alias q='exit'
       alias reload='source ~/.zshrc'
       # export GTK_DEBUG = interactive
-      export PATH=$PATH:/home/quang/.spicetify
+      export PATH="$PATH:$HOME/.spicetify"
     '';
 
     shellAliases = {
-      rebuild = "USER=\"$(id -un)\" nix run github:nix-community/home-manager -- switch --impure --flake \".#$(id -un)\" && nix fmt";
+      rebuild = "nix flake check && nix run github:nix-community/home-manager -- switch --flake .#quang";
     };
 
     history.size = 10000;

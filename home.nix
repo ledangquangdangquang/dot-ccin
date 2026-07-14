@@ -10,7 +10,7 @@
   create_symlink = path: config.lib.file.mkOutOfStoreSymlink path;
 
   # Tạo danh sách các ứng dụng cần tạo symlink từ thư mục dotfiles
-  configApps = ["foot" "weathr" "vicinae" "fastfetch" "btop" "bat" "DankMaterialShell" "nvim" "niri" "kitty" "starship" "yazi"];
+  configApps = ["sway" "i3status-rust" "foot" "weathr" "vicinae" "fastfetch" "btop" "bat" "DankMaterialShell" "nvim" "niri" "kitty" "starship" "yazi"];
 
   fuzzyvim = pkgs.writeShellApplication {
     name = "fuzzyvim";
@@ -59,9 +59,12 @@ in {
     configApps);
 
   home.packages = with pkgs; [
+    i3status-rust
     nerd-fonts.fira-code
-    nerd-fonts.jetbrains-mono
     wl-clipboard
+    pulseaudio
+    nwg-displays
+    wl-mirror
     #vicinae
     fzf
     tree
@@ -84,10 +87,10 @@ in {
     yazi
     starship
     #kitty
-    #foot
+    foot
     kew
     ddcutil # brightness
-    eza # alterlative ls
+    eza # alternative ls
     fuzzyvim
     #discord
     #opencode

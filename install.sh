@@ -3,7 +3,7 @@ set -euo pipefail
 
 repo_url="${REPO_URL:-https://github.com/ledangquangdangquang/UbuntuConfig.git}"
 repo_dir="${REPO_DIR:-$HOME/UbuntuConfig}"
-profile="${HM_PROFILE:-${USER:-$(id -un)}}"
+profile="${HM_PROFILE:-quang}"
 backup_ext="${HM_BACKUP_EXT:-backup}"
 
 info() {
@@ -124,52 +124,12 @@ install_nix() {
 	ensure_command nix || die "Nix was installed, but the nix command is not available yet. Open a new terminal and run this script again."
 }
 prepare_repo() {
-	if [ -d "$repo_dir" ]; then
-		info "Using existing directory at $repo_dir"
-		return
-	fi
-
-	info "Cloning dotfiles into $repo_dir"
-	git clone "$repo_url" "$repo_dir"
-}
-# prepare_repo() {
-# 	if [ -d "$repo_dir/.git" ]; then
-# 		info "Using existing repo at $repo_dir"
-# 		git -C "$repo_dir" remote set-url origin "$repo_url"
-
-# 		local stash_ref=""
-# 		if ! git -C "$repo_dir" diff --quiet ||
-# 			! git -C "$repo_dir" diff --cached --quiet ||
-# 			[ -n "$(git -C "$repo_dir" ls-files --others --exclude-standard)" ]; then
-# 			warn "Local changes detected; stashing them before update"
-# 			git -C "$repo_dir" stash push --include-untracked -m "install.sh auto-stash $(date +%Y-%m-%dT%H:%M:%S%z)"
-# 			stash_ref="$(git -C "$repo_dir" stash list -n 1 --format='%gd')"
-# 		fi
-
-# 		info "Updating repo"
-# 		git -C "$repo_dir" pull --ff-only
-
-# 		if [ -n "$stash_ref" ]; then
-# 			info "Restoring stashed local changes"
-# 			if ! git -C "$repo_dir" stash pop "$stash_ref"; then
-# 				warn "Could not apply the stash cleanly. Your changes are still saved in git stash."
-# 			fi
-# 		fi
-# 		return
-# 	fi
-
-# 	if [ -e "$repo_dir" ]; then
-# 		die "$repo_dir already exists but is not a git repository. Move it away or set REPO_DIR to another path."
-# 	fi
-
-# 	info "Cloning dotfiles into $repo_dir"
-# 	git clone "$repo_url" "$repo_dir"
-# }
-prepare_repo() {
-	# Nếu thư mục đã tồn tại thì bỏ qua
-	if [ -d "$repo_dir" ]; then
+	if [ -d "$repo_dir/.git" ]; then
 		info "Found existing UbuntuConfig at $repo_dir"
 		return
+	fi
+	if [ -e "$repo_dir" ]; then
+		die "$repo_dir exists but is not a Git repository"
 	fi
 
 	info "Cloning dotfiles into $repo_dir"
@@ -185,12 +145,10 @@ verify_repo() {
 
 switch_home_manager() {
 	info "Applying Home Manager profile: $profile"
-	export USER="$profile"
-
 	if ensure_command home-manager; then
-		home-manager switch --impure -b "$backup_ext" --flake "$repo_dir#$profile"
+		home-manager switch -b "$backup_ext" --flake "$repo_dir#$profile"
 	else
-		nix run github:nix-community/home-manager -- switch --impure -b "$backup_ext" --flake "$repo_dir#$profile"
+		nix run github:nix-community/home-manager -- switch -b "$backup_ext" --flake "$repo_dir#$profile"
 	fi
 }
 

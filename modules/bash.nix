@@ -7,7 +7,7 @@
     '';
     shellAliases = {
       c = "clear";
-      rebuild = "nix run github:nix-community/home-manager -- switch --flake .#quang";
+      rebuild = "nix flake check && nix run github:nix-community/home-manager -- switch --flake .#quang";
     };
   };
 }

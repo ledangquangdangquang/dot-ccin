@@ -1,4 +1,6 @@
 {pkgs, ...}: {
+  home.file.".mozilla/firefox/default/user.js".force = true;
+
   programs.firefox = {
     enable = true;
     configPath = ".mozilla/firefox";
@@ -63,9 +65,8 @@
       extensions.force = true; # override extension
       userChrome = ./FirefoxCss/chrome/userChrome.css;
       extraConfig = builtins.readFile (pkgs.fetchurl {
-        url = "https://raw.githubusercontent.com/yokoffing/Betterfox/main/user.js";
-        sha256 = "sha256-6DJW9FMUkUViO1nOEZ4iyBRpI9Nk8C9u4s2Bh/Jv/K0=";
-        # Chạy `nix store prefetch-file <url>` để lấy SHA chuẩn nếu bị lỗi hash
+        url = "https://raw.githubusercontent.com/yokoffing/Betterfox/8e415d1633f10fe0192d9c938e4ca2628eeec9f9/user.js";
+        hash = "sha256-yelDvg0IKbd0xv4QfaZVca+Io6J7bjeIW/6DQBH1B4c=";
       });
     };
   };
