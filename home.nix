@@ -62,8 +62,7 @@ in {
     nerd-fonts.fira-code
     nerd-fonts.jetbrains-mono
     wl-clipboard
-    vicinae
-    brave
+    #vicinae
     fzf
     tree
     bat
@@ -84,13 +83,13 @@ in {
     gcc
     yazi
     starship
-    kitty
-    foot
+    #kitty
+    #foot
     kew
     ddcutil # brightness
     eza # alterlative ls
     fuzzyvim
-    discord
-    opencode
+    #discord
+    #opencode
   ];
 }
