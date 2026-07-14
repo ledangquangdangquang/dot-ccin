@@ -1,12 +1,3 @@
-prepare_repo() {
-	# Nếu thư mục đã tồn tại thì bỏ qua
-	if [ -d "$repo_dir" ]; then
-		info "Found existing UbuntuConfig at $repo_dir"
-		return
-	fi
-
-	info "Cloning dotfiles into $repo_dir"
-	git clone "$repo_url" "$repo_dir"
 #!/usr/bin/env bash
 set -euo pipefail
 
@@ -174,7 +165,16 @@ prepare_repo() {
 # 	info "Cloning dotfiles into $repo_dir"
 # 	git clone "$repo_url" "$repo_dir"
 # }
+prepare_repo() {
+	# Nếu thư mục đã tồn tại thì bỏ qua
+	if [ -d "$repo_dir" ]; then
+		info "Found existing UbuntuConfig at $repo_dir"
+		return
+	fi
 
+	info "Cloning dotfiles into $repo_dir"
+	git clone "$repo_url" "$repo_dir"
+}
 verify_repo() {
 	if ! grep -q '"foot"' "$repo_dir/home.nix" || [ ! -f "$repo_dir/dotfiles/foot/foot.ini" ]; then
 		die "Repo at $repo_dir does not contain the expected foot config. Check that it is on the latest main branch."
