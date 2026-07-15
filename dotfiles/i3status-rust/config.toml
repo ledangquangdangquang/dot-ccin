@@ -27,6 +27,22 @@ full_format = " $icon $percentage "
 missing_format = ""
 
 [[block]]
+block = "custom"
+command = '''state=$(fcitx5-remote 2>/dev/null); if [ "$state" = "2" ]; then echo VN; else echo EN; fi'''
+interval = 1
+[[block.click]]
+button = "left"
+cmd = "fcitx5-remote -t"
+
+[[block]]
+block = "net"
+device = "^wl"
+interval = 2
+format = " $icon $signal_strength "
+inactive_format = " $icon "
+missing_format = ""
+
+[[block]]
 block = "sound"
 format = " $icon $volume "
 

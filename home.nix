@@ -10,7 +10,7 @@
   create_symlink = path: config.lib.file.mkOutOfStoreSymlink path;
 
   # Tạo danh sách các ứng dụng cần tạo symlink từ thư mục dotfiles
-  configApps = ["sway" "i3status-rust" "foot" "weathr" "vicinae" "fastfetch" "btop" "bat" "DankMaterialShell" "nvim" "niri" "kitty" "starship" "yazi"];
+  configApps = ["sway" "i3status-rust" "fcitx5" "foot" "weathr" "vicinae" "fastfetch" "btop" "bat" "DankMaterialShell" "nvim" "niri" "kitty" "starship" "yazi"];
 
   fuzzyvim = pkgs.writeShellApplication {
     name = "fuzzyvim";
@@ -65,7 +65,7 @@ in {
     pulseaudio
     nwg-displays
     wl-mirror
-    #vicinae
+    vicinae
     fzf
     tree
     bat
@@ -92,6 +92,11 @@ in {
     ddcutil # brightness
     eza # alternative ls
     fuzzyvim
+  (qt6Packages.fcitx5-with-addons.override {
+    addons = [
+      qt6Packages.fcitx5-unikey
+    ];
+  })
     #discord
     #opencode
   ];

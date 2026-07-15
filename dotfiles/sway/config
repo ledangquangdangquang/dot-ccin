@@ -30,7 +30,6 @@ set $mod Mod4
 
 # Startup applications
 exec fcitx5 -d
-exec lookapp
 
 # Basic keybindings
 # Launch Alacritty terminal
@@ -43,7 +42,8 @@ bindsym $mod+Shift+z exec zathura
 bindsym $mod+q kill               
 # Logout, restart and reload sway
 bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'
-
+# Launch Fuzzel
+bindsym $mod+space exec fuzzel
 # Reload Sway config
 bindsym $mod+Shift+r reload
 
