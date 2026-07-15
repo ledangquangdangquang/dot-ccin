@@ -1,4 +1,32 @@
-{pkgs, ...}: {
+{pkgs, ...}: let
+  fcitx5Gtk3Cache =
+    pkgs.runCommand "fcitx5-gtk3-immodules-cache" {
+      nativeBuildInputs = [pkgs.gtk3.dev];
+    } ''
+      mkdir -p $out
+      gtk-query-immodules-3.0 \
+        ${pkgs.fcitx5-gtk}/lib/gtk-3.0/3.0.0/immodules/im-fcitx5.so \
+        > $out/immodules.cache
+    '';
+
+  firefoxWithFcitx = pkgs.symlinkJoin {
+    name = "firefox-with-fcitx";
+    paths = [pkgs.firefox];
+    nativeBuildInputs = [pkgs.makeWrapper];
+    postBuild = ''
+      wrapProgram $out/bin/firefox \
+        --set GTK_IM_MODULE fcitx \
+        --set GTK_IM_MODULE_FILE ${fcitx5Gtk3Cache}/immodules.cache \
+        --set XMODIFIERS @im=fcitx
+    '';
+    meta = pkgs.firefox.meta;
+    passthru =
+      pkgs.firefox.passthru
+      // {
+        override = _: firefoxWithFcitx;
+      };
+  };
+in {
   home.file.".mozilla/firefox/default/user.js".force = true;
 
   programs.firefox = {
@@ -7,7 +35,7 @@
     package =
       if pkgs.stdenv.isDarwin
       then pkgs.firefox-bin
-      else pkgs.firefox;
+      else firefoxWithFcitx;
     nativeMessagingHosts = with pkgs; [ff2mpv-rust];
     policies = {
       # about:support

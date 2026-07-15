@@ -4,10 +4,14 @@
 
 This repository manages Ubuntu dotfiles with Nix flakes and Home Manager.
 
+The active desktop session is Sway on Wayland. Treat `dotfiles/sway/` as the
+primary compositor configuration and prefer Sway-compatible tools and examples.
+Do not assume that Niri is in use merely because `dotfiles/niri/` exists.
+
 - `flake.nix` defines inputs, the `quang` Home Manager configuration, and shared arguments.
 - `home.nix` imports `./modules`, installs packages, and symlinks selected folders from `dotfiles/` into `~/.config`.
 - `modules/` contains focused Home Manager modules: `zsh.nix`, `git.nix`, `gtk.nix`, `bash.nix`, and `firefox/`.
-- `dotfiles/` stores application configuration directories, for example `kitty/`, `nvim/`, `niri/`, `fastfetch/`, and `yazi/`.
+- `dotfiles/` stores application configuration directories, for example `sway/`, `kitty/`, `nvim/`, `fastfetch/`, and `yazi/`. Some folders, such as `niri/`, may contain inactive or experimental configurations.
 - `Wallpapers/` contains desktop image assets.
 
 Add new Home Manager logic under `modules/` and add new app config folders under `dotfiles/`. If a new dotfile folder should be linked, add its name to `configApps` in `home.nix`.

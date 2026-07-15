@@ -30,6 +30,7 @@ set $mod Mod4
 
 # Startup applications
 exec fcitx5 -d
+exec swaync
 
 # Basic keybindings
 # Launch Alacritty terminal
@@ -46,6 +47,9 @@ bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. 
 bindsym $mod+space exec fuzzel
 # Reload Sway config
 bindsym $mod+Shift+r reload
+# Notifications
+bindsym $mod+n exec swaync-client -t
+bindsym $mod+Shift+n exec swaync-client -d
 
 # output * bg /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
 output * bg ~/UbuntuConfig/Wallpapers/wallpaper.png fill
@@ -117,5 +121,37 @@ bar {
   }
 }
 
-  bindsym $mod+b bar mode toggle
+  bindsym $mod+Shift+t bar mode toggle
+  # Workspaces define
+# any
+bindsym $mod+a workspace A 
+# setting
+bindsym $mod+s workspace S 
+# documents
+bindsym $mod+d workspace D 
+# coding
+bindsym $mod+c workspace C 
+# browser
+bindsym $mod+b workspace B 
+
+bindsym $mod+1 workspace 1 
+bindsym $mod+2 workspace 2 
+bindsym $mod+3 workspace 3 
+bindsym $mod+4 workspace 4 
+bindsym $mod+5 workspace 5 
+
+# Workspaces moving
+bindsym $mod+Shift+a move container to workspace A
+bindsym $mod+Shift+s move container to workspace S
+bindsym $mod+Shift+d move container to workspace D
+bindsym $mod+Shift+c move container to workspace C
+bindsym $mod+Shift+b move container to workspace B
+bindsym $mod+Shift+1 move container to workspace 1
+bindsym $mod+Shift+2 move container to workspace 2
+bindsym $mod+Shift+3 move container to workspace 3
+bindsym $mod+Shift+4 move container to workspace 4
+bindsym $mod+Shift+5 move container to workspace 5
+# Which app is assigned to which workspace
+assign [class="firefox"] workspace B
+assign [class="foot"] workspace 1
   include /etc/sway/config.d/*

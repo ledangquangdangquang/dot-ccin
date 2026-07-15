@@ -10,7 +10,7 @@
   create_symlink = path: config.lib.file.mkOutOfStoreSymlink path;
 
   # Tạo danh sách các ứng dụng cần tạo symlink từ thư mục dotfiles
-  configApps = ["sway" "i3status-rust" "fcitx5" "foot" "weathr" "vicinae" "fastfetch" "btop" "bat" "DankMaterialShell" "nvim" "niri" "kitty" "starship" "yazi"];
+  configApps = ["fuzzel" "sway" "swaync" "i3status-rust" "fcitx5" "foot" "weathr" "vicinae" "fastfetch" "btop" "bat" "DankMaterialShell" "nvim" "niri" "kitty" "starship" "yazi"];
 
   fuzzyvim = pkgs.writeShellApplication {
     name = "fuzzyvim";
@@ -46,6 +46,11 @@ in {
   home.username = "${user}";
   home.homeDirectory = "/home/${user}";
   home.stateVersion = hostMain.stateVersion;
+  home.sessionVariables = {
+    XMODIFIERS = "@im=fcitx";
+    GTK_IM_MODULE = "fcitx";
+    QT_IM_MODULE = "fcitx";
+  };
   targets.genericLinux.enable = true;
 
   # Tối ưu hóa toàn bộ phần định nghĩa xdg.configFile cũ bằng một vòng lặp map
@@ -71,6 +76,8 @@ in {
     bat
     git
     fuzzel
+    swaynotificationcenter
+    libnotify
     fastfetch
     swaybg
     neovim
@@ -92,11 +99,11 @@ in {
     ddcutil # brightness
     eza # alternative ls
     fuzzyvim
-  (qt6Packages.fcitx5-with-addons.override {
-    addons = [
-      qt6Packages.fcitx5-unikey
-    ];
-  })
+    (qt6Packages.fcitx5-with-addons.override {
+      addons = [
+        qt6Packages.fcitx5-unikey
+      ];
+    })
     #discord
     #opencode
   ];
