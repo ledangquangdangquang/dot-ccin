@@ -45,8 +45,13 @@ bindsym $mod+q kill
 bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'
 # Launch Fuzzel
 bindsym $mod+space exec fuzzel
+# Network menus
+bindsym $mod+w exec wifi-menu
+bindsym $mod+Ctrl+b exec bluetooth-menu
 # Reload Sway config
 bindsym $mod+Shift+r reload
+# Key shortcut reference
+bindsym $mod+i exec ~/.config/sway/show-keyshortcuts.sh
 # Notifications
 bindsym $mod+n exec swaync-client -t
 bindsym $mod+Shift+n exec swaync-client -d
@@ -55,7 +60,6 @@ bindsym F8 exec screenshot region
 bindsym Shift+F8 exec screenshot full
 bindsym Ctrl+F8 exec screenshot copy
 
-# output * bg /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
 output * bg ~/UbuntuConfig/Wallpapers/wallpaper.png fill
 
 # Split windows (horizontal/vertical)
@@ -97,20 +101,16 @@ input "type:keyboard" {
 
 # Workspace
 # Open it while starting up
-# exec swaymsg workspace 1
+exec swaymsg workspace 1
 for_window [title="^.*"] title_format ""
 default_border none 
 bar {
   position top
   height 28
+  mode hide
   font pango:FiraCode Nerd Font 15
   status_command i3status-rs ~/.config/i3status-rust/config.toml
 
-  # colors {
-  #     statusline #ffffff
-  #     background #323232
-  #     inactive_workspace #32323200 #32323200 #5c5c5c
-  # }
   colors {
     background         $base
     statusline         $text
@@ -125,8 +125,8 @@ bar {
   }
 }
 
-  bindsym $mod+Shift+t bar mode toggle
-  # Workspaces define
+bindsym $mod+Shift+t bar mode toggle
+# Workspaces define
 # any
 bindsym $mod+a workspace A 
 # setting
@@ -158,4 +158,6 @@ bindsym $mod+Shift+5 move container to workspace 5
 # Which app is assigned to which workspace
 assign [app_id="firefox"] workspace B
 assign [app_id="foot"] workspace 1
-  include /etc/sway/config.d/*
+for_window [app_id="firefox"] workspace B
+for_window [app_id="foot"] workspace 1
+include /etc/sway/config.d/*

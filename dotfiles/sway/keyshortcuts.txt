@@ -1,0 +1,56 @@
+SWAY — Mod is the Super/Windows key
+────────────────────────────────────────────────────────────
+Mod + i                 Show this shortcut list
+Mod + Return            Open Foot terminal
+Mod + Shift + f         Open Firefox
+Mod + Shift + z         Open Zathura
+Mod + Space             Open Fuzzel launcher
+Mod + w                 Open Wi-Fi menu
+Mod + Ctrl + b          Open Bluetooth menu
+Mod + q                 Close focused window
+Mod + Shift + r         Reload Sway config
+Mod + Shift + e         Exit Sway
+
+NOTIFICATIONS AND SCREENSHOTS
+────────────────────────────────────────────────────────────
+Mod + n                 Toggle notification center
+Mod + Shift + n         Toggle Do Not Disturb
+F8                      Capture region and open Satty
+Shift + F8              Capture full screen and open Satty
+Ctrl + F8               Capture region directly to clipboard
+
+WINDOWS AND PANES
+────────────────────────────────────────────────────────────
+Mod + h / j / k / l     Focus left / down / up / right
+Mod + Shift + h/j/k/l   Move window left / down / up / right
+Mod + Ctrl + h/l        Shrink / grow window width
+Mod + Ctrl + j/k        Shrink / grow window height
+Mod + Shift + t         Toggle status bar
+
+WORKSPACES
+────────────────────────────────────────────────────────────
+Mod + a/s/d/c/b         Go to workspace A/S/D/C/B
+Mod + 1/2/3/4/5         Go to workspace 1/2/3/4/5
+Mod + Shift + key       Move window to the matching workspace
+Firefox                 Opens automatically on workspace B
+Foot                    Opens automatically on workspace 1
+
+HARDWARE
+────────────────────────────────────────────────────────────
+Brightness Up/Down      Change brightness by 5%
+Volume Up/Down          Change volume by 5%
+Volume Mute             Toggle audio mute
+
+TMUX — Prefix is Alt + a
+────────────────────────────────────────────────────────────
+Alt+a, c                Create a new window
+Alt+a, |                Split pane horizontally
+Alt+a, -                Split pane vertically
+Alt+a, f                Open project/session picker
+Alt+a, r                Reload Tmux config
+Alt+a, d                Detach from session
+Alt+a, [                Enter copy mode; y copies selection
+Alt + h/j/k/l           Focus Tmux pane without prefix
+Alt + Shift + h/j/k/l   Resize Tmux pane without prefix
+Alt+a, Ctrl+s           Save session with Resurrect
+Alt+a, Ctrl+r           Restore session with Resurrect
