@@ -3,7 +3,7 @@
 
 
 ![Ubuntu](https://img.shields.io/badge/ubuntu-26.04-orange?logo=ubuntu&logoColor=orange)
-![Niri](https://img.shields.io/badge/niri-26.04-orange?logo=niri&logoColor=orange)
+![Sway](https://img.shields.io/badge/Sway-Wayland-68751C?logo=sway&logoColor=white)
 ![Nix](https://img.shields.io/badge/nixpkgs-2.34.7-informational.svg?style=flat&logo=nixos&logoColor=CAD3F5&colorA=24273A&colorB=8aadf4)
 
 
@@ -19,7 +19,7 @@ Paste this into a terminal on Ubuntu:
 bash <(curl -fsSL https://raw.githubusercontent.com/ledangquangdangquang/UbuntuConfig/main/install.sh)
 ```
 
-The script installs Nix if needed, enables flakes, clones this repo to `~/UbuntuConfig`, applies the Home Manager profile for the current Linux user, and sets zsh as the default shell.
+The script installs Nix if needed, enables flakes, clones this repo to `~/UbuntuConfig`, applies the `quang` Home Manager profile, and sets zsh as the default shell.
 
 ## Overview
 
@@ -30,10 +30,10 @@ Main stack:
 | Area | Tools |
 | --- | --- |
 | Shell | Zsh, Oh My Zsh, Starship |
-| Window manager | Niri on Wayland |
+| Window manager | Sway on Wayland |
 | Terminal | Foot, Kitty, Tmux |
 | Editor | Neovim |
-| Launcher/UI | Vicinae, DankMaterialShell |
+| Launcher/UI | Fuzzel, SwayNC, Vicinae |
 | File manager | Yazi |
 | Browser | Firefox |
 | Theme | Catppuccin, Bibata cursor, Nerd Fonts |
@@ -43,7 +43,7 @@ Main stack:
 ```text
 .
 ├── flake.nix          # Flake inputs and Home Manager entry
-├── home.nix           # Packages, config symlinks, shared Home Manager setup
+├── home.nix           # Minimal Home Manager entry point
 ├── modules/           # Focused Home Manager modules
 ├── dotfiles/          # App configs linked into ~/.config
 ├── Wallpapers/        # Wallpaper and avatar assets
@@ -53,10 +53,17 @@ Main stack:
 
 Important modules:
 
+- `modules/default.nix`: Imports all focused Home Manager modules.
+- `modules/dotfiles.nix`: Links selected `dotfiles/` folders into `~/.config`.
+- `modules/packages.nix`: User packages shared by the desktop environment.
+- `modules/fcitx.nix`: Fcitx5 input method configuration.
+- `modules/notifications.nix`: SwayNC and notification sound configuration.
+- `modules/screenshot.nix`: Screenshot commands and tools.
+- `modules/wifi.nix` and `modules/bluetooth.nix`: Network menu helpers.
 - `modules/zsh.nix`: Zsh setup, aliases, shell functions.
 - `modules/git.nix`: Git identity, Git alias, SSH config for GitHub.
 - `modules/gtk.nix`: GTK theme, fonts, cursor theme.
-- `modules/tmux.nix`: Tmux prefix, session restore, sessionizer, clipboard, and theme.
+- `modules/tmux.nix`: Tmux prefix, session management, restore, clipboard, and theme.
 - `modules/firefox/default.nix`: Firefox package, policies, profile config.
 
 ## Setup
@@ -78,22 +85,29 @@ cd ~/UbuntuConfig
 Apply the Home Manager configuration for the current Linux user:
 
 ```bash
-USER="$(id -un)" nix run github:nix-community/home-manager -- switch --impure --flake ".#$(id -un)"
+nix run github:nix-community/home-manager -- switch --flake .#quang
 ```
 
 After Home Manager is installed, you can use:
 
 ```bash
-USER="$(id -un)" home-manager switch --impure --flake ".#$(id -un)"
+home-manager switch --flake .#quang
 ```
 
 ## Common Commands
 
 ```bash
-nix flake check --no-build
+nix flake check
 ```
 
-Validate flake outputs without building everything.
+Validate and build the flake checks.
+
+```bash
+nix fmt
+git diff --exit-code -- '*.nix'
+```
+
+Format Nix files and verify that formatting produces no uncommitted changes. The flake and formatting checks also run automatically on pushes and pull requests through GitHub Actions.
 
 ```bash
 nix build .#homeConfigurations.quang.activationPackage
@@ -133,7 +147,7 @@ Use `attach` only from a normal shell. If already inside tmux, use `switch-clien
 
 | Shortcut | Action |
 | --- | --- |
-| `Alt-a` then `f` | Open `tmux-sessionizer` project picker with `fzf` |
+| `Alt-a` then `s` | Open the session chooser; press `x` to delete with confirmation |
 | `Alt-a` then `r` | Reload tmux config |
 | `Alt-a` then `\|` | Split pane horizontally in the current directory |
 | `Alt-a` then `-` | Split pane vertically in the current directory |
@@ -178,14 +192,15 @@ df -h / /home
 To add a new app config:
 
 1. Put the config directory under `dotfiles/<app>/`.
-2. Add `<app>` to `configApps` in `home.nix`.
+2. Add `<app>` to `configApps` in `modules/dotfiles.nix`.
 3. Run `home-manager switch --flake .#quang`.
 
-User-specific values live in `flake.nix` and `home.nix`, including `user`, `hostname`, `homeDirectory`, and `stateVersion`.
+Add new Home Manager logic to a focused file under `modules/`, then import it from `modules/default.nix`. User and host-specific values are centralized in `flake.nix`; `home.nix` remains the minimal entry point.
 
 ## Notes
 
-- Keyboard shortcuts are mainly in `dotfiles/niri/config.kdl`, `dotfiles/kitty/kitty.conf`, and the Neovim config.
+- Sway keyboard shortcuts are defined in `dotfiles/sway/config` and summarized in `dotfiles/sway/keyshortcuts.txt` (`Mod+i`).
+- `dotfiles/niri/` is inactive/experimental and is not the primary compositor configuration.
 - Shell aliases are managed in `modules/zsh.nix`.
 - Do not commit secrets, SSH private keys, browser sessions, or generated logs.
 
