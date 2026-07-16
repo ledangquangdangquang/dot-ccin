@@ -2,6 +2,7 @@ SWAY — Mod is the Super/Windows key
 ────────────────────────────────────────────────────────────
 Mod + i                 Show this shortcut list
 Mod + Return            Open Foot terminal
+Mod + e                 Open Nautilus file manager
 Mod + Shift + f         Open Firefox
 Mod + Shift + z         Open Zathura
 Mod + Space             Open Fuzzel launcher

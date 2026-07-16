@@ -35,6 +35,8 @@ exec swaync
 # Basic keybindings
 # Launch Alacritty terminal
 bindsym $mod+Return exec foot
+# Launch Nautilus file manager
+bindsym $mod+e exec nautilus --new-window
 # Launch Firefox
 bindsym $mod+Shift+f exec firefox          
 # Zathura for documentation
