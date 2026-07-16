@@ -46,9 +46,9 @@ TMUX — Prefix is Alt + a
 Alt+a, c                Create a new window
 Alt+a, |                Split pane horizontally
 Alt+a, -                Split pane vertically
-Alt+a, f                Open project/session picker
 Alt+a, r                Reload Tmux config
 Alt+a, d                Detach from session
+Alt+a, w                Show full session
 Alt+a, [                Enter copy mode; y copies selection
 Alt + h/j/k/l           Focus Tmux pane without prefix
 Alt + Shift + h/j/k/l   Resize Tmux pane without prefix

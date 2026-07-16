@@ -1,51 +1,4 @@
-{pkgs, ...}: let
-  tmux-sessionizer = pkgs.writeShellApplication {
-    name = "tmux-sessionizer";
-    runtimeInputs = with pkgs; [
-      fzf
-      tmux
-    ];
-    text = ''
-      set -o pipefail
-
-      roots=(
-        "$HOME/UbuntuConfig"
-        "$HOME/Projects"
-        "$HOME/Code"
-        "$HOME/dev"
-        "$HOME/work"
-      )
-
-      candidates=()
-      for root in "''${roots[@]}"; do
-        if [[ -d "$root" ]]; then
-          candidates+=("$root")
-          for dir in "$root"/* "$root"/*/*; do
-            [[ -d "$dir" ]] && candidates+=("$dir")
-          done
-        fi
-      done
-
-      selected=$(
-        printf '%s\n' "''${candidates[@]}" |
-          fzf --prompt='tmux session > ' --height=80% --layout=reverse
-      )
-
-      [[ -z "$selected" ]] && exit 0
-
-      session_name=$(basename "$selected" | tr '.:' '__')
-
-      if [[ -z "''${TMUX:-}" ]]; then
-        tmux new-session -A -s "$session_name" -c "$selected"
-      else
-        tmux new-session -ds "$session_name" -c "$selected" 2>/dev/null || true
-        tmux switch-client -t "$session_name"
-      fi
-    '';
-  };
-in {
-  home.packages = [tmux-sessionizer];
-
+{pkgs, ...}: {
   programs.tmux = {
     enable = true;
     baseIndex = 1;
@@ -92,7 +45,6 @@ in {
       set -g status-position top
 
       bind r source-file ~/.config/tmux/tmux.conf \; display-message 'tmux config reloaded'
-      bind f display-popup -E "${tmux-sessionizer}/bin/tmux-sessionizer"
       bind | split-window -h -c '#{pane_current_path}'
       bind - split-window -v -c '#{pane_current_path}'
       bind c new-window -c '#{pane_current_path}'

@@ -9,12 +9,21 @@ primary compositor configuration and prefer Sway-compatible tools and examples.
 Do not assume that Niri is in use merely because `dotfiles/niri/` exists.
 
 - `flake.nix` defines inputs, the `quang` Home Manager configuration, and shared arguments.
-- `home.nix` imports `./modules`, installs packages, and symlinks selected folders from `dotfiles/` into `~/.config`.
-- `modules/` contains focused Home Manager modules: `zsh.nix`, `git.nix`, `gtk.nix`, `bash.nix`, and `firefox/`.
+- `home.nix` is the minimal Home Manager entrypoint. It sets the user, home directory, state version, Catppuccin integration, and imports `./modules`.
+- `modules/default.nix` is the module index. Register every new Home Manager module there.
+- `modules/packages.nix` contains the shared package list. Feature-specific packages should remain in their owning module.
+- `modules/dotfiles.nix` maps selected folders from `dotfiles/` into `~/.config`. Its `configApps` list is the place to register newly linked application folders.
+- `modules/fcitx.nix` configures Fcitx5, Unikey, and input-method environment variables.
+- `modules/wifi.nix` and `modules/bluetooth.nix` provide the Fuzzel-based network menus.
+- `modules/notifications.nix` configures notification packages and the notification sound/audio-ducking helper.
+- `modules/screenshot.nix` provides the Grim, Slurp, and Satty screenshot workflow.
+- `modules/fuzzyvim.nix` provides the Fzf-based project/file picker.
+- `modules/tmux.nix`, `zsh.nix`, `git.nix`, `gtk.nix`, `bash.nix`, and `nix-cleanup.nix` contain their respective focused Home Manager configuration.
+- `modules/firefox/` contains the Firefox Home Manager module, policies, profile settings, CSS, and related assets.
 - `dotfiles/` stores application configuration directories, for example `sway/`, `kitty/`, `nvim/`, `fastfetch/`, and `yazi/`. Some folders, such as `niri/`, may contain inactive or experimental configurations.
 - `Wallpapers/` contains desktop image assets.
 
-Add new Home Manager logic under `modules/` and add new app config folders under `dotfiles/`. If a new dotfile folder should be linked, add its name to `configApps` in `home.nix`.
+Keep `home.nix` minimal. Add packages, generated scripts, session variables, and application logic to a focused file under `modules/`, then import it from `modules/default.nix`. Add application-owned configuration under `dotfiles/<app>/`; if the folder should be linked, add its name to `configApps` in `modules/dotfiles.nix`.
 
 ## Build, Test, and Development Commands
 
