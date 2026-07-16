@@ -44,6 +44,7 @@ Volume Mute             Toggle audio mute
 TMUX — Prefix is Alt + a
 ────────────────────────────────────────────────────────────
 Alt+a, c                Create a new window
+Alt+a, s                Choose session; x deletes with confirmation
 Alt+a, |                Split pane horizontally
 Alt+a, -                Split pane vertically
 Alt+a, r                Reload Tmux config

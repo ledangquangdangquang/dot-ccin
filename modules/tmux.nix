@@ -45,6 +45,7 @@
       set -g status-position top
 
       bind r source-file ~/.config/tmux/tmux.conf \; display-message 'tmux config reloaded'
+      bind s choose-tree -sZ
       bind | split-window -h -c '#{pane_current_path}'
       bind - split-window -v -c '#{pane_current_path}'
       bind c new-window -c '#{pane_current_path}'
