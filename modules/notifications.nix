@@ -70,6 +70,7 @@
       gawk
       libnotify
       pulseaudio
+      wlsunset
     ];
     text = ''
       notify_level() {
@@ -134,8 +135,26 @@
             --hint="string:x-canonical-private-synchronous:caps-lock" \
             --icon="$icon" "Caps Lock" "$state"
           ;;
+        night-light)
+          pid_file="''${XDG_RUNTIME_DIR:-/tmp}/wlsunset-4000k.pid"
+
+          if [[ -s "$pid_file" ]] && kill -0 "$(<"$pid_file")" 2>/dev/null; then
+            kill "$(<"$pid_file")"
+            rm -f "$pid_file"
+            notify-send --app-name="System" --expire-time=1500 \
+              --hint="string:x-canonical-private-synchronous:night-light" \
+              --icon=weather-clear-symbolic "Night Light" "Off · 6500K"
+          else
+            rm -f "$pid_file"
+            wlsunset -T 4000 -t 4000 &
+            echo "$!" >"$pid_file"
+            notify-send --app-name="System" --expire-time=1500 \
+              --hint="string:x-canonical-private-synchronous:night-light" \
+              --icon=weather-clear-night-symbolic "Night Light" "On · 4000K"
+          fi
+          ;;
         *)
-          echo "Usage: system-control {brightness-up|brightness-down|volume-up|volume-down|volume-mute|caps-lock}" >&2
+          echo "Usage: system-control {brightness-up|brightness-down|volume-up|volume-down|volume-mute|caps-lock|night-light}" >&2
           exit 2
           ;;
       esac

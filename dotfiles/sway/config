@@ -61,6 +61,8 @@ bindsym $mod+Shift+n exec swaync-client -d
 bindsym F8 exec screenshot region
 bindsym Shift+F8 exec screenshot full
 bindsym Ctrl+F8 exec screenshot copy
+# Toggle 4000K night light
+bindsym F9 exec system-control night-light
 
 output * bg ~/UbuntuConfig/Wallpapers/wallpaper.png fill
 
