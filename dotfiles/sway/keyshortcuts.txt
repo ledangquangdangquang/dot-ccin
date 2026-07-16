@@ -8,9 +8,12 @@ Mod + Shift + z         Open Zathura
 Mod + Space             Open Fuzzel launcher
 Mod + w                 Open Wi-Fi menu
 Mod + Ctrl + b          Open Bluetooth menu
+Mod + v                 Open clipboard history
+Mod + Shift + v         Clear clipboard history
 Mod + q                 Close focused window
 Mod + Shift + r         Reload Sway config
-Mod + Shift + e         Exit Sway
+Mod + Escape            Lock screen
+Mod + Shift + e         Open power menu
 
 NOTIFICATIONS AND SCREENSHOTS
 ────────────────────────────────────────────────────────────
