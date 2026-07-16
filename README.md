@@ -66,34 +66,6 @@ Important modules:
 - `modules/tmux.nix`: Tmux prefix, session management, restore, clipboard, and theme.
 - `modules/firefox/default.nix`: Firefox package, policies, profile config.
 
-## Setup
-
-Enable Nix flakes if needed:
-
-```bash
-mkdir -p ~/.config/nix
-echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf
-```
-
-Clone this repo to the expected path:
-
-```bash
-git clone git@github.com:ledangquangdangquang/UbuntuConfig.git ~/UbuntuConfig
-cd ~/UbuntuConfig
-```
-
-Apply the Home Manager configuration for the current Linux user:
-
-```bash
-nix run github:nix-community/home-manager -- switch --flake .#quang
-```
-
-After Home Manager is installed, you can use:
-
-```bash
-home-manager switch --flake .#quang
-```
-
 ## Common Commands
 
 ```bash
