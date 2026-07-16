@@ -1,7 +1,7 @@
 # Configuration Architecture
 
-This repository is a Home Manager configuration for the `quang` user on a
-non-NixOS Ubuntu system. Nix builds the packages and generated commands, while
+This repository is a Home Manager configuration for the user selected in
+`flake.nix` on a non-NixOS Ubuntu system. Nix builds the packages and generated commands, while
 Home Manager writes user-level configuration and links application dotfiles.
 Sway is the active Wayland compositor; the Niri files are experimental.
 
@@ -9,7 +9,7 @@ Sway is the active Wayland compositor; the Niri files are experimental.
 
 ```text
 flake.nix
-  └─ homeConfigurations.quang
+  └─ homeConfigurations.${user}
        └─ home.nix
             ├─ Catppuccin Home Manager module
             └─ modules/default.nix
@@ -26,8 +26,8 @@ settings. `modules/default.nix` is the index for all feature modules.
 
 | Area | Source | Result |
 | --- | --- | --- |
-| Flake inputs and profile identity | `flake.nix` | `homeConfigurations.quang` |
-| Account and Home Manager state | `home.nix` | `/home/quang`, state version, generic Linux support |
+| Flake inputs and profile identity | `flake.nix` | `homeConfigurations.${user}` |
+| Account and Home Manager state | `home.nix` | `/home/${user}`, state version, generic Linux support |
 | Shared command-line packages | `modules/packages.nix` | Packages in the user profile |
 | Application configuration | `dotfiles/<app>/` | Out-of-store links under `~/.config/<app>` |
 | GTK, fonts, and cursor | `modules/gtk.nix` | GTK and pointer settings |
@@ -84,13 +84,13 @@ by a Home Manager systemd user timer.
 If Home Manager is already available:
 
 ```bash
-home-manager switch --flake .#quang
+home-manager switch --flake ".#$USER"
 ```
 
 Otherwise, run it through Nix:
 
 ```bash
-nix run github:nix-community/home-manager -- switch --flake .#quang
+nix run github:nix-community/home-manager -- switch --flake ".#$USER"
 ```
 
 Changing `home.stateVersion` can alter Home Manager defaults and should not be

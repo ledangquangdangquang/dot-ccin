@@ -8,7 +8,7 @@ The active desktop session is Sway on Wayland. Treat `dotfiles/sway/` as the
 primary compositor configuration and prefer Sway-compatible tools and examples.
 Do not assume that Niri is in use merely because `dotfiles/niri/` exists.
 
-- `flake.nix` defines inputs, the `quang` Home Manager configuration, and shared arguments.
+- `flake.nix` defines inputs, the user-named Home Manager configuration, and shared arguments.
 - `home.nix` is the minimal Home Manager entrypoint. It sets the user, home directory, state version, Catppuccin integration, and imports `./modules`.
 - `modules/default.nix` is the module index. Register every new Home Manager module there.
 - `modules/packages.nix` contains the shared package list. Feature-specific packages should remain in their owning module.
@@ -29,8 +29,8 @@ Keep `home.nix` minimal. Add packages, generated scripts, session variables, and
 
 - `nix flake check` validates the flake outputs.
 - `nix fmt` formats Nix files with the flake formatter.
-- `nix run github:nix-community/home-manager -- switch --flake .#quang` applies the Home Manager configuration locally.
-- `home-manager switch --flake .#quang` applies the same config when Home Manager is already installed.
+- `nix run github:nix-community/home-manager -- switch --flake ".#$USER"` applies the Home Manager configuration locally.
+- `home-manager switch --flake ".#$USER"` applies the same config when Home Manager is already installed.
 
 Run validation before switching when editing `flake.nix`, `home.nix`, or `modules/*.nix`.
 
@@ -46,7 +46,7 @@ There is no dedicated test suite. Treat `nix flake check` and Home Manager evalu
 
 The Git history uses short, direct commit messages such as `eza and alias update`, `firefoxCss fix bookmark bar`, and `foot catpuccin mocha`. Follow that style: summarize the changed area and outcome in one concise line.
 
-Pull requests should include a brief description, any commands run, and screenshots for visible UI changes such as themes, Firefox CSS, terminal styling, or wallpapers. Mention whether `home-manager switch --flake .#quang` was tested.
+Pull requests should include a brief description, any commands run, and screenshots for visible UI changes such as themes, Firefox CSS, terminal styling, or wallpapers. Mention whether `home-manager switch --flake ".#$USER"` was tested.
 
 ## Security & Configuration Tips
 

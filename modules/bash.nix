@@ -1,4 +1,4 @@
-{
+{user, ...}: {
   programs.bash = {
     enable = true;
     bashrcExtra = ''
@@ -7,7 +7,7 @@
     '';
     shellAliases = {
       c = "clear";
-      rebuild = "nix flake check && nix run github:nix-community/home-manager -- switch --flake .#quang";
+      rebuild = "nix flake check && nix run github:nix-community/home-manager -- switch --flake .#${user}";
     };
   };
 }

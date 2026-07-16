@@ -22,7 +22,7 @@
   "script-fail-notify": false,
   "scripts": {
     "notification-sound": {
-      "exec": "/home/quang/.nix-profile/bin/notification-sound",
+      "exec": "notification-sound",
       "run-on": "receive"
     }
   },

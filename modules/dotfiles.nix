@@ -33,5 +33,10 @@ in {
     // {
       "sway/keyshortcuts.txt".source = createSymlink "${dotfiles}/sway/keyshortcuts.txt";
       "sway/show-keyshortcuts.sh".source = createSymlink "${dotfiles}/sway/show-keyshortcuts.sh";
+      "DankMaterialShell/settings.json".text =
+        builtins.replaceStrings
+        ["$HOME"]
+        [config.home.homeDirectory]
+        (builtins.readFile ../dotfiles/DankMaterialShell/settings.json);
     };
 }

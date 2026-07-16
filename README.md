@@ -19,7 +19,11 @@ Paste this into a terminal on Ubuntu:
 bash <(curl -fsSL https://raw.githubusercontent.com/ledangquangdangquang/UbuntuConfig/main/install.sh)
 ```
 
-The script installs Nix if needed, enables flakes, clones this repo to `~/UbuntuConfig`, applies the `quang` Home Manager profile, sets zsh as the default shell, and registers the Sway session with Ubuntu's display manager.
+The script installs Nix if needed, enables flakes, clones this repo to
+`~/UbuntuConfig`, writes the current Linux username to `flake.nix`, applies the
+matching Home Manager profile, sets zsh as the default shell, and registers the
+Sway session with Ubuntu's display manager. Run the installer while logged in
+as the user that should own the configuration.
 
 ## Overview
 
@@ -87,7 +91,7 @@ git diff --exit-code -- '*.nix'
 Format Nix files and verify that formatting produces no uncommitted changes. The flake and formatting checks also run automatically on pushes and pull requests through GitHub Actions.
 
 ```bash
-nix build .#homeConfigurations.quang.activationPackage
+nix build ".#homeConfigurations.${USER}.activationPackage"
 ```
 
 Build the Home Manager activation package and catch evaluation/build warnings.
@@ -170,7 +174,7 @@ To add a new app config:
 
 1. Put the config directory under `dotfiles/<app>/`.
 2. Add `<app>` to `configApps` in `modules/dotfiles.nix`.
-3. Run `home-manager switch --flake .#quang`.
+3. Run `home-manager switch --flake ".#$USER"`.
 
 Add new Home Manager logic to a focused file under `modules/`, then import it from `modules/default.nix`. User and host-specific values are centralized in `flake.nix`; `home.nix` remains the minimal entry point.
 
@@ -184,11 +188,11 @@ Add new Home Manager logic to a focused file under `modules/`, then import it fr
 ### Register Sway on Ubuntu
 
 ```sh
-sudo tee /usr/share/wayland-sessions/sway-nix.desktop >/dev/null <<'EOF'
+sudo tee /usr/share/wayland-sessions/sway-nix.desktop >/dev/null <<EOF
 [Desktop Entry]
 Name=Sway (Nix)
 Comment=Sway with Nix applications
-Exec=/usr/bin/env PATH=/home/quang/.nix-profile/bin:/nix/var/nix/profiles/default/bin:/usr/local/bin:/usr/bin:/bin XDG_DATA_DIRS=/home/quang/.nix-profile/share:/nix/var/nix/profiles/default/share:/usr/local/share:/usr/share /usr/bin/sway --unsupported-gpu
+Exec=/usr/bin/env PATH=$HOME/.nix-profile/bin:/nix/var/nix/profiles/default/bin:/usr/local/bin:/usr/bin:/bin XDG_DATA_DIRS=$HOME/.nix-profile/share:/nix/var/nix/profiles/default/share:/usr/local/share:/usr/share /usr/bin/sway --unsupported-gpu
 Type=Application
 DesktopNames=sway
 EOF

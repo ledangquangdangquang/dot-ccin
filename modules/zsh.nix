@@ -1,4 +1,4 @@
-{...}: {
+{user, ...}: {
   programs.zsh = {
     enable = true;
     enableCompletion = true;
@@ -157,7 +157,7 @@
     '';
 
     shellAliases = {
-      rebuild = "nix flake check && nix run github:nix-community/home-manager -- switch --flake .#quang";
+      rebuild = "nix flake check && nix run github:nix-community/home-manager -- switch --flake .#${user}";
     };
 
     history.size = 10000;

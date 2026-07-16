@@ -3,7 +3,7 @@ set -euo pipefail
 
 repo_url="${REPO_URL:-https://github.com/ledangquangdangquang/UbuntuConfig.git}"
 repo_dir="${REPO_DIR:-$HOME/UbuntuConfig}"
-profile="${HM_PROFILE:-quang}"
+profile=""
 backup_ext="${HM_BACKUP_EXT:-backup}"
 
 info() {
@@ -139,6 +139,29 @@ prepare_repo() {
 	info "Cloning dotfiles into $repo_dir"
 	git clone "$repo_url" "$repo_dir"
 }
+
+get_target_user() {
+	id -un
+}
+
+configure_flake_user() {
+	local flake_file="$repo_dir/flake.nix"
+	local current_user
+
+	profile="$(get_target_user)"
+	if [[ ! "$profile" =~ ^[a-z_][a-z0-9_-]*$ ]] || ! getent passwd "$profile" >/dev/null; then
+		die "Cannot configure Home Manager for invalid or unknown user: $profile"
+	fi
+
+	current_user="$(sed -nE 's/^[[:space:]]*user = "([^"]+)";$/\1/p' "$flake_file")"
+	[ -n "$current_user" ] || die "Could not find the user setting in $flake_file"
+
+	if [ "$current_user" != "$profile" ]; then
+		info "Configuring flake user: $profile"
+		sed -Ei 's/^([[:space:]]*user = ")[^"]+(";)$/\1'"$profile"'\2/' "$flake_file"
+	fi
+}
+
 verify_repo() {
 	if [ ! -f "$repo_dir/flake.nix" ] ||
 		[ ! -f "$repo_dir/home.nix" ] ||
@@ -215,6 +238,7 @@ main() {
 	load_nix_profile
 	prepare_repo
 	verify_repo
+	configure_flake_user
 	switch_home_manager
 	set_default_shell
 	register_sway_session

@@ -265,7 +265,7 @@ window-rule {
 // window-rule {
 //     geometry-corner-radius 12
 //     // Áp dụng shader trắng đen cho toàn bộ các cửa sổ
-//     shader "/home/quang/.config/niri/grayscale.glsl" 
+//     shader "~/.config/niri/grayscale.glsl"
 // }
 // Open the Firefox picture-in-picture player as floating by default.
 window-rule {

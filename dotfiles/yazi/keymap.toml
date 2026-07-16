@@ -246,9 +246,9 @@ keymap = [
 	{ on = [ "g", "d" ],       run = "cd ~/Downloads",   desc = "Go to Downloads" },
 	{ on = [ "g", "<Space>" ], run = "cd --interactive", desc = "Jump interactively" },
 	{ on = [ "g", "f" ],       run = "follow",           desc = "Follow hovered symlink" },
-	{ on = [ "g", "p" ],       run = "cd /home/aechewhy/Pictures/",   desc = "Go to pictures" },
-	{ on = [ "g", "s" ],       run = "cd '/home/aechewhy/Documents/Study Materials/'",   desc = "Go to study materials" },
-	{ on = [ "g", "S" ],       run = "cd /home/aechewhy/Pictures/Screenshots",   desc = "Go to screenshots" },
+	{ on = [ "g", "p" ],       run = "cd ~/Pictures/",   desc = "Go to pictures" },
+	{ on = [ "g", "s" ],       run = "cd '~/Documents/Study Materials/'",   desc = "Go to study materials" },
+	{ on = [ "g", "S" ],       run = "cd ~/Pictures/Screenshots",   desc = "Go to screenshots" },
 	{ on = [ "g", "/" ],       run = "cd /",   desc = "Go to /" },
 	{ on = [ "g", "." ],       run = "cd ~/.dotfiles",   desc = "Go to .dotfiles" },
 
@@ -278,7 +278,7 @@ keymap = [
 	{ on = "<F1>", run = "help", desc = "Open help" },
   # Miscellaneous
   
-  { on = [".", "y"], run = "nvim /home/aechewhy/.config/yazi", desc = "Config yazi"},
+  { on = [".", "y"], run = "nvim ~/.config/yazi", desc = "Config yazi"},
 ]
 
 [tasks]
