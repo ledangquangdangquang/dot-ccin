@@ -50,6 +50,10 @@ ensure_dependencies() {
 		missing_packages+=(xz-utils)
 	fi
 
+	if [ ! -x /usr/bin/sway ]; then
+		missing_packages+=(sway)
+	fi
+
 	if [ "${#missing_packages[@]}" -gt 0 ]; then
 		ensure_command sudo || die "sudo is required to install: ${missing_packages[*]}"
 		info "Installing missing package(s): ${missing_packages[*]}"
@@ -136,7 +140,11 @@ prepare_repo() {
 	git clone "$repo_url" "$repo_dir"
 }
 verify_repo() {
-	if ! grep -q '"foot"' "$repo_dir/home.nix" || [ ! -f "$repo_dir/dotfiles/foot/foot.ini" ]; then
+	if [ ! -f "$repo_dir/flake.nix" ] ||
+		[ ! -f "$repo_dir/home.nix" ] ||
+		! grep -Fq '"foot"' "$repo_dir/modules/dotfiles.nix" ||
+		! grep -Eq '^[[:space:]]*foot([[:space:]]|$)' "$repo_dir/modules/packages.nix" ||
+		[ ! -f "$repo_dir/dotfiles/foot/foot.ini" ]; then
 		die "Repo at $repo_dir does not contain the expected foot config. Check that it is on the latest main branch."
 	fi
 

@@ -58,6 +58,8 @@ Important modules:
 - `modules/packages.nix`: User packages shared by the desktop environment.
 - `modules/fcitx.nix`: Fcitx5 input method configuration.
 - `modules/notifications.nix`: SwayNC and notification sound configuration.
+- `modules/power.nix`: Fuzzel-based suspend, logout, reboot, and shutdown menu.
+- `modules/clipboard.nix`: Clipboard history watcher, picker, and clear-history commands.
 - `modules/screenshot.nix`: Screenshot commands and tools.
 - `modules/wifi.nix` and `modules/bluetooth.nix`: Network menu helpers.
 - `modules/zsh.nix`: Zsh setup, aliases, shell functions.
@@ -65,6 +67,9 @@ Important modules:
 - `modules/gtk.nix`: GTK theme, fonts, cursor theme.
 - `modules/tmux.nix`: Tmux prefix, session management, restore, clipboard, and theme.
 - `modules/firefox/default.nix`: Firefox package, policies, profile config.
+
+See [`docs/architecture.md`](docs/architecture.md) for the evaluation flow,
+module ownership, generated commands, and extension points.
 
 ## Common Commands
 
