@@ -1,9 +1,11 @@
+"$schema" = "https://starship.rs/config-schema.json"
+
 # Disable newline after the prompt
 add_newline = false
 
 # Define the prompt format
 format = """
-[╭─](purple) $directory$git_branch
+[╭─](purple) $directory$git_branch$python$nix_shell
 [╰─](purple) $character 
 """
 
@@ -15,6 +17,35 @@ style = "purple"
 [git_branch]
 symbol = " "
 style = "purple"
+
+# Show the Python version and the active virtual environment. This module is
+# only displayed in Python projects or while a virtual environment is active.
+[python]
+symbol = " "
+style = "yellow"
+format = "via [${symbol}${version}( ($virtualenv))]($style) "
+version_format = "v${raw}"
+python_binary = ["python3", "python"]
+detect_extensions = ["py", "ipynb"]
+detect_files = [
+  ".python-version",
+  "Pipfile",
+  "__init__.py",
+  "pyproject.toml",
+  "requirements.txt",
+  "setup.py",
+  "tox.ini",
+  "uv.lock",
+]
+detect_folders = [".venv", "venv"]
+generic_venv_names = [".venv", "venv"]
+
+# Show whether the current shell was entered through nix develop/nix shell.
+[nix_shell]
+symbol = " "
+style = "blue"
+format = "via [$symbol$state( ($name))]($style) "
+heuristic = true
 
 # Configure the character section for success and error states
 [character]

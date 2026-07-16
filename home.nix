@@ -14,6 +14,5 @@
   home.username = user;
   home.homeDirectory = "/home/${user}";
   home.stateVersion = hostMain.stateVersion;
-
   targets.genericLinux.enable = true;
 }

@@ -85,6 +85,11 @@ in {
       };
     };
     profiles.default = {
+      settings = {
+        "layout.spellcheckDefault" = 2;
+        "browser.download.useDownloadDir" = false;
+        "browser.download.always_ask_before_handling_new_types" = true;
+      };
       search = {
         force = true;
         default = "ddg"; # DuckDuckGo
