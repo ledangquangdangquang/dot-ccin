@@ -98,6 +98,12 @@ bindsym XF86MonBrightnessDown exec system-control brightness-down
 bindsym XF86AudioRaiseVolume exec system-control volume-up
 bindsym XF86AudioLowerVolume exec system-control volume-down
 bindsym XF86AudioMute exec system-control volume-mute
+# Function-key media controls
+bindsym F1 exec system-control volume-mute
+bindsym F2 exec system-control volume-down
+bindsym F3 exec system-control volume-up
+bindsym F6 exec system-control brightness-down
+bindsym F7 exec system-control brightness-up
 # Caps Lock status
 bindsym --release Caps_Lock exec system-control caps-lock
 

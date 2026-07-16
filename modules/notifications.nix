@@ -146,11 +146,20 @@
               --icon=weather-clear-symbolic "Night Light" "Off · 6500K"
           else
             rm -f "$pid_file"
-            wlsunset -T 4000 -t 4000 &
+            wlsunset -T 4001 -t 4000 -S 00:00 -s 23:59 &
             echo "$!" >"$pid_file"
-            notify-send --app-name="System" --expire-time=1500 \
-              --hint="string:x-canonical-private-synchronous:night-light" \
-              --icon=weather-clear-night-symbolic "Night Light" "On · 4000K"
+            sleep 0.2
+
+            if kill -0 "$(<"$pid_file")" 2>/dev/null; then
+              notify-send --app-name="System" --expire-time=1500 \
+                --hint="string:x-canonical-private-synchronous:night-light" \
+                --icon=weather-clear-night-symbolic "Night Light" "On · 4000K"
+            else
+              rm -f "$pid_file"
+              notify-send --app-name="System" --urgency=critical --expire-time=3000 \
+                --hint="string:x-canonical-private-synchronous:night-light" \
+                --icon=dialog-error-symbolic "Night Light" "Could not change display temperature"
+            fi
           fi
           ;;
         *)

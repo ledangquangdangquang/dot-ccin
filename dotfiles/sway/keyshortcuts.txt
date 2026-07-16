@@ -38,9 +38,12 @@ Foot                    Opens automatically on workspace 1
 
 HARDWARE
 ────────────────────────────────────────────────────────────
-Brightness Up/Down      Change brightness by 5%
-Volume Up/Down          Change volume by 5%
-Volume Mute             Toggle audio mute
+F1                      Toggle audio mute
+F2 / F3                 Decrease / increase volume by 5%
+F6 / F7                 Decrease / increase brightness by 5%
+F9                      Toggle 4000K Night Light
+Media brightness keys   Change brightness by 5%
+Media volume keys       Change volume or toggle mute
 
 TMUX — Prefix is Alt + a
 ────────────────────────────────────────────────────────────
