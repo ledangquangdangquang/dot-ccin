@@ -19,7 +19,7 @@ Paste this into a terminal on Ubuntu:
 bash <(curl -fsSL https://raw.githubusercontent.com/ledangquangdangquang/UbuntuConfig/main/install.sh)
 ```
 
-The script installs Nix if needed, enables flakes, clones this repo to `~/UbuntuConfig`, applies the `quang` Home Manager profile, and sets zsh as the default shell.
+The script installs Nix if needed, enables flakes, clones this repo to `~/UbuntuConfig`, applies the `quang` Home Manager profile, sets zsh as the default shell, and registers the Sway session with Ubuntu's display manager.
 
 ## Overview
 
