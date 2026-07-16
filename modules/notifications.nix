@@ -73,16 +73,16 @@
     ];
     text = ''
       notify_level() {
-        local id="$1"
+        local tag="$1"
         local icon="$2"
         local title="$3"
         local value="$4"
 
         notify-send \
           --app-name="System" \
-          --replace-id="$id" \
           --expire-time=1500 \
           --icon="$icon" \
+          --hint="string:x-canonical-private-synchronous:$tag" \
           --hint="int:value:$value" \
           "$title" "$value%"
       }
@@ -91,31 +91,32 @@
         brightness-up)
           brightnessctl set +5%
           value="$(brightnessctl -m | awk -F, '{gsub(/%/, "", $4); print $4}')"
-          notify_level 99101 display-brightness-symbolic "Brightness" "$value"
+          notify_level brightness display-brightness-symbolic "Brightness" "$value"
           ;;
         brightness-down)
           brightnessctl set 5%-
           value="$(brightnessctl -m | awk -F, '{gsub(/%/, "", $4); print $4}')"
-          notify_level 99101 display-brightness-symbolic "Brightness" "$value"
+          notify_level brightness display-brightness-symbolic "Brightness" "$value"
           ;;
         volume-up)
           pactl set-sink-volume @DEFAULT_SINK@ +5%
           value="$(pactl get-sink-volume @DEFAULT_SINK@ | awk 'match($0, /[0-9]+%/) { print substr($0, RSTART, RLENGTH - 1); exit }')"
-          notify_level 99102 audio-volume-high-symbolic "Volume" "$value"
+          notify_level volume audio-volume-high-symbolic "Volume" "$value"
           ;;
         volume-down)
           pactl set-sink-volume @DEFAULT_SINK@ -5%
           value="$(pactl get-sink-volume @DEFAULT_SINK@ | awk 'match($0, /[0-9]+%/) { print substr($0, RSTART, RLENGTH - 1); exit }')"
-          notify_level 99102 audio-volume-low-symbolic "Volume" "$value"
+          notify_level volume audio-volume-low-symbolic "Volume" "$value"
           ;;
         volume-mute)
           pactl set-sink-mute @DEFAULT_SINK@ toggle
           if [[ "$(pactl get-sink-mute @DEFAULT_SINK@)" == *yes ]]; then
-            notify-send --app-name="System" --replace-id=99102 --expire-time=1500 \
+            notify-send --app-name="System" --expire-time=1500 \
+              --hint="string:x-canonical-private-synchronous:volume" \
               --icon=audio-volume-muted-symbolic "Volume" "Muted"
           else
             value="$(pactl get-sink-volume @DEFAULT_SINK@ | awk 'match($0, /[0-9]+%/) { print substr($0, RSTART, RLENGTH - 1); exit }')"
-            notify_level 99102 audio-volume-high-symbolic "Volume" "$value"
+            notify_level volume audio-volume-high-symbolic "Volume" "$value"
           fi
           ;;
         caps-lock)
@@ -129,7 +130,8 @@
             state="On"
             icon="changes-allow-symbolic"
           fi
-          notify-send --app-name="System" --replace-id=99103 --expire-time=1500 \
+          notify-send --app-name="System" --expire-time=1500 \
+            --hint="string:x-canonical-private-synchronous:caps-lock" \
             --icon="$icon" "Caps Lock" "$state"
           ;;
         *)
