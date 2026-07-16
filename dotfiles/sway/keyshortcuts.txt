@@ -12,7 +12,6 @@ Mod + v                 Open clipboard history
 Mod + Shift + v         Clear clipboard history
 Mod + q                 Close focused window
 Mod + Shift + r         Reload Sway config
-Mod + Escape            Lock screen
 Mod + Shift + e         Open power menu
 
 NOTIFICATIONS AND SCREENSHOTS

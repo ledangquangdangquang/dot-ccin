@@ -307,7 +307,6 @@ binds {
     //     spawn "bash" "-c" "$HOME/.config/wofi/wofi.sh";
     // }
     Mod+Space repeat=false { spawn "vicinae" "toggle"; }
-    Super+Alt+L hotkey-overlay-title="Lock the Screen: swaylock" { spawn "swaylock"; }
     Super+E hotkey-overlay-title="Open File Manager" { spawn "nautilus"; }
 
     // Use spawn-sh to run a shell command. Do this if you need pipes, multiple commands, etc.

@@ -15,7 +15,6 @@
     ./wifi.nix
     ./bluetooth.nix
     ./notifications.nix
-    ./lock.nix
     ./power.nix
     ./clipboard.nix
     # --- Folder ---

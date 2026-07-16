@@ -8,12 +8,11 @@
     ];
     text = ''
       choice="$({
-        printf '󰌾  Lock\tlock\n'
         printf '󰒲  Suspend\tsuspend\n'
         printf '󰍃  Logout\tlogout\n'
         printf '󰜉  Reboot\treboot\n'
         printf '󰐥  Shutdown\tshutdown\n'
-      } | fuzzel --dmenu --with-nth=1 --prompt='Power ❯ ' --lines=5 --width=36)" || exit 0
+      } | fuzzel --dmenu --with-nth=1 --prompt='Power ❯ ' --lines=4 --width=36)" || exit 0
 
       IFS=$'\t' read -r _ action <<< "$choice"
 
@@ -25,11 +24,7 @@
       }
 
       case "$action" in
-        lock)
-          lock-screen
-          ;;
         suspend)
-          lock-screen
           systemctl suspend
           ;;
         logout)

@@ -31,7 +31,6 @@ set $mod Mod4
 # Startup applications
 exec fcitx5 -d
 exec swaync
-exec session-idle
 exec clipboard-watcher
 
 # Basic keybindings
@@ -45,8 +44,7 @@ bindsym $mod+Shift+f exec firefox
 bindsym $mod+Shift+z exec zathura          
 # Close focused window
 bindsym $mod+q kill               
-# Lock and power menu
-bindsym $mod+Escape exec lock-screen
+# Power menu
 bindsym $mod+Shift+e exec power-menu
 # Launch Fuzzel
 bindsym $mod+space exec fuzzel
