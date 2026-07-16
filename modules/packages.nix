@@ -26,6 +26,7 @@
     gcc
     yazi
     starship
+    zathura
     # kitty
     foot
     kew

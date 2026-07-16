@@ -38,6 +38,8 @@ in {
       else firefoxWithFcitx;
     nativeMessagingHosts = with pkgs; [ff2mpv-rust];
     policies = {
+      PromptForDownloadLocation = true;
+
       # about:support
       ExtensionSettings = {
         # DDict
@@ -86,7 +88,7 @@ in {
     };
     profiles.default = {
       settings = {
-        "layout.spellcheckDefault" = 2;
+        "layout.spellcheckDefault" = 0;
         "browser.download.useDownloadDir" = false;
         "browser.download.always_ask_before_handling_new_types" = true;
       };

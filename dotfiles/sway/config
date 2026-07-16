@@ -169,7 +169,9 @@ bindsym $mod+Shift+4 move container to workspace 4
 bindsym $mod+Shift+5 move container to workspace 5
 # Which app is assigned to which workspace
 assign [app_id="firefox"] workspace B
+assign [app_id="zathura"] workspace D
 assign [app_id="foot"] workspace 1
 for_window [app_id="firefox"] workspace B
+for_window [app_id="zathura"] workspace D
 for_window [app_id="foot"] workspace 1
 include /etc/sway/config.d/*
