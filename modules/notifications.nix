@@ -61,10 +61,89 @@
         "$sound_file"
     '';
   };
+
+  system-control = pkgs.writeShellApplication {
+    name = "system-control";
+    runtimeInputs = with pkgs; [
+      brightnessctl
+      coreutils
+      gawk
+      libnotify
+      pulseaudio
+    ];
+    text = ''
+      notify_level() {
+        local id="$1"
+        local icon="$2"
+        local title="$3"
+        local value="$4"
+
+        notify-send \
+          --app-name="System" \
+          --replace-id="$id" \
+          --expire-time=1500 \
+          --icon="$icon" \
+          --hint="int:value:$value" \
+          "$title" "$value%"
+      }
+
+      case "''${1:-}" in
+        brightness-up)
+          brightnessctl set +5%
+          value="$(brightnessctl -m | awk -F, '{gsub(/%/, "", $4); print $4}')"
+          notify_level 99101 display-brightness-symbolic "Brightness" "$value"
+          ;;
+        brightness-down)
+          brightnessctl set 5%-
+          value="$(brightnessctl -m | awk -F, '{gsub(/%/, "", $4); print $4}')"
+          notify_level 99101 display-brightness-symbolic "Brightness" "$value"
+          ;;
+        volume-up)
+          pactl set-sink-volume @DEFAULT_SINK@ +5%
+          value="$(pactl get-sink-volume @DEFAULT_SINK@ | awk 'match($0, /[0-9]+%/) { print substr($0, RSTART, RLENGTH - 1); exit }')"
+          notify_level 99102 audio-volume-high-symbolic "Volume" "$value"
+          ;;
+        volume-down)
+          pactl set-sink-volume @DEFAULT_SINK@ -5%
+          value="$(pactl get-sink-volume @DEFAULT_SINK@ | awk 'match($0, /[0-9]+%/) { print substr($0, RSTART, RLENGTH - 1); exit }')"
+          notify_level 99102 audio-volume-low-symbolic "Volume" "$value"
+          ;;
+        volume-mute)
+          pactl set-sink-mute @DEFAULT_SINK@ toggle
+          if [[ "$(pactl get-sink-mute @DEFAULT_SINK@)" == *yes ]]; then
+            notify-send --app-name="System" --replace-id=99102 --expire-time=1500 \
+              --icon=audio-volume-muted-symbolic "Volume" "Muted"
+          else
+            value="$(pactl get-sink-volume @DEFAULT_SINK@ | awk 'match($0, /[0-9]+%/) { print substr($0, RSTART, RLENGTH - 1); exit }')"
+            notify_level 99102 audio-volume-high-symbolic "Volume" "$value"
+          fi
+          ;;
+        caps-lock)
+          state_file="''${XDG_RUNTIME_DIR:-/tmp}/caps-lock-state"
+          if [[ -e "$state_file" ]]; then
+            rm -f "$state_file"
+            state="Off"
+            icon="changes-prevent-symbolic"
+          else
+            touch "$state_file"
+            state="On"
+            icon="changes-allow-symbolic"
+          fi
+          notify-send --app-name="System" --replace-id=99103 --expire-time=1500 \
+            --icon="$icon" "Caps Lock" "$state"
+          ;;
+        *)
+          echo "Usage: system-control {brightness-up|brightness-down|volume-up|volume-down|volume-mute|caps-lock}" >&2
+          exit 2
+          ;;
+      esac
+    '';
+  };
 in {
   home.packages = with pkgs; [
     libnotify
     notification-sound
+    system-control
     pulseaudio
     swaynotificationcenter
   ];

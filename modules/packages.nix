@@ -29,6 +29,7 @@
     # kitty
     foot
     kew
+    brightnessctl # laptop/internal display brightness
     ddcutil # brightness
     eza # alternative ls
   ];

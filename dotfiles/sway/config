@@ -89,17 +89,15 @@ bindsym $mod+Ctrl+j resize shrink height 10px
 
 # Brightness
 # Increase brightness
-bindsym XF86MonBrightnessUp exec 'brightnessctl set +5%'
+bindsym XF86MonBrightnessUp exec system-control brightness-up
 # Decrease brightness
-bindsym XF86MonBrightnessDown exec 'brightnessctl set 5%-'
+bindsym XF86MonBrightnessDown exec system-control brightness-down
 # Volume
-bindsym XF86AudioRaiseVolume exec 'pactl set-sink-volume @DEFAULT_SINK@ +5%'
-bindsym XF86AudioLowerVolume exec 'pactl set-sink-volume @DEFAULT_SINK@ -5%'
-bindsym XF86AudioMute exec 'pactl set-sink-mute @DEFAULT_SINK@ toggle'
-
-input "type:keyboard" {
-    xkb_options ctrl:nocaps
-}
+bindsym XF86AudioRaiseVolume exec system-control volume-up
+bindsym XF86AudioLowerVolume exec system-control volume-down
+bindsym XF86AudioMute exec system-control volume-mute
+# Caps Lock status
+bindsym --release Caps_Lock exec system-control caps-lock
 
 # Workspace
 # Open it while starting up
