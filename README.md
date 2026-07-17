@@ -3,7 +3,7 @@
 
 
 ![Ubuntu](https://img.shields.io/badge/ubuntu-26.04-orange?logo=ubuntu&logoColor=orange)
-![Sway](https://img.shields.io/badge/Sway-Wayland-68751C?logo=sway&logoColor=white)
+![Sway](https://img.shields.io/badge/Sway-1.9-68751C?logo=sway&logoColor=white)
 ![Nix](https://img.shields.io/badge/nixpkgs-2.34.7-informational.svg?style=flat&logo=nixos&logoColor=CAD3F5&colorA=24273A&colorB=8aadf4)
 
 
