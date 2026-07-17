@@ -9,6 +9,7 @@
     ./nix-cleanup.nix
     ./dotfiles.nix
     ./default-apps.nix
+    ./vlc.nix
     ./packages.nix
     ./fcitx.nix
     ./fuzzyvim.nix
