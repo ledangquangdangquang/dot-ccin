@@ -8,6 +8,7 @@
     ./tmux.nix
     ./nix-cleanup.nix
     ./dotfiles.nix
+    ./default-apps.nix
     ./packages.nix
     ./fcitx.nix
     ./fuzzyvim.nix
