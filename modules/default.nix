@@ -19,6 +19,7 @@
     ./notifications.nix
     ./power.nix
     ./clipboard.nix
+    ./sway.nix
     # --- Folder ---
     ./firefox
   ];

@@ -9,7 +9,7 @@
     initContent = ''
       fastfetch
       export PATH="$HOME/bin:$HOME/.local/bin:$PATH"
-
+      export PATH=/home/quang/.opencode/bin:$PATH  
       eval "$(starship init zsh)"
       export EDITOR=nvim
       export STARSHIP_CONFIG=~/.config/starship/starship.toml

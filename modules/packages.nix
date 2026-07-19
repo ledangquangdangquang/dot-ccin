@@ -27,6 +27,7 @@
     yazi
     starship
     zathura
+    ffmpeg
     # kitty
     foot
     kew
