@@ -34,5 +34,6 @@
     brightnessctl # laptop/internal display brightness
     ddcutil # brightness
     eza # alternative ls
+    kanshi # automatic output management
   ];
 }

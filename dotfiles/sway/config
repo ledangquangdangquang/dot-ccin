@@ -32,6 +32,7 @@ set $mod Mod4
 exec fcitx5 -d
 exec swaync
 exec clipboard-watcher
+exec kanshi
 
 # Basic keybindings
 # Launch Alacritty terminal

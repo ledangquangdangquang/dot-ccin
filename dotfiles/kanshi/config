@@ -1,0 +1,18 @@
+profile dp-1 {
+    output eDP-1 disable
+    output DP-1 enable
+}
+
+profile dp-2 {
+    output eDP-1 disable
+    output DP-2 enable
+}
+
+profile hdmi-a-1 {
+    output eDP-1 disable
+    output HDMI-A-1 enable
+}
+
+profile internal {
+    output eDP-1 enable
+}

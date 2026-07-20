@@ -11,6 +11,7 @@
     "foot"
     "weathr"
     "vicinae"
+    "kanshi"
     "fastfetch"
     "btop"
     "bat"
