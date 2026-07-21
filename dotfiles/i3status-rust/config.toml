@@ -43,6 +43,14 @@ inactive_format = " $icon "
 missing_format = ""
 
 [[block]]
+block = "custom"
+command = "b=$(bluetoothctl show 2>/dev/null | grep -q 'Powered: yes' && echo on || echo off); [ \"$b\" = on ] && c=$(bluetoothctl devices Connected 2>/dev/null | grep -q . && echo 󰂱 || echo 󰂲) || c=󰂲; echo \"$c BT\""
+interval = 5
+[[block.click]]
+button = "left"
+cmd = "bluetooth-menu"
+
+[[block]]
 block = "sound"
 format = " $icon $volume "
 

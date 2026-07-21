@@ -46,7 +46,7 @@ bindsym $mod+Shift+z exec zathura
 # Close focused window
 bindsym $mod+q kill               
 # Power menu
-bindsym $mod+Shift+e exec power-menu
+bindsym $mod+x exec power-menu
 # Launch Fuzzel
 bindsym $mod+space exec fuzzel
 # Network menus
