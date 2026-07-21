@@ -20,7 +20,7 @@
     stylua
     tree-sitter
     nil
-    nixpkgs-fmt
+
     btop
     gcc
     yazi

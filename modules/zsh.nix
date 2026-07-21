@@ -9,7 +9,7 @@
     initContent = ''
       fastfetch
       export PATH="$HOME/bin:$HOME/.local/bin:$PATH"
-      export PATH=/home/quang/.opencode/bin:$PATH  
+      export PATH="$HOME/.opencode/bin:$PATH"
       export PATH="$PATH:/snap/bin"
       eval "$(starship init zsh)"
       export EDITOR=nvim
@@ -153,8 +153,7 @@
       alias cls='clear'
       alias q='exit'
       alias reload='source ~/.zshrc'
-      # export GTK_DEBUG = interactive
-      export PATH="$PATH:$HOME/.spicetify"
+
     '';
 
     shellAliases = {

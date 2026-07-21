@@ -5,7 +5,7 @@
 }: {
   fonts.fontconfig.enable = true;
   home.packages = [
-    # pkgs.nerdfonts
+
     pkgs.twemoji-color-font
     pkgs.noto-fonts-color-emoji
     pkgs.nerd-fonts.noto
@@ -21,8 +21,8 @@
   gtk = {
     enable = true;
     theme = {
-      name = "catppuccin-frappe-blue-standard";
-      package = pkgs.catppuccin-gtk;
+      name = "catppuccin-mocha-blue-standard";
+      package = pkgs.catppuccin-gtk.override { variant = "mocha"; };
     };
     gtk4.theme = config.gtk.theme;
     font = {

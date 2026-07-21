@@ -15,4 +15,6 @@
   home.homeDirectory = "/home/${user}";
   home.stateVersion = hostMain.stateVersion;
   targets.genericLinux.enable = true;
+
+  home.sessionVariables.TERMINAL = "foot";
 }

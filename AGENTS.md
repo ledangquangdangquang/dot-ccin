@@ -51,3 +51,9 @@ Pull requests should include a brief description, any commands run, and screensh
 ## Security & Configuration Tips
 
 Do not commit private keys, tokens, machine-specific secrets, or browser session data. Review Firefox extension backups and generated config exports before adding them. Keep username- or host-specific assumptions centralized in `flake.nix` and `home.nix`.
+
+## Communication Style
+
+- User has ADHD. Be extremely concise and direct.
+- Skip preamble, summaries, and explanations unless explicitly asked.
+- Just do the thing. One-line answers preferred.

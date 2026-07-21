@@ -35,7 +35,7 @@ exec clipboard-watcher
 exec kanshi
 
 # Basic keybindings
-# Launch Alacritty terminal
+# Launch foot terminal
 bindsym $mod+Return exec foot
 # Launch Nautilus file manager
 bindsym $mod+e exec nautilus --new-window
@@ -69,12 +69,7 @@ bindsym Ctrl+F8 exec screenshot copy
 # Toggle 4000K night light
 bindsym F9 exec system-control night-light
 
-# output * bg ~/UbuntuConfig/Wallpapers/wallpaper.png fill
 output * bg ~/UbuntuConfig/Wallpapers/catppuccin-abstract-eclipse-1920x1080.png fill
-
-# Split windows (horizontal/vertical)
-# bindsym $mod+h split h
-# bindsym $mod+v split v
 
 # Move focus between windows
 bindsym $mod+h focus left
