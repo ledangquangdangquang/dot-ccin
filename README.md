@@ -202,3 +202,49 @@ Type=Application
 DesktopNames=sway
 EOF
 ```
+
+## Other Distros
+
+This repo is built for Ubuntu. Most of the Nix-managed config works on any Linux distro, but a few things differ.
+
+### Package Manager
+
+| Distro | Command |
+| --- | --- |
+| Ubuntu/Debian | `apt` |
+| Fedora | `dnf` |
+| Arch/Manjaro | `pacman` |
+| openSUSE | `zypper` |
+
+`install.sh` uses `apt`. Replace the package list and install commands if running on a different distro.
+
+### Sway GPU Flags
+
+- **Ubuntu + NVIDIA**: requires `--unsupported-gpu` in the `.desktop` entry.
+- **Arch/Fedora**: Sway runs natively, no extra flag needed.
+- **NixOS**: Sway is configured declaratively, no manual `.desktop` file.
+
+### Session Registration
+
+- **Ubuntu/Debian**: `/usr/share/wayland-sessions/`
+- **Arch/Fedora**: same path, but you can also use `environment.d` instead.
+- **NixOS**: register via `services.xserver.windowManager.sway.enable`.
+
+### Nix Installation
+
+- **Ubuntu**: single-user mode (default in `install.sh`).
+- **NixOS**: Nix is pre-installed.
+- **Arch/Fedora**: can use multi-user mode (`nix install --daemon`).
+
+### Audio Stack
+
+- **Ubuntu 22.04+**: PipeWire (`pactl`/`paplay` work via compatibility layer).
+- **Fedora 34+**: PipeWire.
+- **Arch**: PipeWire (new default) or PulseAudio.
+- **Debian 11**: PulseAudio.
+
+All audio scripts in this repo use `pactl`/`paplay`, which work on both PipeWire and PulseAudio.
+
+### Brightness Control
+
+`brightnessctl` works on most distros. Older systems may need `xbacklight` or `light` instead.
