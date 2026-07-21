@@ -1,16 +1,38 @@
 # UbuntuConfig
 
-
-
 ![Ubuntu](https://img.shields.io/badge/ubuntu-26.04-orange?logo=ubuntu&logoColor=orange)
 ![Sway](https://img.shields.io/badge/Sway-1.9-68751C?logo=sway&logoColor=white)
 ![Nix](https://img.shields.io/badge/nixpkgs-2.34.7-informational.svg?style=flat&logo=nixos&logoColor=CAD3F5&colorA=24273A&colorB=8aadf4)
 
-
 Personal Ubuntu dotfiles managed with Nix flakes and Home Manager.
 
-## Showcase 
-![screenshot](./assets/screenshot.png) 
+## Showcase
+
+![screenshot](./assets/screenshot.png)
+
+## Component Table
+
+| Component | Description |
+| --- | --- |
+| Window Manager | Sway on Wayland |
+| Bar | i3status-rust |
+| Terminal Emulator | Foot, Kitty |
+| Application Launcher | Fuzzel |
+| Notification Daemon | SwayNC |
+| File Manager | Yazi |
+| Text Editor | Neovim |
+| Browser | Firefox |
+| PDF Viewer | Zathura |
+| Screenshot | Grim + Slurp + Satty |
+| Shell | Zsh + Starship |
+| Theme | Catppuccin Mocha |
+| Input Method | Fcitx5 + Unikey |
+| Terminal Multiplexer | Tmux |
+| System Monitor | Btop |
+| File Viewer | Bat |
+| File Explorer | Eza |
+| Fuzzy Finder | Fzf |
+
 ## Quick Install
 
 Paste this into a terminal on Ubuntu:
@@ -25,23 +47,6 @@ matching Home Manager profile, sets zsh as the default shell, and registers the
 Sway session with Ubuntu's display manager. Run the installer while logged in
 as the user that should own the configuration.
 
-## Overview
-
-This repository is built for a non-NixOS Ubuntu setup. Nix and Home Manager install user packages, manage shell/browser/GTK settings, and symlink application configs from this repo into `~/.config`.
-
-Main stack:
-
-| Area | Tools |
-| --- | --- |
-| Shell | Zsh, Oh My Zsh, Starship |
-| Window manager | Sway on Wayland |
-| Terminal | Foot, Kitty, Tmux |
-| Editor | Neovim |
-| Launcher/UI | Fuzzel, SwayNC, Vicinae |
-| File manager | Yazi |
-| Browser | Firefox |
-| Theme | Catppuccin, Bibata cursor, Nerd Fonts |
-
 ## Repository Layout
 
 ```text
@@ -55,7 +60,7 @@ Main stack:
 └── flake.lock         # Locked dependency versions
 ```
 
-Important modules:
+## Important Modules
 
 - `modules/default.nix`: Imports all focused Home Manager modules.
 - `modules/dotfiles.nix`: Links selected `dotfiles/` folders into `~/.config`.
