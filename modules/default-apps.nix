@@ -6,6 +6,8 @@
     enable = true;
 
     defaultApplications = {
+      "x-scheme-handler/terminal" = ["foot.desktop"];
+
       "application/pdf" = ["org.pwmt.zathura.desktop"];
 
       "text/plain" = ["nvim.desktop"];
