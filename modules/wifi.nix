@@ -65,7 +65,7 @@
         rows+="󰖪  Disconnect Wi-Fi"$'\t'"wifi-disconnect"$'\n'
 
         networks="$(
-          nmcli -t --escape no -f IN-USE,SIGNAL,SECURITY,SSID device wifi list --rescan yes 2>/dev/null |
+          nmcli -t --escape no -f IN-USE,SIGNAL,SECURITY,SSID device wifi list --rescan auto 2>/dev/null |
             awk -F: '
               {
                 active=$1; signal=$2; security=$3
@@ -113,7 +113,7 @@
           elif [ -n "$eth_connection" ]; then
             err="$(nmcli connection up "$eth_connection" 2>&1)" && notify "Ethernet connected" "$eth_connection" && exit 0
           fi
-          notify -u critical "Ethernet connection failed" "${err:-No Ethernet device or connection found}"
+          notify -u critical "Ethernet connection failed" "''${err:-No Ethernet device or connection found}"
           ;;
         eth-disconnect)
           if [ -n "$eth_device" ]; then
