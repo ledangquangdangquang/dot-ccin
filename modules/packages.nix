@@ -21,7 +21,6 @@
     tree-sitter
     nil
     nixpkgs-fmt
-    nodejs
     btop
     gcc
     yazi
