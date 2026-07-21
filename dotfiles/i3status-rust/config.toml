@@ -41,6 +41,9 @@ interval = 2
 format = " $icon $signal_strength "
 inactive_format = " $icon "
 missing_format = ""
+[[block.click]]
+button = "left"
+cmd = "wifi-menu"
 
 [[block]]
 block = "custom"
@@ -53,6 +56,9 @@ cmd = "bluetooth-menu"
 [[block]]
 block = "sound"
 format = " $icon $volume "
+[[block.click]]
+button = "left"
+cmd = "pavucontrol"
 
 [[block]]
 block = "time"
