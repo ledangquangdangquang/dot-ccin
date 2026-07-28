@@ -19,7 +19,7 @@ Personal Ubuntu dotfiles managed with Nix flakes and Home Manager.
 | Terminal Emulator | Foot, Kitty |
 | Application Launcher | Fuzzel |
 | Notification Daemon | SwayNC |
-| File Manager | Yazi |
+| File Manager | Superfile |
 | Text Editor | Neovim |
 | Browser | Firefox |
 | PDF Viewer | Zathura |
