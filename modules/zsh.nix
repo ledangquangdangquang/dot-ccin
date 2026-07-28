@@ -98,18 +98,18 @@
       # =========================================================
       # Sửa lại function y() cho Yazi: cd vào thư mục đã chọn
       # =========================================================
-      function y() {
-        local tmp_file cwd
-        tmp_file=$(mktemp -t "yazi-cwd.XXXXXX") || return
-
-        yazi "$@" --cwd-file="$tmp_file"
-        cwd=$(<"$tmp_file")
-        rm -f -- "$tmp_file"
-
-        if [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
-          builtin cd -- "$cwd"
-        fi
-      }
+      # function y() {
+      #   local tmp_file cwd
+      #   tmp_file=$(mktemp -t "yazi-cwd.XXXXXX") || return
+      #
+      #   yazi "$@" --cwd-file="$tmp_file"
+      #   cwd=$(<"$tmp_file")
+      #   rm -f -- "$tmp_file"
+      #
+      #   if [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+      #     builtin cd -- "$cwd"
+      #   fi
+      # }
 
       fuzzyvim-widget() {
         zle -I

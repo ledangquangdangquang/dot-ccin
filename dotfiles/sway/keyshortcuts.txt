@@ -28,6 +28,7 @@ Mod + h / j / k / l     Focus left / down / up / right
 Mod + Shift + h/j/k/l   Move window left / down / up / right
 Mod + Ctrl + h/l        Shrink / grow window width
 Mod + Ctrl + j/k        Shrink / grow window height
+Mod + \                 Set master 70% / stack 30% layout
 Mod + Shift + t         Toggle status bar
 
 WORKSPACES
