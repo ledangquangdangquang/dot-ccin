@@ -21,6 +21,7 @@
     "kitty"
     "starship"
     "yazi"
+    "superfile"
   ];
 in {
   xdg.configFile =

@@ -75,6 +75,26 @@
 
       # Comments
       ZSH_HIGHLIGHT_STYLES[comment]='fg=#6c7086,italic'              # overlay0
+      spf() {
+    os=$(uname -s)
+
+    # Linux
+    if [[ "$os" == "Linux" ]]; then
+        export SPF_LAST_DIR="''${XDG_STATE_HOME:-$HOME/.local/state}/superfile/lastdir"
+    fi
+
+    # macOS
+    if [[ "$os" == "Darwin" ]]; then
+        export SPF_LAST_DIR="$HOME/Library/Application Support/superfile/lastdir"
+    fi
+
+    command superfile "$@"
+
+    [ ! -f "$SPF_LAST_DIR" ] || {
+        . "$SPF_LAST_DIR"
+        rm -f -- "$SPF_LAST_DIR" > /dev/null
+    }
+}
       # =========================================================
       # Sửa lại function y() cho Yazi: cd vào thư mục đã chọn
       # =========================================================
