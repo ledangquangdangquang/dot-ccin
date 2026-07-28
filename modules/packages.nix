@@ -20,10 +20,10 @@
     stylua
     tree-sitter
     nil
-
+    superfile
     btop
     gcc
-    yazi
+    # yazi
     starship
     zathura
     ffmpeg
