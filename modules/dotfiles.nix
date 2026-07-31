@@ -6,7 +6,6 @@
     "zathura"
     "sway"
     "i3"
-    "dunst"
     "i3status-rust"
     "fcitx5"
     "foot"
