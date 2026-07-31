@@ -95,7 +95,7 @@ in {
       bind - split-window -v -c '#{pane_current_path}'
       bind c new-window -c '#{pane_current_path}'
 
-      bind-key -T copy-mode-vi y send-keys -X copy-pipe-and-cancel '${pkgs.wl-clipboard}/bin/wl-copy'
+      bind-key -T copy-mode-vi y send-keys -X copy-pipe-and-cancel 'if [[ -n "''${WAYLAND_DISPLAY:-}" ]]; then wl-copy; else xclip -selection clipboard; fi'
 
       bind -n M-h select-pane -L
       bind -n M-j select-pane -D

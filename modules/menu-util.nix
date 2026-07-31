@@ -40,7 +40,11 @@
       tmpdir="''$(mktemp -d)"
       trap 'rm -rf "$tmpdir"' EXIT
       cat > "$tmpdir/rows"
-      awk -F '\t' '{ print $1 }' "$tmpdir/rows" > "$tmpdir/display"
+      if [[ -n "$with_nth" ]]; then
+        awk -F '\t' -v n="$with_nth" '{ print $n }' "$tmpdir/rows" > "$tmpdir/display"
+      else
+        awk -F '\t' '{ print $1 }' "$tmpdir/rows" > "$tmpdir/display"
+      fi
 
       rargs=(-dmenu -i)
       rprompt="''${prompt_only:-$prompt}"

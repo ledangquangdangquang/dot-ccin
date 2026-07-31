@@ -25,12 +25,12 @@
         last_text=""
         last_image=""
         while true; do
-          cur_text="$(xclip -selection clipboard -o 2>/dev/null)"
+          cur_text="$(xclip -selection clipboard -o 2>/dev/null || true)"
           if [[ "$cur_text" != "$last_text" ]]; then
             last_text="$cur_text"
             [[ -n "$cur_text" ]] && printf '%s\n' "$cur_text" | cliphist store 2>/dev/null
           fi
-          cur_image="$(xclip -selection clipboard -t image/png -o 2>/dev/null)"
+          cur_image="$(xclip -selection clipboard -t image/png -o 2>/dev/null || true)"
           if [[ "$cur_image" != "$last_image" ]]; then
             last_image="$cur_image"
             [[ -n "$cur_image" ]] && printf '%s' "$cur_image" | cliphist store image/png 2>/dev/null
@@ -51,7 +51,7 @@
       xclip
     ];
     text = ''
-      choice="$(cliphist list | menu --dmenu --prompt='Clipboard ❯ ' --lines=15 --width=70)" || exit 0
+      choice="$(cliphist list | menu --dmenu --with-nth=2 --prompt='Clipboard ❯ ' --lines=15 --width=70)" || exit 0
       [[ -n "$choice" ]] || exit 0
       hash="$(printf '%s' "$choice" | awk '{print $1}')"
       [[ -n "$hash" ]] || exit 0

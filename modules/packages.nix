@@ -31,7 +31,6 @@
     zathura
     ffmpeg
     kitty
-    foot
     kew
     brightnessctl # laptop/internal display brightness
     ddcutil # brightness

@@ -45,7 +45,7 @@ generic_venv_names = [".venv", "venv"]
 symbol = " "
 style = "blue"
 format = "via [$symbol$state( ($name))]($style) "
-heuristic = true
+heuristic = false
 
 # Configure the character section for success and error states
 [character]
