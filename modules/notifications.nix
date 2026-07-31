@@ -165,11 +165,46 @@
   };
 in {
   home.packages = with pkgs; [
-    dunst # X11 notification daemon
     libnotify
     notification-sound
     system-control
     pulseaudio
-    swaynotificationcenter # Wayland notification daemon
   ];
+
+  services.dunst = {
+    enable = true;
+    settings = {
+      global = {
+        origin = "bottom-center";
+        offset = "10x10";
+        corner_radius = 10;
+        width = 400;
+        timeout = 8;
+        timeout_low = 4;
+        timeout_critical = 0;
+        follow = "mouse";
+        icon_position = "left";
+        frame_width = 2;
+        font = "FiraCode Nerd Font Mono 14";
+        transparency = 10;
+        separator_height = 2;
+        notification_limit = 10;
+      };
+      urgency_low = {
+        background = "#1e1e2e";
+        foreground = "#cdd6f4";
+        timeout = 4;
+      };
+      urgency_normal = {
+        background = "#1e1e2e";
+        foreground = "#cdd6f4";
+        timeout = 8;
+      };
+      urgency_critical = {
+        background = "#1e1e2e";
+        foreground = "#cdd6f4";
+        timeout = 0;
+      };
+    };
+  };
 }

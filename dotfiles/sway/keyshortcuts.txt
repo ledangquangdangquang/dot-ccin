@@ -16,8 +16,8 @@ Mod + Shift + e         Open power menu
 
 NOTIFICATIONS AND SCREENSHOTS
 ────────────────────────────────────────────────────────────
-Mod + n                 Toggle notification center
-Mod + Shift + n         Toggle Do Not Disturb
+Mod + n                 Close all notifications
+Mod + Shift + n         Pop notification history
 F8                      Capture region and open Satty
 Shift + F8              Capture full screen and open Satty
 Ctrl + F8               Capture region directly to clipboard

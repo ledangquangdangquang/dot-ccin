@@ -30,7 +30,7 @@ set $mod Mod4
 
 # Startup applications
 exec fcitx5 -d
-exec swaync
+exec dunst
 exec clipboard-watcher
 exec kanshi
 exec autotiling
@@ -61,8 +61,8 @@ bindsym $mod+Shift+r reload
 # Key shortcut reference
 bindsym $mod+i exec ~/.config/sway/show-keyshortcuts.sh
 # Notifications
-bindsym $mod+n exec swaync-client -t
-bindsym $mod+Shift+n exec swaync-client -d
+bindsym $mod+n exec dunstctl close-all
+bindsym $mod+Shift+n exec dunstctl history-pop
 # Screenshots
 bindsym F8 exec screenshot region
 bindsym Shift+F8 exec screenshot full

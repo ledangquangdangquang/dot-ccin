@@ -22,6 +22,10 @@
       "application/x-extension-xhtml" = ["firefox.desktop"];
       "application/x-extension-xht" = ["firefox.desktop"];
 
+      "application/json" = ["nvim.desktop"];
+      "application/xml" = ["nvim.desktop"];
+      "application/rss+xml" = ["nvim.desktop"];
+
       "text/plain" = ["nvim.desktop"];
       "text/markdown" = ["nvim.desktop"];
       "text/x-markdown" = ["nvim.desktop"];
