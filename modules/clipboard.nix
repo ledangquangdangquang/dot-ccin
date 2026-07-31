@@ -53,10 +53,12 @@
     text = ''
       choice="$(cliphist list | menu --dmenu --prompt='Clipboard ❯ ' --lines=15 --width=70)" || exit 0
       [[ -n "$choice" ]] || exit 0
+      hash="$(printf '%s' "$choice" | awk '{print $1}')"
+      [[ -n "$hash" ]] || exit 0
       if [[ -n "''${WAYLAND_DISPLAY:-}" ]]; then
-        printf '%s' "$choice" | cliphist decode | wl-copy
+        printf '%s' "$hash" | cliphist decode | wl-copy
       else
-        printf '%s' "$choice" | cliphist decode | xclip -selection clipboard
+        printf '%s' "$hash" | cliphist decode | xclip -selection clipboard
       fi
     '';
   };
