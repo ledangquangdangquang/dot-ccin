@@ -1,13 +1,14 @@
 {pkgs, ...}: let
+  menu = (import ./menu-util.nix {inherit pkgs;}).menu;
   bluetoothMenu = pkgs.writeShellApplication {
     name = "bluetooth-menu";
     runtimeInputs = with pkgs; [
       bluez
       coreutils
-      fuzzel
       gawk
       gnugrep
       libnotify
+      menu
     ];
     text = ''
       notify() {
@@ -37,7 +38,7 @@
         done < <(bluetoothctl devices 2>/dev/null)
       }
 
-      choice="$(build_rows | fuzzel --dmenu --with-nth=1 --prompt='Bluetooth ❯ ' --lines=12 --width=55)" || exit 0
+      choice="$(build_rows | menu --dmenu --with-nth=1 --prompt='Bluetooth ❯ ' --lines=12 --width=55)" || exit 0
       IFS=$'\t' read -r _ action mac <<< "$choice"
 
       case "$action" in

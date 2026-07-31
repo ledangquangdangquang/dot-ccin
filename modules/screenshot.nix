@@ -5,9 +5,11 @@
       coreutils
       grim
       libnotify
+      maim
       satty
       slurp
       wl-clipboard
+      xclip
     ];
     text = ''
       mode="''${1:-region}"
@@ -16,29 +18,29 @@
 
       mkdir -p "$screenshot_dir"
 
-      select_region() {
-        slurp -d -b '#1e1e2ecc' -c '#cba6f7ff' -s '#31324488' -w 2
-      }
-
-      edit_screenshot() {
-        satty \
-          --filename - \
-          --fullscreen \
-          --output-filename "$screenshot_file" \
-          --copy-command wl-copy
-      }
-
       case "$mode" in
         region)
-          geometry="$(select_region)" || exit 0
-          grim -g "$geometry" -t ppm - | edit_screenshot
+          if [[ -n "''${WAYLAND_DISPLAY:-}" ]]; then
+            geometry="$(slurp -d -b '#1e1e2ecc' -c '#cba6f7ff' -s '#31324488' -w 2)" || exit 0
+            grim -g "$geometry" -t ppm - | satty --filename - --fullscreen --output-filename "$screenshot_file" --copy-command wl-copy
+          else
+            maim -s | satty --filename - --fullscreen --output-filename "$screenshot_file" --copy-command "xclip -selection clipboard -t image/png"
+          fi
           ;;
         full)
-          grim -t ppm - | edit_screenshot
+          if [[ -n "''${WAYLAND_DISPLAY:-}" ]]; then
+            grim -t ppm - | satty --filename - --fullscreen --output-filename "$screenshot_file" --copy-command wl-copy
+          else
+            maim | satty --filename - --fullscreen --output-filename "$screenshot_file" --copy-command "xclip -selection clipboard -t image/png"
+          fi
           ;;
         copy)
-          geometry="$(select_region)" || exit 0
-          grim -g "$geometry" -t png - | wl-copy --type image/png
+          if [[ -n "''${WAYLAND_DISPLAY:-}" ]]; then
+            geometry="$(slurp -d -b '#1e1e2ecc' -c '#cba6f7ff' -s '#31324488' -w 2)" || exit 0
+            grim -g "$geometry" -t png - | wl-copy --type image/png
+          else
+            maim -s | xclip -selection clipboard -t image/png
+          fi
           notify-send \
             --app-name="Screenshot" \
             --expire-time=2500 \
@@ -55,8 +57,10 @@
 in {
   home.packages = with pkgs; [
     grim
+    maim
     satty
     slurp
     screenshot
+    xclip
   ];
 }

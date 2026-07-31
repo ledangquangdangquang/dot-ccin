@@ -11,6 +11,9 @@
     bat
     git
     fuzzel
+    rofi
+    xclip
+    maim
     fastfetch
     swaybg
     feh
@@ -28,7 +31,7 @@
     starship
     zathura
     ffmpeg
-    # kitty
+    kitty
     foot
     kew
     brightnessctl # laptop/internal display brightness

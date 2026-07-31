@@ -1,11 +1,12 @@
 {pkgs, ...}: let
+  menu = (import ./menu-util.nix {inherit pkgs;}).menu;
   networkMenu = pkgs.writeShellApplication {
     name = "wifi-menu";
     runtimeInputs = with pkgs; [
       coreutils
-      fuzzel
       gawk
       libnotify
+      menu
       networkmanager
     ];
     text = ''
@@ -83,7 +84,7 @@
         fi
       fi
 
-      choice="$(printf '%s' "$rows" | fuzzel --dmenu --with-nth=1 --prompt='Network ❯ ' --lines=14 --width=55)" || exit 0
+      choice="$(printf '%s' "$rows" | menu --dmenu --with-nth=1 --prompt='Network ❯ ' --lines=14 --width=55)" || exit 0
       IFS=$'\t' read -r _ action value <<< "$choice"
 
       case "$action" in
@@ -128,7 +129,7 @@
             exit 0
           fi
 
-          password="$(fuzzel --dmenu --prompt-only="Password for $value ❯ " --password --width=55)" || exit 0
+          password="$(menu --dmenu --prompt-only="Password for $value ❯ " --password --width=55)" || exit 0
           [ -n "$password" ] || exit 0
           if nmcli device wifi connect "$value" password "$password"; then
             notify "Connected" "$value"

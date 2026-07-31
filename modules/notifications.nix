@@ -67,10 +67,10 @@
     runtimeInputs = with pkgs; [
       brightnessctl
       coreutils
+      gammastep
       gawk
       libnotify
       pulseaudio
-      wlsunset
     ];
     text = ''
       notify_level() {
@@ -136,26 +136,20 @@
             --icon="$icon" "Caps Lock" "$state"
           ;;
         night-light)
-          pid_file="''${XDG_RUNTIME_DIR:-/tmp}/wlsunset-4000k.pid"
-
-          if [[ -s "$pid_file" ]] && kill -0 "$(<"$pid_file")" 2>/dev/null; then
-            kill "$(<"$pid_file")"
-            rm -f "$pid_file"
+          state_file="''${XDG_RUNTIME_DIR:-/tmp}/night-light"
+          if [[ -e "$state_file" ]]; then
+            rm -f "$state_file"
+            gammastep -x
             notify-send --app-name="System" --expire-time=1500 \
               --hint="string:x-canonical-private-synchronous:night-light" \
               --icon=weather-clear-symbolic "Night Light" "Off · 6500K"
           else
-            rm -f "$pid_file"
-            wlsunset -T 4001 -t 4000 -S 00:00 -s 23:59 &
-            echo "$!" >"$pid_file"
-            sleep 0.2
-
-            if kill -0 "$(<"$pid_file")" 2>/dev/null; then
+            if gammastep -O 4000 2>/dev/null; then
+              touch "$state_file"
               notify-send --app-name="System" --expire-time=1500 \
                 --hint="string:x-canonical-private-synchronous:night-light" \
                 --icon=weather-clear-night-symbolic "Night Light" "On · 4000K"
             else
-              rm -f "$pid_file"
               notify-send --app-name="System" --urgency=critical --expire-time=3000 \
                 --hint="string:x-canonical-private-synchronous:night-light" \
                 --icon=dialog-error-symbolic "Night Light" "Could not change display temperature"
@@ -171,10 +165,11 @@
   };
 in {
   home.packages = with pkgs; [
+    dunst # X11 notification daemon
     libnotify
     notification-sound
     system-control
     pulseaudio
-    swaynotificationcenter
+    swaynotificationcenter # Wayland notification daemon
   ];
 }

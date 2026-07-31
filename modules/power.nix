@@ -1,8 +1,9 @@
 {pkgs, ...}: let
+  menu = (import ./menu-util.nix {inherit pkgs;}).menu;
   powerMenu = pkgs.writeShellApplication {
     name = "power-menu";
     runtimeInputs = with pkgs; [
-      fuzzel
+      menu
       sway
       systemd
     ];
@@ -12,14 +13,14 @@
         printf '󰍃  Logout\tlogout\n'
         printf '󰜉  Reboot\treboot\n'
         printf '󰐥  Shutdown\tshutdown\n'
-      } | fuzzel --dmenu --with-nth=1 --prompt='Power ❯ ' --lines=4 --width=36)" || exit 0
+      } | menu --dmenu --with-nth=1 --prompt='Power ❯ ' --lines=4 --width=36)" || exit 0
 
       IFS=$'\t' read -r _ action <<< "$choice"
 
       confirm() {
         local label="$1"
         local answer
-        answer="$(printf 'Cancel\n%s\n' "$label" | fuzzel --dmenu --prompt='Confirm ❯ ' --lines=2 --width=36)" || return 1
+        answer="$(printf 'Cancel\n%s\n' "$label" | menu --dmenu --prompt='Confirm ❯ ' --lines=2 --width=36)" || return 1
         [[ "$answer" == "$label" ]]
       }
 
@@ -28,7 +29,13 @@
           systemctl suspend
           ;;
         logout)
-          confirm "Logout" && swaymsg exit
+          confirm "Logout" && {
+            if [[ -n "''${WAYLAND_DISPLAY:-}" ]]; then
+              swaymsg exit
+            else
+              i3-msg exit
+            fi
+          }
           ;;
         reboot)
           confirm "Reboot" && systemctl reboot
