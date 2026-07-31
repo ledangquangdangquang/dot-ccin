@@ -50,10 +50,6 @@ ensure_dependencies() {
 		missing_packages+=(xz-utils)
 	fi
 
-	if [ ! -x /usr/bin/sway ]; then
-		missing_packages+=(sway)
-	fi
-
 	if [ "${#missing_packages[@]}" -gt 0 ]; then
 		ensure_command sudo || die "sudo is required to install: ${missing_packages[*]}"
 		info "Installing missing package(s): ${missing_packages[*]}"
@@ -208,28 +204,6 @@ set_default_shell() {
 	chsh -s "$zsh_path" "$profile"
 }
 
-register_sway_session() {
-	local session_file="/usr/share/wayland-sessions/sway-nix.desktop"
-	local nix_profile="$HOME/.nix-profile"
-
-	ensure_command sudo || die "sudo is required to register the Sway session"
-
-	if [ ! -x /usr/bin/sway ]; then
-		warn "/usr/bin/sway was not found; install Ubuntu's sway package before selecting the session"
-	fi
-
-	info "Registering Sway session at $session_file"
-	sudo mkdir -p "$(dirname "$session_file")"
-	printf '%s\n' \
-		'[Desktop Entry]' \
-		'Name=Sway (Nix)' \
-		'Comment=Sway with Nix applications' \
-		"Exec=/usr/bin/env PATH=$nix_profile/bin:/nix/var/nix/profiles/default/bin:/usr/local/bin:/usr/bin:/bin XDG_DATA_DIRS=$nix_profile/share:/nix/var/nix/profiles/default/share:/usr/local/share:/usr/share /usr/bin/sway --unsupported-gpu" \
-		'Type=Application' \
-		'DesktopNames=sway' |
-		sudo tee "$session_file" >/dev/null
-}
-
 main() {
 	print_banner
 	ensure_dependencies
@@ -241,7 +215,6 @@ main() {
 	configure_flake_user
 	switch_home_manager
 	set_default_shell
-	register_sway_session
 	info "Done. Restart your shell if new commands are not available yet."
 }
 

@@ -14,7 +14,6 @@
     xclip
     maim
     fastfetch
-    swaybg
     feh
     neovim
     alejandra

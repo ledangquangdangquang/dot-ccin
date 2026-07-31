@@ -61,7 +61,7 @@ with its runtime dependencies and exposes the resulting command through
 | `nix-cleanup` | `modules/nix-cleanup.nix` | Remove old user-profile history and collect the Nix store |
 
 Bindings and autostart behavior for these helpers belong in
-`dotfiles/sway/config`. The weekly `nix-cleanup` invocation is instead managed
+`dotfiles/i3/config`. The weekly `nix-cleanup` invocation is instead managed
 by a Home Manager systemd user timer.
 
 ## Extending the Configuration

@@ -1,7 +1,6 @@
 # UbuntuConfig
 
 ![Ubuntu](https://img.shields.io/badge/ubuntu-26.04-orange?logo=ubuntu&logoColor=orange)
-![Sway](https://img.shields.io/badge/Sway-1.9-68751C?logo=sway&logoColor=white)
 ![Nix](https://img.shields.io/badge/nixpkgs-2.34.7-informational.svg?style=flat&logo=nixos&logoColor=CAD3F5&colorA=24273A&colorB=8aadf4)
 
 Personal Ubuntu dotfiles managed with Nix flakes and Home Manager.
@@ -14,11 +13,11 @@ Personal Ubuntu dotfiles managed with Nix flakes and Home Manager.
 
 | Component | Description |
 | --- | --- |
-| Window Manager | Sway on Wayland |
+| Window Manager | i3 (installed externally) |
 | Bar | i3status-rust |
 | Terminal Emulator | Foot, Kitty |
-| Application Launcher | Fuzzel |
-| Notification Daemon | SwayNC |
+| Application Launcher | Fuzzel, Rofi |
+| Notification Daemon | dunst |
 | File Manager | Superfile |
 | Text Editor | Neovim |
 | Browser | Firefox |
@@ -185,50 +184,18 @@ Add new Home Manager logic to a focused file under `modules/`, then import it fr
 
 ## Notes
 
-- Sway keyboard shortcuts are defined in `dotfiles/sway/config` and summarized in `dotfiles/sway/keyshortcuts.txt` (`Mod+i`).
-- `dotfiles/niri/` is inactive/experimental and is not the primary compositor configuration.
+- i3 keyboard shortcuts are defined in `dotfiles/i3/config` and summarized in `dotfiles/i3/keyshortcuts.txt` (`Mod+i`).
+- Shell aliases are managed in `modules/zsh.nix`.
 - Shell aliases are managed in `modules/zsh.nix`.
 - Do not commit secrets, SSH private keys, browser sessions, or generated logs.
 
-### Register Sway on Ubuntu
-
-```sh
-sudo tee /usr/share/wayland-sessions/sway-nix.desktop >/dev/null <<EOF
-[Desktop Entry]
-Name=Sway (Nix)
-Comment=Sway with Nix applications
-Exec=/usr/bin/env PATH=$HOME/.nix-profile/bin:/nix/var/nix/profiles/default/bin:/usr/local/bin:/usr/bin:/bin XDG_DATA_DIRS=$HOME/.nix-profile/share:/nix/var/nix/profiles/default/share:/usr/local/share:/usr/share /usr/bin/sway --unsupported-gpu
-Type=Application
-DesktopNames=sway
-EOF
-```
-
-## Other Distros
-
-This repo is built for Ubuntu. Most of the Nix-managed config works on any Linux distro, but a few things differ.
-
-### Package Manager
-
-| Distro | Command |
-| --- | --- |
-| Ubuntu/Debian | `apt` |
-| Fedora | `dnf` |
-| Arch/Manjaro | `pacman` |
-| openSUSE | `zypper` |
-
 `install.sh` uses `apt`. Replace the package list and install commands if running on a different distro.
-
-### Sway GPU Flags
-
-- **Ubuntu + NVIDIA**: requires `--unsupported-gpu` in the `.desktop` entry.
-- **Arch/Fedora**: Sway runs natively, no extra flag needed.
-- **NixOS**: Sway is configured declaratively, no manual `.desktop` file.
 
 ### Session Registration
 
-- **Ubuntu/Debian**: `/usr/share/wayland-sessions/`
-- **Arch/Fedora**: same path, but you can also use `environment.d` instead.
-- **NixOS**: register via `services.xserver.windowManager.sway.enable`.
+- **Ubuntu/Debian**: `/usr/share/wayland-sessions/` — create a `.desktop` file pointing to your compositor binary.
+- **Arch/Fedora**: same path, or use `environment.d`.
+- **NixOS**: register via `services.xserver.windowManager.<name>.enable`.
 
 ### Nix Installation
 

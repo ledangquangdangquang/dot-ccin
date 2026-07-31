@@ -9,6 +9,7 @@
     ./modules
   ];
 
+  catppuccin.enable = true;
   catppuccin.autoEnable = true;
 
   home.username = user;

@@ -4,9 +4,7 @@
 
 This repository manages Ubuntu dotfiles with Nix flakes and Home Manager.
 
-The active desktop session is Sway on Wayland. Treat `dotfiles/sway/` as the
-primary compositor configuration and prefer Sway-compatible tools and examples.
-Do not assume that Niri is in use merely because `dotfiles/niri/` exists.
+The active window manager is i3. Treat `dotfiles/i3/` as the window manager configuration. This project configures supporting tools (rofi, dunst, power menu, etc.); the window manager itself is installed externally.
 
 - `flake.nix` defines inputs, the user-named Home Manager configuration, and shared arguments.
 - `home.nix` is the minimal Home Manager entrypoint. It sets the user, home directory, state version, Catppuccin integration, and imports `./modules`.
@@ -15,12 +13,12 @@ Do not assume that Niri is in use merely because `dotfiles/niri/` exists.
 - `modules/dotfiles.nix` maps selected folders from `dotfiles/` into `~/.config`. Its `configApps` list is the place to register newly linked application folders.
 - `modules/fcitx.nix` configures Fcitx5, Unikey, and input-method environment variables.
 - `modules/wifi.nix` and `modules/bluetooth.nix` provide the Fuzzel-based network menus.
-- `modules/notifications.nix` configures notification packages and the notification sound/audio-ducking helper.
+- `modules/notifications.nix` configures dunst notification daemon.
 - `modules/screenshot.nix` provides the Grim, Slurp, and Satty screenshot workflow.
 - `modules/fuzzyvim.nix` provides the Fzf-based project/file picker.
 - `modules/tmux.nix`, `zsh.nix`, `git.nix`, `gtk.nix`, `bash.nix`, and `nix-cleanup.nix` contain their respective focused Home Manager configuration.
 - `modules/firefox/` contains the Firefox Home Manager module, policies, profile settings, CSS, and related assets.
-- `dotfiles/` stores application configuration directories, for example `sway/`, `kitty/`, `nvim/`, `fastfetch/`, and `yazi/`. Some folders, such as `niri/`, may contain inactive or experimental configurations.
+- `dotfiles/` stores application configuration directories, for example `i3/`, `kitty/`, `nvim/`, `fastfetch/`, and `yazi/`.
 - `Wallpapers/` contains desktop image assets.
 
 Keep `home.nix` minimal. Add packages, generated scripts, session variables, and application logic to a focused file under `modules/`, then import it from `modules/default.nix`. Add application-owned configuration under `dotfiles/<app>/`; if the folder should be linked, add its name to `configApps` in `modules/dotfiles.nix`.

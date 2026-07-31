@@ -4,7 +4,6 @@
     name = "power-menu";
     runtimeInputs = with pkgs; [
       menu
-      sway
       systemd
     ];
     text = ''
@@ -29,13 +28,7 @@
           systemctl suspend
           ;;
         logout)
-          confirm "Logout" && {
-            if [[ -n "''${WAYLAND_DISPLAY:-}" ]]; then
-              swaymsg exit
-            else
-              i3-msg exit
-            fi
-          }
+          confirm "Logout" && i3-msg exit
           ;;
         reboot)
           confirm "Reboot" && systemctl reboot

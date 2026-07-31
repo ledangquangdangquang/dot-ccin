@@ -20,7 +20,6 @@
     ./power.nix
     ./clipboard.nix
     ./menu.nix
-    ./sway.nix
     ./i3.nix
     # --- Folder ---
     ./firefox
