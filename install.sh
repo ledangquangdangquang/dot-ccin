@@ -101,6 +101,33 @@ enable_flakes() {
 	fi
 }
 
+install_i3() {
+	ensure_command sudo || die "sudo is required to install i3"
+	local keyring_deb="/tmp/sur5r-keyring.deb"
+	local version_codename
+
+	version_codename="$(grep '^VERSION_CODENAME=' /etc/os-release | cut -f2 -d=)"
+
+	info "Adding sur5r i3 repository keyring"
+	wait_for_apt
+	sudo apt-get update
+	wait_for_apt
+	curl -fsSL "https://debian.sur5r.net/i3/pool/main/s/sur5r-keyring/sur5r-keyring_2025.12.14_all.deb" \
+		-o "$keyring_deb" || die "Failed to download sur5r-keyring"
+	sudo apt install -y "$keyring_deb"
+	rm -f "$keyring_deb"
+
+	info "Adding sur5r i3 source"
+	printf '%s\n' "deb [signed-by=/usr/share/keyrings/sur5r-keyring.gpg] http://debian.sur5r.net/i3/ ${version_codename} universe" \
+		| sudo tee /etc/apt/sources.list.d/sur5r-i3.list >/dev/null
+
+	info "Installing i3"
+	wait_for_apt
+	sudo apt-get update
+	wait_for_apt
+	sudo DEBIAN_FRONTEND=noninteractive apt-get install -y i3
+}
+
 load_nix_profile() {
 	if [ -e "$HOME/.nix-profile/etc/profile.d/nix.sh" ]; then
 		# shellcheck disable=SC1091
@@ -207,6 +234,7 @@ set_default_shell() {
 main() {
 	print_banner
 	ensure_dependencies
+	install_i3
 	install_nix
 	enable_flakes
 	load_nix_profile
