@@ -5,6 +5,7 @@
     "fuzzel"
     "zathura"
     "sway"
+    "i3"
     "swaync"
     "i3status-rust"
     "fcitx5"
@@ -36,6 +37,8 @@ in {
     // {
       "sway/keyshortcuts.txt".source = createSymlink "${dotfiles}/sway/keyshortcuts.txt";
       "sway/show-keyshortcuts.sh".source = createSymlink "${dotfiles}/sway/show-keyshortcuts.sh";
+      "i3/keyshortcuts.txt".source = createSymlink "${dotfiles}/i3/keyshortcuts.txt";
+      "i3/show-keyshortcuts.sh".source = createSymlink "${dotfiles}/i3/show-keyshortcuts.sh";
       "DankMaterialShell/settings.json".text =
         builtins.replaceStrings
         ["$HOME"]

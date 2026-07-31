@@ -13,6 +13,7 @@
     fuzzel
     fastfetch
     swaybg
+    feh
     neovim
     alejandra
     ripgrep

@@ -75,7 +75,7 @@ output * bg ~/UbuntuConfig/Wallpapers/catppuccin-abstract-eclipse-1920x1080.png 
 # Move focus between windows
 bindsym $mod+h focus left
 bindsym $mod+j focus down 
-bindsym $mod+k focus top
+bindsym $mod+k focus up
 bindsym $mod+l focus right
 
 # Move window instead of just focusing
