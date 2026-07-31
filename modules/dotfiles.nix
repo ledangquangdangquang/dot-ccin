@@ -18,6 +18,7 @@
     "DankMaterialShell"
     "nvim"
     "kitty"
+    "alacritty"
     "starship"
     "yazi"
     "superfile"

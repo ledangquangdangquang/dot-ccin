@@ -27,6 +27,7 @@
     btop
     gcc
     # yazi
+    alacritty
     starship
     zathura
     ffmpeg
