@@ -6,6 +6,8 @@ This repository manages Ubuntu dotfiles with Nix flakes and Home Manager.
 
 The active window manager is i3. Treat `dotfiles/i3/` as the window manager configuration. This project configures supporting tools (rofi, dunst, power menu, etc.); the window manager itself is installed externally.
 
+**App configuration priority**: Add packages to `modules/packages.nix` first. For app configuration files, create `dotfiles/<app>/` and link it via `configApps` in `modules/dotfiles.nix`. Home Manager declarative modules (e.g., `programs.rofi`, `services.dunst`) should only be used when they offer deep integration that a simple config file cannot replicate (e.g., systemd services, generated configs).
+
 - `flake.nix` defines inputs, the user-named Home Manager configuration, and shared arguments.
 - `home.nix` is the minimal Home Manager entrypoint. It sets the user, home directory, state version, Catppuccin integration, and imports `./modules`.
 - `modules/default.nix` is the module index. Register every new Home Manager module there.
@@ -18,7 +20,7 @@ The active window manager is i3. Treat `dotfiles/i3/` as the window manager conf
 - `modules/fuzzyvim.nix` provides the Fzf-based project/file picker.
 - `modules/tmux.nix`, `zsh.nix`, `git.nix`, `gtk.nix`, `bash.nix`, and `nix-cleanup.nix` contain their respective focused Home Manager configuration.
 - `modules/firefox/` contains the Firefox Home Manager module, policies, profile settings, CSS, and related assets.
-- `dotfiles/` stores application configuration directories, for example `i3/`, `kitty/`, `nvim/`, `fastfetch/`, and `yazi/`.
+- `dotfiles/` stores application configuration directories, for example `i3/`, `rofi/`, `kitty/`, `nvim/`, `fastfetch/`, and `yazi/`.
 - `Wallpapers/` contains desktop image assets.
 
 Keep `home.nix` minimal. Add packages, generated scripts, session variables, and application logic to a focused file under `modules/`, then import it from `modules/default.nix`. Add application-owned configuration under `dotfiles/<app>/`; if the folder should be linked, add its name to `configApps` in `modules/dotfiles.nix`.

@@ -71,10 +71,6 @@
       fi
     '';
   };
-  programs.rofi = {
-    enable = true;
-    package = pkgs.rofi;
-  };
 in {
   inherit menu menu-launcher;
 }

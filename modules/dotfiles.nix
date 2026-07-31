@@ -3,6 +3,7 @@
   createSymlink = path: config.lib.file.mkOutOfStoreSymlink path;
   configApps = [
     "fuzzel"
+    "rofi"
     "zathura"
     "i3"
     "i3status-rust"

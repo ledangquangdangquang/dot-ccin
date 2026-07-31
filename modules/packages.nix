@@ -11,6 +11,7 @@
     bat
     git
     fuzzel
+    rofi
     xclip
     maim
     fastfetch
