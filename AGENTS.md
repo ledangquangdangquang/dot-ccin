@@ -42,9 +42,21 @@ Use two-space indentation in Nix files and keep attribute sets compact but reada
 
 There is no dedicated test suite. Treat `nix flake check` and Home Manager evaluation as the main safety checks. For dotfile-only edits, verify the target application still parses the file, such as opening Kitty, Fastfetch, or Neovim after switching.
 
+## Catppuccin Mocha Theming
+
+This rice is centered around the Catppuccin Mocha palette. All themable apps (rofi, dunst, fastfetch, kitty, etc.) should use Catppuccin Mocha colors consistently:
+- `background` (#1e1e2e / `base`)
+- `foreground` (#cdd6f4 / `text`)
+- `red` (#f38ba8), `blue` (#89b4fa), `green` (#a6e3a1), `yellow` (#f9e2af), `mauve` (#cba6f7), `peach` (#fab387), `teal` (#94e2d5), `sapphire` (#74c7ec)
+- Surfaces: `surface0` (#313244), `surface1` (#45475a), `surface2` (#585b70)
+- Subtext: `subtext1` (#bac2de), `subtext0` (#a6adc8)
+- `overlay0` (#6c7086), `overlay1` (#7f849c), `overlay2` (#9399b2)
+
+When adding app themes, ensure the colors are actual Catppuccin Mocha values (not Solarized or other palettes). Rasi theme files go in `dotfiles/<app>/` and are linked via `configApps`. Dunst config is declarative in `modules/notifications.nix` using `services.dunst`.
+
 ## Commit & Pull Request Guidelines
 
-The Git history uses short, direct commit messages such as `eza and alias update`, `firefoxCss fix bookmark bar`, and `foot catpuccin mocha`. Follow that style: summarize the changed area and outcome in one concise line.
+The Git history uses short, direct commit messages such as `eza and alias update`, `firefox css fix bookmark bar`, and `foot catppuccin mocha`. Follow that style: summarize the changed area and outcome in one concise line.
 
 Pull requests should include a brief description, any commands run, and screenshots for visible UI changes such as themes, Firefox CSS, terminal styling, or wallpapers. Mention whether `home-manager switch --flake ".#$USER"` was tested.
 

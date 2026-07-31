@@ -2,16 +2,6 @@
 
 * {
     font: "FiraCode Nerd Font Mono 14";
-    background: #1e1e2e;
-    foreground: #cdd6f4;
-    accent: #89b4fa;
-    accent-alt: #74c7ec;
-    highlight: #45475a;
-    border: 2px;
-    border-color: #45475a;
-    border-radius: 10px;
-    padding: 10px;
-    spacing: 5px;
 }
 
 configuration {
@@ -27,96 +17,4 @@ configuration {
     case-sensitive: false;
     scrolling-mode: 3;
     sidebar-mode: false;
-}
-
-* {
-    background: #1e1e2e;
-    foreground: #cdd6f4;
-    accent: #89b4fa;
-    accent-alt: #74c7ec;
-    highlight: #45475a;
-    border: 2px;
-    border-color: #45475a;
-    border-radius: 10px;
-    padding: 10px;
-    spacing: 5px;
-}
-
-window {
-    background: #1e1e2e;
-    border: 2px;
-    border-color: #45475a;
-    border-radius: 10px;
-    padding: 10px;
-}
-
-entry {
-    background: #313244;
-    foreground: #cdd6f4;
-    border: 0px;
-    border-radius: 5px;
-    padding: 5px;
-}
-
-listview {
-    background: #1e1e2e;
-    foreground: #cdd6f4;
-    border: 0px;
-    padding: 5px;
-}
-
-element {
-    background: #1e1e2e;
-    foreground: #cdd6f4;
-    padding: 5px;
-    border-radius: 3px;
-}
-
-element selected {
-    background: #89b4fa;
-    foreground: #1e1e2e;
-}
-
-element-text {
-    vertical-align: 0.5;
-}
-
-entry > placeholder {
-    foreground: #6c7086;
-}
-
-inputbar {
-    background: #1e1e2e;
-    children: [ entry, listview ];
-}
-
-prompt {
-    background: #1e1e2e;
-    foreground: #89b4fa;
-    padding: 5px;
-}
-
-textbox-prompt-colon {
-    background: #1e1e2e;
-    foreground: #89b4fa;
-    padding: 5px;
-}
-
-message {
-    background: #1e1e2e;
-    foreground: #f38ba8;
-    border: 1px solid #f38ba8;
-    border-radius: 5px;
-    padding: 5px;
-}
-
-timestamp {
-    background: #1e1e2e;
-    foreground: #6c7086;
-}
-
-layout {
-    orientation: vertical;
-    lines: 15;
-    columns: 1;
 }

@@ -94,6 +94,10 @@ bindsym $mod+Ctrl+j resize shrink height 10px
 # Layout preset: master 70% / stack 30%
 bindsym $mod+Backslash resize set width 70 ppt
 
+# Split layout 70/30
+bindsym $mod+o splitv; focus up; resize set height 70 ppt
+bindsym $mod+u splith; focus left; resize set width 70 ppt
+
 # Brightness
 # Increase brightness
 bindsym XF86MonBrightnessUp exec system-control brightness-up

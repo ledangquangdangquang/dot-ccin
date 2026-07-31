@@ -19,6 +19,8 @@
       stream_ids=()
       stream_volumes=()
 
+      wpctl set-mute @DEFAULT_SINK@ 0 2>/dev/null
+
       restore_volumes() {
         local index
         for index in "''${!stream_ids[@]}"; do
@@ -185,6 +187,8 @@ in {
         follow = "mouse";
         icon_position = "left";
         frame_width = 2;
+        frame_color = "#89b4fa";
+        separator_color = "frame";
         font = "FiraCode Nerd Font Mono 14";
         transparency = 10;
         separator_height = 2;
@@ -194,16 +198,19 @@ in {
         background = "#1e1e2e";
         foreground = "#cdd6f4";
         timeout = 4;
+        script = "${notification-sound}/bin/notification-sound";
       };
       urgency_normal = {
         background = "#1e1e2e";
         foreground = "#cdd6f4";
         timeout = 8;
+        script = "${notification-sound}/bin/notification-sound";
       };
       urgency_critical = {
         background = "#1e1e2e";
         foreground = "#cdd6f4";
         timeout = 0;
+        script = "${notification-sound}/bin/notification-sound";
       };
     };
   };

@@ -1,29 +1,241 @@
+/**
+ * Catppuccin Mocha Rasi theme for Rofi 2.0
+ * Based on catppuccin-mocha palette
+ */
 * {
-  rosewater: #f5e0dc;
-  flamingo: #f2cdcd;
-  pink: #f5c2e7;
-  mauve: #cba6f7;
-  red: #f38ba8;
-  maroon: #eba0ac;
-  peach: #fab387;
-  yellow: #f9e2af;
-  green: #a6e3a1;
-  teal: #94e2d5;
-  sky: #89dceb;
-  sapphire: #74c7ec;
-  blue: #89b4fa;
-  lavender: #b4befe;
-  text: #cdd6f4;
-  subtext1: #bac2de;
-  subtext0: #a6adc8;
-  overlay2: #9399b2;
-  overlay1: #7f849c;
-  overlay0: #6c7086;
-  surface2: #585b70;
-  surface1: #45475a;
-  surface0: #313244;
-  base: #1e1e2e;
-  mantle: #181825;
-  crust: #11111b;
+    red:                         rgba ( 243, 139, 168, 100 % );
+    pink:                        rgba ( 245, 194, 231, 100 % );
+    mauve:                       rgba ( 203, 166, 247, 100 % );
+    peach:                       rgba ( 250, 179, 135, 100 % );
+    yellow:                      rgba ( 249, 226, 175, 100 % );
+    green:                       rgba ( 166, 227, 161, 100 % );
+    teal:                        rgba ( 148, 226, 213, 100 % );
+    sky:                         rgba ( 137, 220, 235, 100 % );
+    sapphire:                    rgba ( 116, 199, 236, 100 % );
+    blue:                        rgba ( 137, 180, 250, 100 % );
+    lavender:                    rgba ( 180, 190, 254, 100 % );
+    text:                        rgba ( 205, 214, 244, 100 % );
+    subtext1:                    rgba ( 186, 194, 222, 100 % );
+    subtext0:                    rgba ( 166, 173, 200, 100 % );
+    overlay2:                    rgba ( 147, 153, 178, 100 % );
+    overlay1:                    rgba ( 127, 132, 156, 100 % );
+    overlay0:                    rgba ( 108, 112, 134, 100 % );
+    surface2:                    rgba ( 88, 91, 112, 100 % );
+    surface1:                    rgba ( 69, 71, 90, 100 % );
+    surface0:                    rgba ( 49, 50, 68, 100 % );
+    base:                        rgba ( 30, 30, 46, 100 % );
+    mantle:                      rgba ( 24, 24, 37, 100 % );
+    crust:                       rgba ( 17, 17, 27, 100 % );
+    background-color:            transparent;
+    border-color:                var(surface0);
+    normal-background:           var(base);
+    normal-foreground:           var(text);
+    selected-background:         var(surface0);
+    selected-foreground:         var(text);
+    active-background:           var(surface1);
+    active-foreground:           var(blue);
+    urgent-background:           var(base);
+    urgent-foreground:           var(red);
+    separatorcolor:              var(surface0);
+    spacing:                     4;
 }
 
+window {
+    padding:          6;
+    background-color: var(base);
+    border:           2;
+    border-color:     var(surface0);
+    border-radius:    10;
+    location:         center;
+    width:            800;
+}
+
+mainbox {
+    padding:          6;
+    background-color: var(base);
+    border:           0;
+    children:         [ "inputbar", "listview", "message" ];
+}
+
+inputbar {
+    padding:          4px 8px;
+    spacing:          4px;
+    text-color:       var(text);
+    background-color: var(base);
+    border:           0;
+    children:         [ "prompt", "textbox-prompt-colon", "entry", "textbox-num-sep", "num-rows", "case-indicator" ];
+}
+
+entry {
+    text-color:       var(text);
+    cursor:           text;
+    spacing:          0;
+    placeholder-color: var(overlay0);
+    placeholder:      "Type to filter";
+    background-color: var(base);
+    border:           0;
+}
+
+prompt {
+    spacing:          0;
+    text-color:       var(subtext1);
+    background-color: var(base);
+}
+
+textbox-prompt-colon {
+    margin:           0px 0.3em 0px 0px;
+    expand:           false;
+    str:              ":";
+    text-color:       var(blue);
+    background-color: var(base);
+}
+
+num-filtered-rows {
+    expand:           false;
+    text-color:       var(overlay0);
+    background-color: var(base);
+}
+
+num-rows {
+    expand:           false;
+    text-color:       var(overlay0);
+    background-color: var(base);
+}
+
+textbox-num-sep {
+    expand:           false;
+    str:              "/";
+    text-color:       var(overlay0);
+    background-color: var(base);
+}
+
+case-indicator {
+    spacing:          0;
+    text-color:       var(teal);
+    background-color: var(base);
+}
+
+listview {
+    padding:          4px 0px 0px;
+    scrollbar:        true;
+    border:           0;
+    spacing:          2px;
+    fixed-height:     0;
+}
+
+scrollbar {
+    width:            4px;
+    padding:          0;
+    handle-width:     4px;
+    border:           0;
+    handle-color:     var(surface2);
+    background-color: var(mantle);
+}
+
+element {
+    padding:          4px 8px;
+    cursor:           pointer;
+    spacing:          8px;
+    border:           0;
+    border-radius:    4;
+}
+
+element normal.normal {
+    background-color: var(normal-background);
+    text-color:       var(normal-foreground);
+}
+
+element normal.urgent {
+    background-color: var(urgent-background);
+    text-color:       var(urgent-foreground);
+}
+
+element normal.active {
+    background-color: var(active-background);
+    text-color:       var(active-foreground);
+}
+
+element selected.normal {
+    background-color: var(selected-background);
+    text-color:       var(selected-foreground);
+    border-radius:    4;
+}
+
+element selected.urgent {
+    background-color: var(urgent-background);
+    text-color:       var(urgent-foreground);
+    border-radius:    4;
+}
+
+element selected.active {
+    background-color: var(selected-background);
+    text-color:       var(selected-foreground);
+    border-radius:    4;
+}
+
+element alternate.normal {
+    background-color: var(normal-background);
+    text-color:       var(normal-foreground);
+}
+
+element alternate.urgent {
+    background-color: var(urgent-background);
+    text-color:       var(urgent-foreground);
+}
+
+element alternate.active {
+    background-color: var(active-background);
+    text-color:       var(active-foreground);
+}
+
+element-text {
+    background-color: transparent;
+    cursor:           inherit;
+    highlight:        inherit;
+    text-color:       inherit;
+    vertical-align:   0.5;
+}
+
+element-icon {
+    background-color: transparent;
+    size:             1.0000em;
+    cursor:           inherit;
+    text-color:       inherit;
+}
+
+message {
+    padding:          4px;
+    border:           1px solid 0px 0px 0px;
+    border-color:     var(separatorcolor);
+    background-color: var(base);
+    text-color:       var(text);
+}
+
+textbox {
+    text-color:       var(text);
+}
+
+button {
+    cursor:           pointer;
+    spacing:          0;
+    text-color:       var(normal-foreground);
+    background-color: var(base);
+    border-radius:    4;
+}
+
+button selected {
+    background-color: var(selected-background);
+    text-color:       var(selected-foreground);
+}
+
+overlay {
+    padding:          0px 0.2em;
+    background-color: var(normal-foreground);
+    foreground-color: var(normal-background);
+    margin:           0px 0.2em;
+    text-color:       var(normal-background);
+}
+
+sidebar {
+    border:           0;
+}
