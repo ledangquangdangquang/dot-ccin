@@ -6,7 +6,7 @@
     enable = true;
 
     defaultApplications = {
-      "x-scheme-handler/terminal" = ["foot.desktop"];
+      "x-scheme-handler/terminal" = ["alacritty.desktop"];
       "x-scheme-handler/http" = ["firefox.desktop"];
       "x-scheme-handler/https" = ["firefox.desktop"];
       "x-scheme-handler/about" = ["firefox.desktop"];

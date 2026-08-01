@@ -2,10 +2,9 @@
   home.packages = with pkgs; [
     i3status-rust
     nerd-fonts.fira-code
-    wl-clipboard
+    # wl-clipboard
     nwg-displays
-    wl-mirror
-    vicinae
+    # wl-mirror
     fzf
     tree
     bat
@@ -26,7 +25,6 @@
     superfile
     btop
     gcc
-    # yazi
     alacritty
     starship
     zathura

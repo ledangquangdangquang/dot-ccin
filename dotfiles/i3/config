@@ -37,8 +37,8 @@ exec --no-startup-id pactl set-default-sink alsa_output.pci-0000_00_1f.3-platfor
 exec --no-startup-id xrandr --output eDP-1 --off --output HDMI-1-0 --auto
 
 # Basic keybindings
-# Launch kitty terminal
-bindsym $mod+Return exec kitty
+# Launch alacritty terminal
+bindsym $mod+Return exec alacritty
 # Launch Nautilus file manager
 bindsym $mod+e exec nautilus --new-window
 # Launch Firefox
@@ -120,7 +120,16 @@ bindsym --release Caps_Lock exec system-control caps-lock
 # Open it while starting up
 exec --no-startup-id i3-msg workspace 1
 for_window [title="^.*"] title_format ""
-default_border none
+default_border pixel 1
+client.focused          #89b4fa #1e1e2e #cdd6f4 #89b4fa #89b4fa
+# Focus
+client.focused          #b4befe #1e1e2e #cdd6f4 #b4befe #b4befe
+# Không focus
+client.unfocused        #585b70 #1e1e2e #a6adc8 #585b70 #585b70
+client.focused_inactive #585b70 #1e1e2e #a6adc8 #585b70 #585b70
+# Urgent
+client.urgent           #f38ba8 #1e1e2e #f38ba8 #f38ba8 #f38ba8
+client.background       #1e1e2e
 bar {
   position top
   height 28
@@ -171,9 +180,9 @@ bindsym $mod+Shift+3 move container to workspace 3
 bindsym $mod+Shift+4 move container to workspace 4
 bindsym $mod+Shift+5 move container to workspace 5
 # Which app is assigned to which workspace
-assign [class="firefox"] workspace B
-assign [class="zathura"] workspace D
-assign [class="kitty"] workspace 1
+assign [class="firefox"] B
+assign [class="zathura"] D
+assign [class="alacritty"] workspace 1
 for_window [class="firefox"] workspace B
 for_window [class="zathura"] workspace D
-for_window [class="kitty"] workspace 1
+for_window [class="alacritty"] workspace 1

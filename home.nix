@@ -17,5 +17,5 @@
   home.stateVersion = hostMain.stateVersion;
   targets.genericLinux.enable = true;
 
-  home.sessionVariables.TERMINAL = "foot";
+  home.sessionVariables.TERMINAL = "alacritty";
 }
