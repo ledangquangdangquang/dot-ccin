@@ -16,6 +16,7 @@
     ./screenshot.nix
     ./wifi.nix
     ./bluetooth.nix
+    ./wallpaper.nix
     ./notifications.nix
     ./power.nix
     ./clipboard.nix

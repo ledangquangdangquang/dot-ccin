@@ -70,8 +70,11 @@ bindsym Shift+F8 exec screenshot full
 bindsym Ctrl+F8 exec screenshot copy
 # Toggle 4000K night light
 bindsym F9 exec system-control night-light
+# Wallpaper picker
+bindsym $mod+p exec wallpaper-menu
 
-exec --no-startup-id feh --bg-fill --no-fehbg ~/UbuntuConfig/Wallpapers/catppuccin-abstract-eclipse-1920x1080.png
+# exec --no-startup-id feh --bg-fill --no-fehbg ~/UbuntuConfig/Wallpapers/catppuccin-abstract-eclipse-1920x1080.png
+exec --no-startup-id feh --bg-fill --no-fehbg "$(cat ~/.wallpaper 2>/dev/null || echo ~/UbuntuConfig/Wallpapers/wallpaper.png)"
 
 # Move focus between windows
 bindsym $mod+h focus left
