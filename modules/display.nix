@@ -1,12 +1,14 @@
 {pkgs, ...}: let
   menu = (import ./menu-util.nix {inherit pkgs;}).menu;
 
-  runtimeInputs = with pkgs; [
+  baseInputs = with pkgs; [
     coreutils
     feh
-    gnugawk
+    gawk
     xorg.xrandr
   ];
+
+  scriptInputs = baseInputs ++ [connectedOutputs];
 
   # Re-apply wallpaper so the background follows the new layout
   applyWallpaper = ''
@@ -15,7 +17,7 @@
 
   # List of connected outputs via xrandr
   connectedOutputs = pkgs.writeShellApplication {
-    inherit runtimeInputs;
+    runtimeInputs = baseInputs;
     name = "display-outputs";
     text = ''
       xrandr --query | awk '/ connected /{print $1}'
@@ -24,7 +26,7 @@
 
   # Set primary output
   setPrimary = pkgs.writeShellApplication {
-    inherit runtimeInputs;
+    runtimeInputs = scriptInputs;
     name = "display-set-primary";
     text = ''
       primary="$1"
@@ -35,7 +37,7 @@
 
   # Extend: primary stays primary, every other connected output to the right
   extendScript = pkgs.writeShellApplication {
-    inherit runtimeInputs;
+    runtimeInputs = scriptInputs;
     name = "display-extend";
     text = ''
       mapfile -t outputs < <(display-outputs)
@@ -51,15 +53,17 @@
     '';
   };
 
-  # Duplicate: mirror every output to the primary
+  # Duplicate: mirror every output to the primary resolution and position
   duplicateScript = pkgs.writeShellApplication {
-    inherit runtimeInputs;
+    runtimeInputs = scriptInputs;
     name = "display-duplicate";
     text = ''
       mapfile -t outputs < <(display-outputs)
       primary="''${outputs[0]}"
-      for out in "''${outputs[@]}"; do
-        xrandr --output "$out" --same-as "$primary"
+      mode="$(xrandr --query | awk -v out="$primary" '$0 ~ "^" out " connected" {getline; print $1; exit}')"
+      xrandr --output "$primary" --mode "$mode" --pos 0x0
+      for out in "''${outputs[@]:1}"; do
+        xrandr --output "$out" --mode "$mode" --pos 0x0
       done
       ${applyWallpaper}
     '';
@@ -67,7 +71,7 @@
 
   # Only: turn everything off except the chosen output
   onlyScript = pkgs.writeShellApplication {
-    inherit runtimeInputs;
+    runtimeInputs = scriptInputs;
     name = "display-only";
     text = ''
       target="$1"
@@ -86,16 +90,24 @@
   # Interactive menu: Extend / Duplicate / Only / Pick primary
   displayMenu = pkgs.writeShellApplication {
     name = "display-menu";
-    runtimeInputs = with pkgs; [
-      menu
-      xorg.xrandr
-    ];
+    runtimeInputs =
+      (with pkgs; [
+        menu
+        xorg.xrandr
+      ])
+      ++ [
+        connectedOutputs
+        setPrimary
+        extendScript
+        duplicateScript
+        onlyScript
+      ];
     text = ''
       choice="$({
-        printf '󰧑  Extend\t extend\n'
-        printf '󰧑  Duplicate\t duplicate\n'
-        printf '󰧑  Only...\t only\n'
-        printf '󰧑  Set primary...\t primary\n'
+        printf '󰧑  Extend\textend\n'
+        printf '󰧑  Duplicate\tduplicate\n'
+        printf '󰧑  Only...\tonly\n'
+        printf '󰧑  Set primary...\tprimary\n'
       } | menu --dmenu --with-nth=1 --prompt='Display ❯ ' --lines=4 --width=36)" || exit 0
 
       IFS=$'\t' read -r _ action <<< "$choice"
