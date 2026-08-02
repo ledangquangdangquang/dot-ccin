@@ -8,7 +8,6 @@
     "i3"
     "i3status-rust"
     "fcitx5"
-    "foot"
     "weathr"
     "vicinae"
     "kanshi"

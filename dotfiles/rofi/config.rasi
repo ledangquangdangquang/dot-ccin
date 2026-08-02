@@ -11,7 +11,7 @@ configuration {
     display-run: "run:";
     show-icons: true;
     icon-theme: "Papirus";
-    terminal: "foot";
+    terminal: "alacritty";
     drun-display-format: "{name}";
     sort: true;
     case-sensitive: false;

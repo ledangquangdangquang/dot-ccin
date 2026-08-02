@@ -188,10 +188,10 @@ configure_flake_user() {
 verify_repo() {
 	if [ ! -f "$repo_dir/flake.nix" ] ||
 		[ ! -f "$repo_dir/home.nix" ] ||
-		! grep -Fq '"foot"' "$repo_dir/modules/dotfiles.nix" ||
-		! grep -Eq '^[[:space:]]*foot([[:space:]]|$)' "$repo_dir/modules/packages.nix" ||
-		[ ! -f "$repo_dir/dotfiles/foot/foot.ini" ]; then
-		die "Repo at $repo_dir does not contain the expected foot config. Check that it is on the latest main branch."
+		! grep -Fq '"alacritty"' "$repo_dir/modules/dotfiles.nix" ||
+		! grep -Eq '^[[:space:]]*alacritty([[:space:]]|$)' "$repo_dir/modules/packages.nix" ||
+		[ ! -f "$repo_dir/dotfiles/alacritty/alacritty.toml" ]; then
+		die "Repo at $repo_dir does not contain the expected alacritty config. Check that it is on the latest main branch."
 	fi
 
 	info "Repo commit: $(git -C "$repo_dir" rev-parse --short HEAD)"
