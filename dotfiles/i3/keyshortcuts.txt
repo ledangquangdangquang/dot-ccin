@@ -14,6 +14,7 @@ Mod + q                 Close focused window
 Mod + Shift + r         Reload Sway config
 Mod + Shift + e         Open power menu
 Mod + p                 Open wallpaper picker
+Mod + Shift + m         Open display menu (extend / duplicate / only)
 
 NOTIFICATIONS AND SCREENSHOTS
 ────────────────────────────────────────────────────────────

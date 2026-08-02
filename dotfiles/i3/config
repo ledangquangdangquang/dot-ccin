@@ -72,6 +72,8 @@ bindsym Ctrl+F8 exec screenshot copy
 bindsym F9 exec system-control night-light
 # Wallpaper picker
 bindsym $mod+p exec wallpaper-menu
+# Display management
+bindsym $mod+Shift+m exec display-menu
 
 # exec --no-startup-id feh --bg-fill --no-fehbg ~/UbuntuConfig/Wallpapers/catppuccin-abstract-eclipse-1920x1080.png
 exec --no-startup-id feh --bg-fill --no-fehbg "$(cat ~/.wallpaper 2>/dev/null || echo ~/UbuntuConfig/Wallpapers/wallpaper.png)"

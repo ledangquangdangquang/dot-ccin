@@ -19,6 +19,7 @@
     ./wallpaper.nix
     ./notifications.nix
     ./power.nix
+    ./display.nix
     ./clipboard.nix
     ./menu.nix
     ./i3.nix
