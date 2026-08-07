@@ -84,6 +84,18 @@ in {
           install_url = "https://addons.mozilla.org/firefox/downloads/file/4524018/vimium_ff-2.3.xpi";
           installation_mode = "force_installed";
         };
+        # New Tab Override
+        "newtaboverride@agenedia.com" = {
+          install_url = "https://addons.mozilla.org/firefox/downloads/latest/new-tab-override/latest.xpi";
+          installation_mode = "force_installed";
+        };
+      };
+
+      # Configure New Tab Override to open the Catppuccin startup page
+      "3rdparty".Extensions."newtaboverride@agenedia.com" = {
+        type = "custom_url";
+        url = "file://${config.home.homeDirectory}/.config/newtab/index.html";
+        background_color = "#1e1e2e";
       };
     };
     profiles.default = {
