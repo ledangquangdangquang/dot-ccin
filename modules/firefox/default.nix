@@ -9,25 +9,46 @@
         > $out/immodules.cache
     '';
 
-  firefoxWithFcitx = pkgs.symlinkJoin {
-    name = "firefox-with-fcitx";
-    paths = [pkgs.firefox];
-    nativeBuildInputs = [pkgs.makeWrapper];
-    postBuild = ''
-      wrapProgram $out/bin/firefox \
-        --set GTK_IM_MODULE fcitx \
-        --set GTK_IM_MODULE_FILE ${fcitx5Gtk3Cache}/immodules.cache \
-        --set XMODIFIERS @im=fcitx
-    '';
-    meta = pkgs.firefox.meta;
-    passthru =
-      pkgs.firefox.passthru
-      // {
-        override = _: firefoxWithFcitx;
-      };
-  };
+  wrapFirefox = firefox:
+    pkgs.symlinkJoin {
+      name = "firefox-with-fcitx";
+      paths = [firefox];
+      nativeBuildInputs = [pkgs.makeWrapper];
+      postBuild = ''
+        wrapProgram $out/bin/firefox \
+          --set GTK_IM_MODULE fcitx \
+          --set GTK_IM_MODULE_FILE ${fcitx5Gtk3Cache}/immodules.cache \
+          --set XMODIFIERS @im=fcitx
+      '';
+      meta = firefox.meta;
+      passthru =
+        firefox.passthru
+        // {
+          override = args: wrapFirefox (firefox.override args);
+        };
+    };
+
+  firefoxWithFcitx = wrapFirefox pkgs.firefox;
+
+  newtabPort = 8918;
+  newtabUrl = "http://127.0.0.1:${toString newtabPort}/";
 in {
   home.file.".mozilla/firefox/default/user.js".force = true;
+
+  systemd.user.services.newtab-server = {
+    Unit = {
+      Description = "Static server for the Catppuccin Firefox new tab page";
+      After = ["network.target"];
+    };
+    Service = {
+      Type = "simple";
+      ExecStart = "${pkgs.python3}/bin/python3 -m http.server ${toString newtabPort} --bind 127.0.0.1 --directory ${config.home.homeDirectory}/.config/newtab";
+      Restart = "on-failure";
+    };
+    Install = {
+      WantedBy = ["default.target"];
+    };
+  };
 
   programs.firefox = {
     enable = true;
@@ -94,7 +115,7 @@ in {
       # Configure New Tab Override to open the Catppuccin startup page
       "3rdparty".Extensions."newtaboverride@agenedia.com" = {
         type = "custom_url";
-        url = "file://${config.home.homeDirectory}/.config/newtab/index.html";
+        url = newtabUrl;
         background_color = "#1e1e2e";
       };
     };
@@ -103,7 +124,7 @@ in {
         "layout.spellcheckDefault" = 0;
         "browser.download.useDownloadDir" = false;
         "browser.download.always_ask_before_handling_new_types" = true;
-        "browser.startup.homepage" = "file://${config.home.homeDirectory}/.config/newtab/index.html";
+        "browser.startup.homepage" = newtabUrl;
         "browser.startup.page" = 1;
         "browser.urlbar.suggest.history" = false;
         "browser.urlbar.suggest.bookmark" = false;
@@ -120,6 +141,10 @@ in {
         privateDefault = "ddg";
       };
       extensions.force = true; # override extension
+      extensions.settings."{d7742d87-e61d-4b78-b8a1-b469842139fa}" = {
+        settings = builtins.fromJSON (builtins.readFile ./ExtensionConfig/vimium/vimium-options.json);
+        force = true;
+      };
       userChrome = ./FirefoxCss/chrome/userChrome.css;
       extraConfig = builtins.readFile (pkgs.fetchurl {
         url = "https://raw.githubusercontent.com/yokoffing/Betterfox/8e415d1633f10fe0192d9c938e4ca2628eeec9f9/user.js";
