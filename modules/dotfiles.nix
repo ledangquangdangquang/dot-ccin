@@ -21,6 +21,7 @@
     "starship"
     "yazi"
     "superfile"
+    "newtab"
   ];
 in {
   xdg.configFile =

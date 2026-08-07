@@ -1,4 +1,4 @@
-{pkgs, ...}: let
+{pkgs, config, ...}: let
   fcitx5Gtk3Cache =
     pkgs.runCommand "fcitx5-gtk3-immodules-cache" {
       nativeBuildInputs = [pkgs.gtk3.dev];
@@ -91,6 +91,16 @@ in {
         "layout.spellcheckDefault" = 0;
         "browser.download.useDownloadDir" = false;
         "browser.download.always_ask_before_handling_new_types" = true;
+        "browser.startup.homepage" = "file://${config.home.homeDirectory}/.config/newtab/index.html";
+        "browser.startup.page" = 1;
+        "browser.urlbar.suggest.history" = false;
+        "browser.urlbar.suggest.bookmark" = false;
+        "browser.urlbar.suggest.topsites" = false;
+        "browser.urlbar.suggest.openpage" = false;
+        "browser.urlbar.suggest.searches" = false;
+        "browser.urlbar.suggest.engines" = false;
+        "browser.urlbar.suggest.quickactions" = false;
+        "browser.urlbar.quicksuggest.enabled" = false;
       };
       search = {
         force = true;

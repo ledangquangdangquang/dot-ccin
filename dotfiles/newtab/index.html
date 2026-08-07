@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Trang chủ</title>
+  <style>
+    :root {
+      --base: #1e1e2e;
+      --mantle: #181825;
+      --crust: #11111b;
+      --text: #cdd6f4;
+      --subtext0: #a6adc8;
+      --subtext1: #bac2de;
+      --surface0: #313244;
+      --surface1: #45475a;
+      --surface2: #585b70;
+      --overlay0: #6c7086;
+      --blue: #89b4fa;
+      --sapphire: #74c7ec;
+      --lavender: #b4befe;
+      --teal: #94e2d5;
+      --green: #a6e3a1;
+      --yellow: #f9e2af;
+      --peach: #fab387;
+      --maroon: #eba0ac;
+      --red: #f38ba8;
+      --mauve: #cba6f7;
+      --pink: #f5c2e7;
+      --rosewater: #f5e0dc;
+      --radius: 14px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(160deg, var(--base) 0%, var(--mantle) 100%);
+      color: var(--text);
+      font-family: "Inter", "Segoe UI", "SF Pro Display", system-ui, -apple-system,
+        "Noto Sans", sans-serif;
+      overflow: hidden;
+    }
+
+    .page {
+      width: min(720px, 92vw);
+      text-align: center;
+      animation: fadeIn 0.6s ease;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .clock {
+      font-size: 96px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      font-variant-numeric: tabular-nums;
+      color: var(--text);
+      text-shadow: 0 0 40px rgba(137, 180, 250, 0.25);
+    }
+
+    .greeting {
+      margin-top: 8px;
+      font-size: 28px;
+      font-weight: 600;
+      color: var(--mauve);
+    }
+
+    .date {
+      margin-top: 4px;
+      font-size: 16px;
+      color: var(--subtext0);
+      letter-spacing: 0.5px;
+    }
+
+    .search {
+      margin: 36px auto 0;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      background: var(--surface0);
+      border: 1px solid var(--surface1);
+      border-radius: var(--radius);
+      padding: 14px 20px;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .search:focus-within {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(137, 180, 250, 0.2);
+    }
+
+    .search-icon {
+      color: var(--blue);
+      font-size: 20px;
+    }
+
+    .search input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: var(--text);
+      font-size: 18px;
+      font-family: inherit;
+    }
+
+    .search input::placeholder {
+      color: var(--overlay0);
+    }
+
+    .links {
+      margin-top: 32px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .link {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      padding: 16px 8px;
+      border-radius: var(--radius);
+      background: var(--surface0);
+      border: 1px solid transparent;
+      text-decoration: none;
+      color: var(--subtext1);
+      font-size: 13px;
+      transition: transform 0.15s ease, border-color 0.15s ease,
+        background 0.15s ease;
+    }
+
+    .link:hover {
+      transform: translateY(-3px);
+      border-color: var(--surface2);
+      background: var(--surface1);
+      color: var(--text);
+    }
+
+    .link .tile {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      color: var(--base);
+      font-weight: 800;
+    }
+
+    .tile.blue { background: var(--blue); }
+    .tile.sapphire { background: var(--sapphire); }
+    .tile.lavender { background: var(--lavender); }
+    .tile.teal { background: var(--teal); }
+    .tile.green { background: var(--green); }
+    .tile.yellow { background: var(--yellow); }
+    .tile.peach { background: var(--peach); }
+    .tile.red { background: var(--red); }
+
+    .footer {
+      margin-top: 40px;
+      font-size: 12px;
+      color: var(--overlay0);
+    }
+
+    @media (max-width: 560px) {
+      .clock { font-size: 64px; }
+      .greeting { font-size: 22px; }
+      .links { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="clock" id="clock">--:--:--</div>
+    <div class="greeting" id="greeting">Xin chào</div>
+    <div class="date" id="date"></div>
+
+    <form class="search" action="https://duckduckgo.com/" method="get">
+      <span class="search-icon">⌕</span>
+      <input type="text" name="q" placeholder="Tìm kiếm trên DuckDuckGo..." autocomplete="off" autofocus />
+    </form>
+
+    <div class="links">
+      <a class="link" href="https://www.youtube.com/">
+        <span class="tile red">YT</span>
+        <span>YouTube</span>
+      </a>
+      <a class="link" href="https://github.com/">
+        <span class="tile lavender">GH</span>
+        <span>GitHub</span>
+      </a>
+      <a class="link" href="https://mail.google.com/">
+        <span class="tile blue">GM</span>
+        <span>Gmail</span>
+      </a>
+      <a class="link" href="https://www.reddit.com/">
+        <span class="tile peach">RD</span>
+        <span>Reddit</span>
+      </a>
+      <a class="link" href="https://chat.openai.com/">
+        <span class="tile teal">AI</span>
+        <span>ChatGPT</span>
+      </a>
+      <a class="link" href="https://translate.google.com/">
+        <span class="tile green">TR</span>
+        <span>Dịch</span>
+      </a>
+      <a class="link" href="https://www.google.com/maps">
+        <span class="tile sapphire">MP</span>
+        <span>Bản đồ</span>
+      </a>
+      <a class="link" href="https://www.wikipedia.org/">
+        <span class="tile yellow">WK</span>
+        <span>Wikipedia</span>
+      </a>
+    </div>
+
+    <div class="footer">Catppuccin Mocha · Home Manager</div>
+  </div>
+
+  <script>
+    const clockEl = document.getElementById("clock");
+    const greetingEl = document.getElementById("greeting");
+    const dateEl = document.getElementById("date");
+
+    function update() {
+      const now = new Date();
+
+      clockEl.textContent = now.toLocaleTimeString("vi-VN", {
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: false,
+      });
+
+      dateEl.textContent = now.toLocaleDateString("vi-VN", {
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      });
+
+      const hour = now.getHours();
+      let greeting;
+      if (hour >= 5 && hour < 12) greeting = "Chào buổi sáng";
+      else if (hour >= 12 && hour < 18) greeting = "Chào buổi chiều";
+      else if (hour >= 18 && hour < 22) greeting = "Chào buổi tối";
+      else greeting = "Chúc ngủ ngon";
+      greetingEl.textContent = greeting + " 👋";
+    }
+
+    update();
+    setInterval(update, 1000);
+  </script>
+</body>
+</html>
