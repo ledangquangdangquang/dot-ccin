@@ -1,273 +1,291 @@
 <!doctype html>
-<html lang="vi">
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Trang chủ</title>
+  <title>Home</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=EB+Garamond:ital@0;1&display=swap" rel="stylesheet" />
   <style>
+    /* Hallmark · genre: editorial · macrostructure: Stat-Led · tone: luxury · theme: catppuccin-mocha · enrichment: typography / stat-hero */
     :root {
-      --base: #1e1e2e;
-      --mantle: #181825;
-      --crust: #11111b;
-      --text: #cdd6f4;
-      --subtext0: #a6adc8;
-      --subtext1: #bac2de;
-      --surface0: #313244;
-      --surface1: #45475a;
-      --surface2: #585b70;
-      --overlay0: #6c7086;
-      --blue: #89b4fa;
-      --sapphire: #74c7ec;
-      --lavender: #b4befe;
-      --teal: #94e2d5;
-      --green: #a6e3a1;
-      --yellow: #f9e2af;
-      --peach: #fab387;
-      --maroon: #eba0ac;
-      --red: #f38ba8;
-      --mauve: #cba6f7;
-      --pink: #f5c2e7;
-      --rosewater: #f5e0dc;
-      --radius: 14px;
+      /* Catppuccin Mocha */
+      --bg-base: #1e1e2e;
+      --bg-mantle: #181825;
+      --bg-crust: #11111b;
+      --ink: #cdd6f4;
+      --muted: #a6adc8;
+      --subtext: #bac2de;
+      --rule: #45475a;
+      --accent: #cba6f7;
+      /* typographic registers */
+      --font-display: "Cormorant Garamond", ui-serif, Georgia, serif;
+      --font-body: "EB Garamond", ui-serif, Georgia, serif;
+      /* spacing (4pt) */
+      --space-xs: 0.25rem;
+      --space-sm: 0.5rem;
+      --space-md: 1rem;
+      --space-lg: 2rem;
+      --space-xl: 4rem;
+      --space-2xl: 8rem;
+      /* motion */
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-in: cubic-bezier(0.7, 0, 0.84, 0);
+      --dur-micro: 120ms;
+      --dur-short: 220ms;
+      --dur-long: 420ms;
     }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: linear-gradient(160deg, var(--base) 0%, var(--mantle) 100%);
-      color: var(--text);
-      font-family: "Inter", "Segoe UI", "SF Pro Display", system-ui, -apple-system,
-        "Noto Sans", sans-serif;
+      min-height: 100vh;
+      display: grid;
+      grid-template-rows: 1fr auto;
+      background:
+        radial-gradient(120% 90% at 15% 8%, var(--bg-mantle) 0%, var(--bg-base) 55%, var(--bg-crust) 100%);
+      color: var(--ink);
+      font-family: var(--font-body);
+      -webkit-font-smoothing: antialiased;
       overflow: hidden;
     }
 
-    .page {
-      width: min(720px, 92vw);
-      text-align: center;
-      animation: fadeIn 0.6s ease;
-    }
-
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(12px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .clock {
-      font-size: 96px;
-      font-weight: 700;
-      letter-spacing: 2px;
-      font-variant-numeric: tabular-nums;
-      color: var(--text);
-      text-shadow: 0 0 40px rgba(137, 180, 250, 0.25);
-    }
-
-    .greeting {
-      margin-top: 8px;
-      font-size: 28px;
-      font-weight: 600;
-      color: var(--mauve);
-    }
-
-    .date {
-      margin-top: 4px;
-      font-size: 16px;
-      color: var(--subtext0);
-      letter-spacing: 0.5px;
-    }
-
-    .search {
-      margin: 36px auto 0;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      width: 100%;
-      background: var(--surface0);
-      border: 1px solid var(--surface1);
-      border-radius: var(--radius);
-      padding: 14px 20px;
-      transition: border-color 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    .search:focus-within {
-      border-color: var(--blue);
-      box-shadow: 0 0 0 3px rgba(137, 180, 250, 0.2);
-    }
-
-    .search-icon {
-      color: var(--blue);
-      font-size: 20px;
-    }
-
-    .search input {
-      flex: 1;
-      background: transparent;
-      border: none;
-      outline: none;
-      color: var(--text);
-      font-size: 18px;
-      font-family: inherit;
-    }
-
-    .search input::placeholder {
-      color: var(--overlay0);
-    }
-
-    .links {
-      margin-top: 32px;
+    .wrap {
+      align-self: center;
+      width: min(88vw, 1200px);
+      margin: 0 auto;
+      padding: var(--space-2xl) 0;
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: end;
+      gap: var(--space-lg);
     }
 
-    .link {
-      display: flex;
-      flex-direction: column;
+    /* left — the hero stat */
+    .stat {
+      position: relative;
+      --i: 0;
+      animation: reveal var(--dur-long) var(--ease-out) forwards;
+      animation-delay: calc(var(--i) * 60ms);
+    }
+
+    .stat__label {
+      display: inline-flex;
       align-items: center;
-      gap: 8px;
-      padding: 16px 8px;
-      border-radius: var(--radius);
-      background: var(--surface0);
-      border: 1px solid transparent;
+      gap: 0.6em;
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      font-variant-caps: all-small-caps;
+      color: var(--muted);
+      margin-bottom: var(--space-md);
+    }
+    .stat__label::before {
+      content: "";
+      width: 2.5em;
+      height: 1px;
+      background: var(--rule);
+    }
+
+    .stat__time {
+      font-family: var(--font-display);
+      font-weight: 300;
+      font-size: clamp(5rem, 18vw + 1rem, 11rem);
+      line-height: 0.95;
+      letter-spacing: -0.02em;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .stat__date {
+      margin-top: var(--space-md);
+      font-style: italic;
+      color: var(--muted);
+      font-size: clamp(1rem, 1.6vw, 1.4rem);
+    }
+
+    /* centre hairline */
+    .indicator {
+      align-self: center;
+      justify-self: center;
+      position: relative;
+      width: 26px;
+      height: 26px;
+    }
+    .indicator .ring {
+      position: absolute;
+      inset: 0;
+      border: 1px solid var(--rule);
+      border-radius: 50%;
+    }
+    .indicator .dot {
+      position: absolute;
+      inset: 50% 0 0 50%;
+      width: 6px;
+      height: 6px;
+      margin: -3px 0 0 -3px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+
+    /* right greeting */
+    .greeting {
+      text-align: right;
+      --i: 1;
+      animation: rise var(--dur-long) var(--ease-out) forwards;
+      animation-delay: calc(var(--i) * 60ms);
+    }
+    .greeting small {
+      display: block;
+      font-family: var(--font-body);
+      font-size: 0.7rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: var(--space-sm);
+    }
+    .greeting h1 {
+      font-family: var(--font-display);
+      font-weight: 400;
+      font-style: italic;
+      font-size: clamp(1.6rem, 3vw, 2.6rem);
+      line-height: 1.15;
+      max-width: 18ch;
+      margin-left: auto;
+    }
+
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: none; }
+    }
+
+    /* footer strip */
+    .quick {
+      border-top: 1px solid var(--rule);
+      padding: var(--space-lg) var(--space-2xl);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: var(--space-lg);
+      --i: 2;
+      animation: rise var(--dur-long) var(--ease-out) forwards;
+      animation-delay: calc(var(--i) * 60ms);
+    }
+    .quick__brand {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: 1.05rem;
+      color: var(--subtext);
+      letter-spacing: 0.02em;
+    }
+    .quick__links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0 var(--space-lg);
+      list-style: none;
+    }
+    .quick__links a {
+      color: var(--muted);
       text-decoration: none;
-      color: var(--subtext1);
-      font-size: 13px;
-      transition: transform 0.15s ease, border-color 0.15s ease,
-        background 0.15s ease;
+      font-size: 0.95rem;
+      border-bottom: 1px solid transparent;
+      transition: color var(--dur-micro) var(--ease-out), border-color var(--dur-micro) var(--ease-out);
+    }
+    .quick__links a:hover,
+    .quick__links a:focus-visible {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+    a:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
     }
 
-    .link:hover {
-      transform: translateY(-3px);
-      border-color: var(--surface2);
-      background: var(--surface1);
-      color: var(--text);
+    @media (max-width: 720px) {
+      .wrap { grid-template-columns: 1fr; align-items: center; text-align: center; }
+      .indicator { display: none; }
+      .greet { text-align: center; }
+      .greeting h1 { margin-left: auto; margin-right: auto; }
+      .quick { flex-direction: column; align-items: center; gap: var(--space-md); padding: var(--space-lg); }
+      .quick__links { justify-content: center; gap: var(--space-md) var(--space-lg); }
     }
 
-    .link .tile {
-      width: 44px;
-      height: 44px;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 20px;
-      color: var(--base);
-      font-weight: 800;
-    }
-
-    .tile.blue { background: var(--blue); }
-    .tile.sapphire { background: var(--sapphire); }
-    .tile.lavender { background: var(--lavender); }
-    .tile.teal { background: var(--teal); }
-    .tile.green { background: var(--green); }
-    .tile.yellow { background: var(--yellow); }
-    .tile.peach { background: var(--peach); }
-    .tile.red { background: var(--red); }
-
-    .footer {
-      margin-top: 40px;
-      font-size: 12px;
-      color: var(--overlay0);
-    }
-
-    @media (max-width: 560px) {
-      .clock { font-size: 64px; }
-      .greeting { font-size: 22px; }
-      .links { grid-template-columns: repeat(2, 1fr); }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 150ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 150ms !important;
+      }
+      .stat, .greeting, .quick { animation: none; opacity: 1; transform: none; }
     }
   </style>
 </head>
 <body>
-  <div class="page">
-    <div class="clock" id="clock">--:--:--</div>
-    <div class="greeting" id="greeting">Xin chào</div>
-    <div class="date" id="date"></div>
-
-    <form class="search" action="https://duckduckgo.com/" method="get">
-      <span class="search-icon">⌕</span>
-      <input type="text" name="q" placeholder="Tìm kiếm trên DuckDuckGo..." autocomplete="off" autofocus />
-    </form>
-
-    <div class="links">
-      <a class="link" href="https://www.youtube.com/">
-        <span class="tile red">YT</span>
-        <span>YouTube</span>
-      </a>
-      <a class="link" href="https://github.com/">
-        <span class="tile lavender">GH</span>
-        <span>GitHub</span>
-      </a>
-      <a class="link" href="https://mail.google.com/">
-        <span class="tile blue">GM</span>
-        <span>Gmail</span>
-      </a>
-      <a class="link" href="https://www.reddit.com/">
-        <span class="tile peach">RD</span>
-        <span>Reddit</span>
-      </a>
-      <a class="link" href="https://chat.openai.com/">
-        <span class="tile teal">AI</span>
-        <span>ChatGPT</span>
-      </a>
-      <a class="link" href="https://translate.google.com/">
-        <span class="tile green">TR</span>
-        <span>Dịch</span>
-      </a>
-      <a class="link" href="https://www.google.com/maps">
-        <span class="tile sapphire">MP</span>
-        <span>Bản đồ</span>
-      </a>
-      <a class="link" href="https://www.wikipedia.org/">
-        <span class="tile yellow">WK</span>
-        <span>Wikipedia</span>
-      </a>
+  <div class="wrap">
+    <div class="stat">
+      <span class="stat__label">Local time</span>
+      <div class="stat__time" id="clock">--:--</div>
+      <div class="stat__date" id="date">—</div>
     </div>
 
-    <div class="footer">Catppuccin Mocha · Home Manager</div>
+    <div class="indicator" aria-hidden="true">
+      <span class="dot"></span>
+    </div>
+
+    <div class="greeting">
+      <small>Hello</small>
+      <h1 id="greeting">Have a gentle day</h1>
+    </div>
   </div>
+
+  <footer class="quick">
+    <span class="quick__brand">Catppuccin</span>
+    <ul class="quick__links">
+      <li><a href="https://www.youtube.com/">YouTube</a></li>
+      <li><a href="https://github.com/">GitHub</a></li>
+      <li><a href="https://mail.google.com/">Gmail</a></li>
+      <li><a href="https://chat.openai.com/">ChatGPT</a></li>
+      <li><a href="https://www.reddit.com/">Reddit</a></li>
+    </ul>
+  </footer>
 
   <script>
     const clockEl = document.getElementById("clock");
-    const greetingEl = document.getElementById("greeting");
     const dateEl = document.getElementById("date");
+    const greetingEl = document.getElementById("greeting");
+    let current = "";
+
+    function pad(n) { return String(n).padStart(2, "0"); }
+    function plural(s) { const m = s.match(/(\d+) (\w+)/); return m && m[1] === "1" ? m[1] + " " + m[2] : s; }
 
     function update() {
       const now = new Date();
+      const hh = pad(now.getHours());
+      const mm = pad(now.getMinutes());
+      const t = `${hh}:${mm}`;
+      clockEl.textContent = t;
 
-      clockEl.textContent = now.toLocaleTimeString("vi-VN", {
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-        hour12: false,
-      });
+      // gentle emphasis flash on each minute change
+      if (t !== current) {
+        clockEl.animate(
+          [{ opacity: 0.35 }, { opacity: 1 }],
+          { duration: 500, easing: "cubic-bezier(0.16, 1, 0.3, 1)", fill: "forwards" }
+        );
+      }
+      current = t;
 
-      dateEl.textContent = now.toLocaleDateString("vi-VN", {
-        weekday: "long",
-        day: "numeric",
-        month: "long",
-        year: "numeric",
+      dateEl.textContent = now.toLocaleDateString("en-US", {
+        weekday: "long", day: "numeric", month: "long", year: "numeric"
       });
 
       const hour = now.getHours();
-      let greeting;
-      if (hour >= 5 && hour < 12) greeting = "Chào buổi sáng";
-      else if (hour >= 12 && hour < 18) greeting = "Chào buổi chiều";
-      else if (hour >= 18 && hour < 22) greeting = "Chào buổi tối";
-      else greeting = "Chúc ngủ ngon";
-      greetingEl.textContent = greeting + " 👋";
+      let msg;
+      if (hour >= 5 && hour < 12) msg = "Good morning";
+      else if (hour >= 12 && hour < 18) msg = "Good afternoon";
+      else if (hour >= 18 && hour < 22) msg = "Good evening";
+      else msg = "Sleep well";
+      if (greetingEl.textContent !== msg) greetingEl.textContent = msg;
     }
 
     update();
