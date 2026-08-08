@@ -1,4 +1,8 @@
-{pkgs, config, ...}: let
+{
+  pkgs,
+  config,
+  ...
+}: let
   fcitx5Gtk3Cache =
     pkgs.runCommand "fcitx5-gtk3-immodules-cache" {
       nativeBuildInputs = [pkgs.gtk3.dev];
