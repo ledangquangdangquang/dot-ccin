@@ -41,7 +41,8 @@ exec --no-startup-id xset dpms 0 0 0
 # Launch alacritty terminal
 bindsym $mod+Return exec alacritty
 # Launch Nautilus file manager
-bindsym $mod+e exec alacritty -e zsh -ic spf
+# bindsym $mod+e exec alacritty -e zsh -ic spf
+bindsym $mod+e exec nautilus
 # Launch Firefox
 bindsym $mod+Shift+f exec firefox
 # Zathura for documentation
