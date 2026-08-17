@@ -30,6 +30,7 @@ set $mod Mod4
 
 # Startup applications
 exec fcitx5 -d
+exec --no-startup-id picom --config ~/.config/picom/picom.conf
 exec dunst
 exec clipboard-watcher
 exec autotiling
@@ -98,8 +99,6 @@ bindsym $mod+Ctrl+l resize grow width 10px
 bindsym $mod+Ctrl+k resize grow height 10px
 bindsym $mod+Ctrl+j resize shrink height 10px
 
-# Layout preset: master 70% / stack 30%
-bindsym $mod+Backslash resize set width 70 ppt
 
 # Split layout 70/30
 bindsym $mod+o splitv; focus up; resize set height 70 ppt

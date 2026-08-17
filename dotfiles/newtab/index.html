@@ -1,14 +1,14 @@
 <!doctype html>
-<html lang="en">
+<html lang="vi">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Home</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=EB+Garamond:ital@0;1&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500&display=swap" rel="stylesheet" />
   <style>
-    /* Hallmark · genre: editorial · macrostructure: Stat-Led · tone: luxury · theme: catppuccin-mocha · enrichment: typography / stat-hero */
+    /* Hallmark · genre: atmospheric · macrostructure: Stat-Led · tone: luxury · theme: catppuccin-mocha · enrichment: typography / stat-hero */
     :root {
       /* Catppuccin Mocha */
       --bg-base: #1e1e2e;
@@ -19,25 +19,26 @@
       --subtext: #bac2de;
       --rule: #45475a;
       --accent: #cba6f7;
+      --green: #a6e3a1;
       /* typographic registers */
-      --font-display: "Cormorant Garamond", ui-serif, Georgia, serif;
-      --font-body: "EB Garamond", ui-serif, Georgia, serif;
+      --font-display: "Fira Code", ui-monospace, SFMono-Regular, Menlo, monospace;
+      --font-body: "Fira Code", ui-monospace, SFMono-Regular, Menlo, monospace;
       /* spacing (4pt) */
       --space-xs: 0.25rem;
       --space-sm: 0.5rem;
       --space-md: 1rem;
       --space-lg: 2rem;
-      --space-xl: 4rem;
-      --space-2xl: 8rem;
       /* motion */
       --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-      --ease-in: cubic-bezier(0.7, 0, 0.84, 0);
       --dur-micro: 120ms;
-      --dur-short: 220ms;
       --dur-long: 420ms;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { font-size: 130%; }
+
+    html, body { overflow-x: clip; }
 
     body {
       min-height: 100vh;
@@ -48,16 +49,15 @@
       color: var(--ink);
       font-family: var(--font-body);
       -webkit-font-smoothing: antialiased;
-      overflow: hidden;
     }
 
     .wrap {
       align-self: center;
-      width: min(88vw, 1200px);
+      width: min(94vw, 1600px);
       margin: 0 auto;
-      padding: var(--space-2xl) 0;
+      padding: var(--space-xl) 0;
       display: grid;
-      grid-template-columns: 1fr auto 1fr;
+      grid-template-columns: 1.2fr auto 1fr;
       align-items: end;
       gap: var(--space-lg);
     }
@@ -66,7 +66,7 @@
     .stat {
       position: relative;
       --i: 0;
-      animation: reveal var(--dur-long) var(--ease-out) forwards;
+      animation: rise var(--dur-long) var(--ease-out) forwards;
       animation-delay: calc(var(--i) * 60ms);
     }
 
@@ -103,6 +103,18 @@
       font-style: italic;
       color: var(--muted);
       font-size: clamp(1rem, 1.6vw, 1.4rem);
+    }
+
+    .greeting__icon {
+      font-size: 0.55em;
+      line-height: 1;
+    }
+    .greeting__range {
+      margin-top: var(--space-sm);
+      font-size: 0.75rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
     }
 
     /* centre hairline */
@@ -148,11 +160,15 @@
     .greeting h1 {
       font-family: var(--font-display);
       font-weight: 400;
-      font-style: italic;
       font-size: clamp(1.6rem, 3vw, 2.6rem);
       line-height: 1.15;
       max-width: 18ch;
       margin-left: auto;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 0.3em;
+      font-variant-numeric: tabular-nums;
     }
 
     @keyframes rise {
@@ -163,52 +179,92 @@
     /* footer strip */
     .quick {
       border-top: 1px solid var(--rule);
-      padding: var(--space-lg) var(--space-2xl);
+      padding: var(--space-md);
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
       align-items: center;
       gap: var(--space-lg);
       --i: 2;
       animation: rise var(--dur-long) var(--ease-out) forwards;
       animation-delay: calc(var(--i) * 60ms);
     }
-    .quick__brand {
-      font-family: var(--font-display);
-      font-style: italic;
-      font-size: 1.05rem;
-      color: var(--subtext);
-      letter-spacing: 0.02em;
-    }
-    .quick__links {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0 var(--space-lg);
-      list-style: none;
-    }
-    .quick__links a {
+    .quick__quote {
       color: var(--muted);
-      text-decoration: none;
       font-size: 0.95rem;
-      border-bottom: 1px solid transparent;
-      transition: color var(--dur-micro) var(--ease-out), border-color var(--dur-micro) var(--ease-out);
-    }
-    .quick__links a:hover,
-    .quick__links a:focus-visible {
-      color: var(--accent);
-      border-bottom-color: var(--accent);
+      text-align: justify;
+      text-align-last: justify;
+      opacity: 0.85;
+      flex: 1 1 0%;
+      min-width: 0;
     }
     a:focus-visible {
       outline: 2px solid var(--accent);
       outline-offset: 3px;
     }
 
+    /* stopwatch */
+    .stopwatch {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+    }
+    .stopwatch__label {
+      font-size: 0.7rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: var(--space-xs);
+    }
+    .stopwatch__time {
+      font-family: var(--font-display);
+      font-weight: 300;
+      font-size: 1.35rem;
+      line-height: 1;
+      color: var(--subtext);
+      font-variant-numeric: tabular-nums;
+      min-width: 8ch;
+      text-align: right;
+    }
+    .stopwatch__btns {
+      display: flex;
+      gap: var(--space-sm);
+    }
+    .stopwatch__btn {
+      background: none;
+      border: 1px solid var(--rule);
+      border-radius: 999px;
+      color: var(--muted);
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.3em 0.9em;
+      cursor: pointer;
+      transition: color var(--dur-micro) var(--ease-out), border-color var(--dur-micro) var(--ease-out);
+    }
+    .stopwatch__btn:hover,
+    .stopwatch__btn:focus-visible {
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+    .stopwatch__btn--running {
+      color: var(--green);
+      border-color: var(--green);
+    }
+
+    .greeting .stopwatch {
+      justify-content: flex-end;
+      margin-top: var(--space-lg);
+    }
+
     @media (max-width: 720px) {
       .wrap { grid-template-columns: 1fr; align-items: center; text-align: center; }
       .indicator { display: none; }
-      .greet { text-align: center; }
-      .greeting h1 { margin-left: auto; margin-right: auto; }
-      .quick { flex-direction: column; align-items: center; gap: var(--space-md); padding: var(--space-lg); }
-      .quick__links { justify-content: center; gap: var(--space-md) var(--space-lg); }
+      .greeting { text-align: center; }
+      .greeting h1 { margin-left: auto; margin-right: auto; justify-content: center; }
+      .stopwatch { justify-content: center; }
+      .quick { flex-direction: column; align-items: center; gap: var(--space-md); padding: var(--space-md); }
+      .quick__quote { text-align: center; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -230,34 +286,41 @@
     </div>
 
     <div class="indicator" aria-hidden="true">
+      <span class="ring"></span>
       <span class="dot"></span>
     </div>
 
     <div class="greeting">
-      <small>Hello</small>
-      <h1 id="greeting">Have a gentle day</h1>
+      <small>Hà Nội</small>
+      <h1 id="greeting">
+        <span class="greeting__icon" id="weather-icon"></span>
+        <span id="greeting-temp">--°</span>
+      </h1>
+      <p class="greeting__range" id="weather-range">--°/--°</p>
+
+      <div class="stopwatch">
+        <div>
+          <p class="stopwatch__label">Stopwatch</p>
+          <span class="stopwatch__time" id="sw-time">00:00</span>
+        </div>
+        <div class="stopwatch__btns">
+          <button class="stopwatch__btn" id="sw-toggle" type="button">Start</button>
+          <button class="stopwatch__btn" id="sw-reset" type="button">Reset</button>
+        </div>
+      </div>
     </div>
   </div>
 
   <footer class="quick">
-    <span class="quick__brand">Catppuccin</span>
-    <ul class="quick__links">
-      <li><a href="https://www.youtube.com/">YouTube</a></li>
-      <li><a href="https://github.com/">GitHub</a></li>
-      <li><a href="https://mail.google.com/">Gmail</a></li>
-      <li><a href="https://chat.openai.com/">ChatGPT</a></li>
-      <li><a href="https://www.reddit.com/">Reddit</a></li>
-    </ul>
+    <p class="quick__quote" id="quote">—</p>
   </footer>
 
   <script>
     const clockEl = document.getElementById("clock");
     const dateEl = document.getElementById("date");
-    const greetingEl = document.getElementById("greeting");
     let current = "";
 
     function pad(n) { return String(n).padStart(2, "0"); }
-    function plural(s) { const m = s.match(/(\d+) (\w+)/); return m && m[1] === "1" ? m[1] + " " + m[2] : s; }
 
     function update() {
       const now = new Date();
@@ -278,18 +341,121 @@
       dateEl.textContent = now.toLocaleDateString("en-US", {
         weekday: "long", day: "numeric", month: "long", year: "numeric"
       });
-
-      const hour = now.getHours();
-      let msg;
-      if (hour >= 5 && hour < 12) msg = "Good morning";
-      else if (hour >= 12 && hour < 18) msg = "Good afternoon";
-      else if (hour >= 18 && hour < 22) msg = "Good evening";
-      else msg = "Sleep well";
-      if (greetingEl.textContent !== msg) greetingEl.textContent = msg;
     }
+
+    // weather (Open-Meteo, Hanoi)
+    const weatherIcon = document.getElementById("weather-icon");
+    const greetingTemp = document.getElementById("greeting-temp");
+    const weatherRange = document.getElementById("weather-range");
+    const WEATHER_URL =
+      "https://api.open-meteo.com/v1/forecast" +
+      "?latitude=21.0285&longitude=105.8542" +
+      "&current=temperature_2m,weather_code" +
+      "&daily=temperature_2m_max,temperature_2m_min" +
+      "&timezone=Asia%2FHo_Chi_Minh&forecast_days=1";
+
+    const WMO_ICONS = {
+      0: "☀️", 1: "🌤️", 2: "⛅", 3: "☁️",
+      45: "🌫️", 48: "🌫️",
+      51: "🌦️", 53: "🌦️", 55: "🌦️",
+      56: "🌧️", 57: "🌧️",
+      61: "🌧️", 63: "🌧️", 65: "🌧️",
+      66: "🌧️", 67: "🌧️",
+      71: "🌨️", 73: "🌨️", 75: "🌨️", 77: "🌨️",
+      80: "🌦️", 81: "🌧️", 82: "⛈️",
+      85: "🌨️", 86: "🌨️",
+      95: "⛈️", 96: "⛈️", 99: "⛈️"
+    };
+
+    async function loadWeather() {
+      try {
+        const res = await fetch(WEATHER_URL);
+        if (!res.ok) throw new Error(res.status);
+        const data = await res.json();
+        const t = Math.round(data.current.temperature_2m);
+        const hi = Math.round(data.daily.temperature_2m_max[0]);
+        const lo = Math.round(data.daily.temperature_2m_min[0]);
+        weatherIcon.textContent = WMO_ICONS[data.current.weather_code] ?? "🌡️";
+        greetingTemp.textContent = `${t}°`;
+        weatherRange.textContent = `${hi}°/${lo}°`;
+      } catch (e) { /* keep placeholders offline */ }
+    }
+    loadWeather();
+    setInterval(loadWeather, 30 * 60 * 1000);
+
+    // stopwatch
+    const swTime = document.getElementById("sw-time");
+    const swToggle = document.getElementById("sw-toggle");
+    const swReset = document.getElementById("sw-reset");
+    let swElapsed = 0;
+    let swRunning = false;
+    let swStart = 0;
+    let swRaf = 0;
+
+    function swFormat(ms) {
+      const s = Math.floor(ms / 1000) % 60;
+      const m = Math.floor(ms / 60000) % 60;
+      const h = Math.floor(ms / 3600000);
+      const hh = h > 0 ? String(h).padStart(2, "0") + ":" : "";
+      return `${hh}${String(m).padStart(2, "0")}:${pad(s)}`;
+    }
+
+    function swTick() {
+      swTime.textContent = swFormat(swElapsed + (performance.now() - swStart));
+      swRaf = requestAnimationFrame(swTick);
+    }
+
+    swToggle.addEventListener("click", () => {
+      if (swRunning) {
+        swElapsed += performance.now() - swStart;
+        swRunning = false;
+        cancelAnimationFrame(swRaf);
+        swToggle.textContent = "Start";
+        swToggle.classList.remove("stopwatch__btn--running");
+      } else {
+        swStart = performance.now();
+        swRunning = true;
+        swToggle.textContent = "Pause";
+        swToggle.classList.add("stopwatch__btn--running");
+        swTick();
+      }
+    });
+
+    swReset.addEventListener("click", () => {
+      swElapsed = 0;
+      swRunning = false;
+      cancelAnimationFrame(swRaf);
+      swTime.textContent = "00:00";
+      swToggle.textContent = "Start";
+      swToggle.classList.remove("stopwatch__btn--running");
+    });
 
     update();
     setInterval(update, 1000);
+
+    const quotes = [
+      "Discipline is choosing between what you want now and what you want most.",
+      "Do something today that your future self will thank you for.",
+      "The secret of getting ahead is getting started.",
+      "Focus on the step in front of you, not the summit.",
+      "You don't have to be great to start, but you have to start to be great.",
+      "Small progress is still progress.",
+      "Make it happen. One tab at a time.",
+      "Better than yesterday, one session at a time.",
+      "The best time to plant a tree was twenty years ago. The second best time is now.",
+      "Don't watch the clock; do what it does. Keep going.",
+      "Success is the sum of small efforts repeated day in and day out.",
+      "Do it with passion or not at all.",
+      "It always seems impossible until it's done.",
+      "Well done is better than well said.",
+      "Energy and persistence conquer all things.",
+      "What you do today can improve all your tomorrows.",
+      "Believe you can and you're halfway there.",
+      "The only way to do great work is to love what you do.",
+      "Everything you've ever wanted is on the other side of fear.",
+      "Great things never come from comfort zones."
+    ];
+    document.getElementById("quote").textContent = quotes.join("  ·  ");
   </script>
 </body>
 </html>

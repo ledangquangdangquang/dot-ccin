@@ -22,6 +22,7 @@
     "yazi"
     "superfile"
     "newtab"
+    "picom"
   ];
 in {
   xdg.configFile =
