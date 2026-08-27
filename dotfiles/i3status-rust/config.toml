@@ -49,7 +49,8 @@ inactive_format = " $icon "
 missing_format = ""
 [[block.click]]
 button = "left"
-cmd = "wifi-menu"
+cmd = "nmtui"
+# cmd = "wifi-menu"
 
 [[block]]
 block = "custom"

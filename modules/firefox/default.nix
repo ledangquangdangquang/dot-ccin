@@ -46,7 +46,8 @@ in {
     };
     Service = {
       Type = "simple";
-      ExecStart = "${pkgs.python3}/bin/python3 -m http.server ${toString newtabPort} --bind 127.0.0.1 --directory ${config.home.homeDirectory}/.config/newtab";
+      Environment = "NEWTAB_PORT=${toString newtabPort} NEWTAB_DIR=${config.home.homeDirectory}/.config/newtab";
+      ExecStart = "${pkgs.python3}/bin/python3 ${./newtab-server.py}";
       Restart = "on-failure";
     };
     Install = {

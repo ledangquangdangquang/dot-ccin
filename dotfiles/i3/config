@@ -127,6 +127,7 @@ bindsym --release Caps_Lock exec system-control caps-lock
 exec --no-startup-id i3-msg workspace 1
 for_window [title="^.*"] title_format ""
 default_border pixel 1
+gaps inner 2
 client.focused          #89b4fa #1e1e2e #cdd6f4 #89b4fa #89b4fa
 # Focus
 client.focused          #b4befe #1e1e2e #cdd6f4 #b4befe #b4befe

@@ -7,7 +7,6 @@
       gawk
       libnotify
       menu
-      networkmanager
     ];
     text = ''
       notify() {
@@ -72,10 +71,22 @@
                 active=$1; signal=$2; security=$3
                 ssid=$0
                 sub(/^[^:]*:[^:]*:[^:]*:/, "", ssid)
-                if (ssid == "" || seen[ssid]++) next
+                if (ssid == "") next
                 icon=(active == "*" ? "󰖩" : "󰤨")
                 lock=(security == "--" || security == "" ? "" : " 󰌾")
-                printf "%s  %s  %s%%%s\twifi\t%s\n", icon, ssid, signal, lock, ssid
+                line=sprintf("%s  %s  %s%%%s\twifi\t%s", icon, ssid, signal, lock, ssid)
+                if (active == "*") {
+                  best[ssid]=line
+                } else if (!(ssid in best)) {
+                  best[ssid]=line
+                }
+                if (!(ssid in orderSeen)) {
+                  orderSeen[ssid]=1
+                  order[++n]=ssid
+                }
+              }
+              END {
+                for (i=1; i<=n; i++) print best[order[i]]
               }
             '
         )"

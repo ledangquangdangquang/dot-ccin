@@ -23,6 +23,7 @@
     "superfile"
     "newtab"
     "picom"
+    "zsh"
   ];
 in {
   xdg.configFile =
