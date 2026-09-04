@@ -13,6 +13,8 @@
       lock_file="$runtime_dir/notification-sound.lock"
       sound_file="${pkgs.sound-theme-freedesktop}/share/sounds/freedesktop/stereo/message.oga"
 
+      [[ "$DUNST_STACK_TAG" == "volume" ]] && exit 0
+
       exec 9>"$lock_file"
       flock --nonblock 9 || exit 0
 

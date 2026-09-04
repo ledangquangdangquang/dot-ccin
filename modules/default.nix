@@ -22,7 +22,6 @@
     ./display.nix
     ./clipboard.nix
     ./menu.nix
-    ./i3.nix
     # --- Folder ---
     ./firefox
   ];

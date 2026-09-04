@@ -22,7 +22,7 @@
     stylua
     tree-sitter
     nil
-    superfile
+    yazi
     btop
     gcc
     alacritty
@@ -34,6 +34,7 @@
     brightnessctl # laptop/internal display brightness
     ddcutil # brightness
     eza # alternative ls
+    bluetui
     kanshi # automatic output management
     autotiling
     picom

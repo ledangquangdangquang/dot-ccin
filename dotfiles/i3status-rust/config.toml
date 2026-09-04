@@ -13,7 +13,7 @@ warning_cpu = 60
 critical_cpu = 90
 [[block.click]]
 button = "left"
-cmd = "$TERMINAL -e btop"
+cmd = "alacritty -e btop"
 
 [[block]]
 block = "memory"
@@ -23,7 +23,7 @@ warning_mem = 80
 critical_mem = 95
 [[block.click]]
 button = "left"
-cmd = "$TERMINAL -e btop"
+cmd = "alacritty -e btop"
 
 [[block]]
 block = "battery"
@@ -49,7 +49,7 @@ inactive_format = " $icon "
 missing_format = ""
 [[block.click]]
 button = "left"
-cmd = "nmtui"
+cmd = "alacritty -e nmtui"
 # cmd = "wifi-menu"
 
 [[block]]
@@ -58,7 +58,8 @@ command = "b=$(bluetoothctl show 2>/dev/null | grep -q 'Powered: yes' && echo on
 interval = 5
 [[block.click]]
 button = "left"
-cmd = "bluetooth-menu"
+cmd = "alacritty -e bluetui"
+# cmd = "bluetooth-menu"
 
 [[block]]
 block = "sound"
