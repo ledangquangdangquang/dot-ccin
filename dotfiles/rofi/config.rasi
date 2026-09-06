@@ -10,7 +10,7 @@ configuration {
     display-ssh: "ssh";
     display-run: "run:";
     show-icons: true;
-    icon-theme: "Papirus";
+    icon-theme: "Papirus-Dark";
     terminal: "alacritty";
     drun-display-format: "{name}";
     sort: true;

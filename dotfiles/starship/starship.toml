@@ -1,25 +1,32 @@
 "$schema" = "https://starship.rs/config-schema.json"
 
-# Disable newline after the prompt
 add_newline = false
 
-# Define the prompt format
 format = """
-[╭─](purple) $directory$git_branch$python$nix_shell
-[╰─](purple) $character 
+[╭─](purple) $os$directory$git_branch$python$nix_shell$fill$time
+[╰─](purple) $character
 """
 
-# Configure the directory section
+[fill]
+disabled = false
+symbol = ' ∙'
+style = '#f5e0dc'
+
 [directory]
 style = "purple"
 
-# Configure the Git branch section
+[line_break]
+disabled = false
+
 [git_branch]
 symbol = " "
 style = "purple"
 
-# Show the Python version and the active virtual environment. This module is
-# only displayed in Python projects or while a virtual environment is active.
+[os]
+disabled = false
+style = 'purple'
+format = '[$symbol ]($style)'
+
 [python]
 symbol = " "
 style = "yellow"
@@ -40,14 +47,18 @@ detect_files = [
 detect_folders = [".venv", "venv"]
 generic_venv_names = [".venv", "venv"]
 
-# Show whether the current shell was entered through nix develop/nix shell.
 [nix_shell]
 symbol = " "
 style = "blue"
 format = "via [$symbol$state( ($name))]($style) "
 heuristic = false
 
-# Configure the character section for success and error states
+[time]
+disabled = false
+time_format = '%R'
+style = '#f5e0dc'
+format = '[ $time]($style)'
+
 [character]
 success_symbol = "[󰄛](purple)"
 error_symbol = "[󰄛](red)"
@@ -56,3 +67,32 @@ error_symbol = "[󰄛](red)"
 ssh_only = false
 format = '@[$localipv4](bold red) '
 disabled = false
+
+[os.symbols]
+Windows = ''
+Ubuntu = '󰕈'
+openSUSE = ''
+Raspbian = '󰐿'
+Mint = '󰣭'
+Macos = ''
+Manjaro = ''
+Linux = '󰌽'
+Gentoo = '󰣨'
+Fedora = '󰣛'
+Alpine = ''
+Amazon = ''
+Android = ''
+Arch = '󰣇'
+Artix = '󰣇'
+CentOS = ''
+Debian = '󰣚'
+Redhat = '󱄛'
+RedHatEnterprise = '󱄛'
+NixOS       = ''
+Pop         = ''
+EndeavourOS = ''
+Kali        = ''
+FreeBSD     = ''
+Elementary  = ''
+Zorin       = ''
+Unknown     = '󰋖'

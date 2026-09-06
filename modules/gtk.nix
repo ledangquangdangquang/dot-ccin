@@ -33,6 +33,11 @@
       package = pkgs.bibata-cursors;
       size = 24;
     };
+    gtk3 = {
+      extraConfig = {
+        gtk-application-prefer-dark-theme = 1;
+      };
+    };
   };
 
   home.pointerCursor = {
