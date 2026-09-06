@@ -19,6 +19,7 @@
   }: let
     system = "x86_64-linux";
     user = "quang";
+    envUser = builtins.getEnv "USER";
 
     hostMain = {
       hostname = "ubuntu-nix"; # Tên định danh cấu hình (không ảnh hưởng hostname thật của Ubuntu)
@@ -28,6 +29,18 @@
       inherit system;
       config.allowUnfree = true;
     };
+
+    mkHome = targetUser:
+      home-manager.lib.homeManagerConfiguration {
+        inherit pkgs;
+        extraSpecialArgs = {
+          inherit inputs hostMain;
+          user = targetUser;
+        };
+        modules = [
+          ./home.nix
+        ];
+      };
   in {
     formatter.${system} = pkgs.writeShellApplication {
       name = "nix-fmt";
@@ -41,18 +54,14 @@
       '';
     };
 
-    # Thay thế nixosConfigurations bằng homeConfigurations độc lập
-    homeConfigurations."${user}" = home-manager.lib.homeManagerConfiguration {
-      inherit pkgs;
-
-      # Truyền các tham số đặc biệt vào file home.nix y hệt cấu hình cũ của anh
-      extraSpecialArgs = {
-        inherit inputs hostMain user;
-      };
-
-      modules = [
-        ./home.nix
-      ];
-    };
+    homeConfigurations =
+      {
+        "${user}" = mkHome user;
+      }
+      // (
+        if envUser != "" && envUser != user
+        then {"${envUser}" = mkHome envUser;}
+        else {}
+      );
   };
 }

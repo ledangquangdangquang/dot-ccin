@@ -2,9 +2,6 @@
   home.packages = with pkgs; [
     i3status-rust
     nerd-fonts.fira-code
-    # wl-clipboard
-    nwg-displays
-    # wl-mirror
     fzf
     tree
     bat
@@ -34,7 +31,6 @@
     ddcutil # brightness
     eza # alternative ls
     bluetui
-    kanshi # automatic output management
     autotiling
     picom
   ];

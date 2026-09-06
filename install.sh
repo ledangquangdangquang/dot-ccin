@@ -200,9 +200,9 @@ verify_repo() {
 switch_home_manager() {
 	info "Applying Home Manager profile: $profile"
 	if ensure_command home-manager; then
-		home-manager switch -b "$backup_ext" --flake "$repo_dir#$profile"
+		home-manager switch --impure -b "$backup_ext" --flake "$repo_dir#$profile"
 	else
-		nix run github:nix-community/home-manager -- switch -b "$backup_ext" --flake "$repo_dir#$profile"
+		nix run github:nix-community/home-manager -- switch --impure -b "$backup_ext" --flake "$repo_dir#$profile"
 	fi
 }
 

@@ -63,7 +63,7 @@ nix store gc                                  # clean /nix/store
 bash <(curl -fsSL https://raw.githubusercontent.com/ledangquangdangquang/UbuntuConfig/main/install.sh)
 ```
 
-The installer sets up Nix, clones the repo to `~/UbuntuConfig`, writes your username to `flake.nix`, applies Home Manager, sets zsh as default, and registers the Sway session with the display manager.
+The installer sets up Nix, installs i3, clones the repo to `~/UbuntuConfig`, applies Home Manager, and sets zsh as default.
 
 ## Notes
 

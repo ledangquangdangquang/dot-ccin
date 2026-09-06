@@ -9,7 +9,6 @@
     "i3status-rust"
     "fcitx5"
     "weathr"
-    "kanshi"
     "fastfetch"
     "btop"
     "bat"
