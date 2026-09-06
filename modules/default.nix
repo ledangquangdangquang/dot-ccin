@@ -22,6 +22,7 @@
     ./display.nix
     ./clipboard.nix
     ./menu.nix
+    ./yazi.nix
     # --- Folder ---
     ./firefox
   ];

@@ -22,7 +22,6 @@
     stylua
     tree-sitter
     nil
-    yazi
     btop
     gcc
     alacritty

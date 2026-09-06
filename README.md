@@ -1,217 +1,64 @@
 # UbuntuConfig
 
-![Ubuntu](https://img.shields.io/badge/ubuntu-26.04-orange?logo=ubuntu&logoColor=orange)
-![Nix](https://img.shields.io/badge/nixpkgs-2.34.7-informational.svg?style=flat&logo=nixos&logoColor=CAD3F5&colorA=24273A&colorB=8aadf4)
+> Dotfiles Ubuntu quản lý bằng Nix flakes + Home Manager. Cài đặt mọi app, config và keybinding theo một lần `switch`.
 
-Personal Ubuntu dotfiles managed with Nix flakes and Home Manager.
+## Dùng gì
 
-## Showcase
-
-![screenshot](./assets/screenshot.png)
-
-## Component Table
-
-| Component | Description |
+| Nhóm | Công cụ |
 | --- | --- |
-| Window Manager | i3 (installed externally) |
-| Bar | i3status-rust |
-| Terminal Emulator | Foot, Kitty |
-| Application Launcher | Fuzzel, Rofi |
-| Notification Daemon | dunst |
-| File Manager | Superfile |
-| Text Editor | Neovim |
-| Browser | Firefox |
-| PDF Viewer | Zathura |
+| Window Manager | **i3** (cài ngoài, i3status-rust) |
+| Shell | **Zsh** + Starship |
+| Terminal | **Kitty**, Alacritty |
+| Launcher | **Rofi**, Fuzzel |
+| Editor | **Neovim** + fuzzyvim (Fzf) |
+| File Manager | **Yazi** (5 plugin) |
+| Browser | **Firefox** (custom CSS) |
+| Notification | **dunst** |
 | Screenshot | Grim + Slurp + Satty |
-| Shell | Zsh + Starship |
-| Theme | Catppuccin Mocha |
-| Input Method | Fcitx5 + Unikey |
-| Terminal Multiplexer | Tmux |
-| System Monitor | Btop |
-| File Viewer | Bat |
-| File Explorer | Eza |
-| Fuzzy Finder | Fzf |
+| Power Menu | Menu + power (Fuzzel) |
+| Ngoài ra | Fcitx5+Unikey, Git, GTK, Tmux, Btop, Bat, Eza, Picom, Kanshi, Wallpaper, Clipboard, VLC, nix-cleanup |
 
-## Quick Install
+## Cấu trúc
 
-Paste this into a terminal on Ubuntu:
+```text
+flake.nix          # inputs, hostname, user, stateVersion
+home.nix           # entry point tối thiểu (import ./modules)
+modules/           # logic Home Manager, mỗi app một file
+  ├── default.nix  # index — đăng ký module mới ở đây
+  ├── packages.nix # danh sách gói cài chung
+  └── dotfiles.nix # symlink dotfiles/<app>/ → ~/.config/<app>
+dotfiles/          # config thô, thư mục con = 1 app
+Wallpapers/        # hình nền
+```
+
+## Cách vận hành
+
+1. **Thêm gói** → `modules/packages.nix`
+2. **Thêm config app** (file thường) → tạo `dotfiles/<app>/`, rồi thêm `"<app>"` vào danh sách `configApps` trong `modules/dotfiles.nix`
+3. **Logic Home Manager** (systemd, alias, env) → file mới trong `modules/`, import từ `modules/default.nix`
+4. **Áp dụng** → `home-manager switch --flake ".#$USER"`
+
+Cấu hình dạng file (i3, kitty, nvim...) là **symlink** vào repo, chỉnh là nhận ngay. Gói bám theo `flake.lock` — tái lập được. WM chạy ngoài; repo chỉ cấu hình.
+
+## Lệnh thường dùng
+
+```bash
+home-manager switch --flake ".#\$(whoami)"   # áp dụng config
+nix flake check                              # kiểm tra trước khi switch
+nix fmt                                      # format file .nix
+nix store gc                                 # dọn /nix/store đầy
+```
+
+## Cài mới
 
 ```bash
 bash <(curl -fsSL https://raw.githubusercontent.com/ledangquangdangquang/UbuntuConfig/main/install.sh)
 ```
+Cài Nix, clone repo về `~/UbuntuConfig`, gán user vào `flake.nix`, switch, đặt zsh mặc định.
 
-The script installs Nix if needed, enables flakes, clones this repo to
-`~/UbuntuConfig`, writes the current Linux username to `flake.nix`, applies the
-matching Home Manager profile, sets zsh as the default shell, and registers the
-Sway session with Ubuntu's display manager. Run the installer while logged in
-as the user that should own the configuration.
+## Ghi chú
 
-## Repository Layout
-
-```text
-.
-├── flake.nix          # Flake inputs and Home Manager entry
-├── home.nix           # Minimal Home Manager entry point
-├── modules/           # Focused Home Manager modules
-├── dotfiles/          # App configs linked into ~/.config
-├── Wallpapers/        # Wallpaper and avatar assets
-├── AGENTS.md          # Contributor/agent guide
-└── flake.lock         # Locked dependency versions
-```
-
-## Important Modules
-
-- `modules/default.nix`: Imports all focused Home Manager modules.
-- `modules/dotfiles.nix`: Links selected `dotfiles/` folders into `~/.config`.
-- `modules/packages.nix`: User packages shared by the desktop environment.
-- `modules/fcitx.nix`: Fcitx5 input method configuration.
-- `modules/notifications.nix`: SwayNC and notification sound configuration.
-- `modules/power.nix`: Fuzzel-based suspend, logout, reboot, and shutdown menu.
-- `modules/clipboard.nix`: Clipboard history watcher, picker, and clear-history commands.
-- `modules/screenshot.nix`: Screenshot commands and tools.
-- `modules/wifi.nix` and `modules/bluetooth.nix`: Network menu helpers.
-- `modules/zsh.nix`: Zsh setup, aliases, shell functions.
-- `modules/git.nix`: Git identity, Git alias, SSH config for GitHub.
-- `modules/gtk.nix`: GTK theme, fonts, cursor theme.
-- `modules/tmux.nix`: Tmux prefix, session management, restore, clipboard, and theme.
-- `modules/firefox/default.nix`: Firefox package, policies, profile config.
-
-See [`docs/architecture.md`](docs/architecture.md) for the evaluation flow,
-module ownership, generated commands, and extension points.
-
-## Common Commands
-
-```bash
-nix flake check
-```
-
-Validate and build the flake checks.
-
-```bash
-nix fmt
-git diff --exit-code -- '*.nix'
-```
-
-Format Nix files and verify that formatting produces no uncommitted changes. The flake and formatting checks also run automatically on pushes and pull requests through GitHub Actions.
-
-```bash
-nix build ".#homeConfigurations.${USER}.activationPackage"
-```
-
-Build the Home Manager activation package and catch evaluation/build warnings.
-
-```bash
-nix fmt
-```
-
-Format Nix files with the formatter declared in `flake.nix`.
-
-## Tmux Shortcuts
-
-Prefix key: `Alt-a`.
-
-Start tmux manually when needed:
-
-```bash
-tmux new -A -s main
-```
-
-Basic session commands:
-
-```bash
-tmux ls                         # List sessions
-tmux new -s work                # Create a new session
-tmux new -A -s main             # Create or attach to main
-tmux attach -t work             # Attach from outside tmux
-tmux switch-client -t work      # Switch session from inside tmux
-tmux kill-session -t work       # Remove a session
-tmux kill-server                # Remove all sessions
-```
-
-Use `attach` only from a normal shell. If already inside tmux, use `switch-client` or `Alt-a` then `s`.
-
-| Shortcut | Action |
-| --- | --- |
-| `Alt-a` then `s` | Open the session chooser; press `x` to delete with confirmation |
-| `Alt-a` then `r` | Reload tmux config |
-| `Alt-a` then `\|` | Split pane horizontally in the current directory |
-| `Alt-a` then `-` | Split pane vertically in the current directory |
-| `Alt-a` then `c` | Create a new window in the current directory |
-| `Alt-h` | Move to the left pane |
-| `Alt-j` | Move to the pane below |
-| `Alt-k` | Move to the pane above |
-| `Alt-l` | Move to the right pane |
-| `Alt-Shift-h` | Resize pane left by 5 cells |
-| `Alt-Shift-j` | Resize pane down by 5 cells |
-| `Alt-Shift-k` | Resize pane up by 5 cells |
-| `Alt-Shift-l` | Resize pane right by 5 cells |
-| Copy mode `y` | Copy selection to Wayland clipboard with `wl-copy` |
-
-`Alt-a` shortcuts only work inside tmux.
-
-Sessions are saved every 15 minutes with `tmux-continuum` and restored after reboot with `tmux-resurrect`.
-
-## Maintenance
-
-Nix keeps old builds in `/nix/store`, so clean garbage when `/` is low on space or rebuild fails with a disk-space error:
-
-```bash
-nix store gc
-```
-
-This configuration also enables a weekly user timer that keeps the last 7 days of user and Home Manager profile history, then runs garbage collection:
-
-```bash
-systemctl --user list-timers nix-cleanup.timer
-systemctl --user start nix-cleanup.service
-```
-
-Check disk usage before rebuilding:
-
-```bash
-df -h / /home
-```
-
-## Customization
-
-To add a new app config:
-
-1. Put the config directory under `dotfiles/<app>/`.
-2. Add `<app>` to `configApps` in `modules/dotfiles.nix`.
-3. Run `home-manager switch --flake ".#$USER"`.
-
-Add new Home Manager logic to a focused file under `modules/`, then import it from `modules/default.nix`. User and host-specific values are centralized in `flake.nix`; `home.nix` remains the minimal entry point.
-
-## Notes
-
-- i3 keyboard shortcuts are defined in `dotfiles/i3/config` and summarized in `dotfiles/i3/keyshortcuts.txt` (`Mod+i`).
-- Shell aliases are managed in `modules/zsh.nix`.
-- Shell aliases are managed in `modules/zsh.nix`.
-- Do not commit secrets, SSH private keys, browser sessions, or generated logs.
-
-`install.sh` uses `apt`. Replace the package list and install commands if running on a different distro.
-
-### Session Registration
-
-- **Ubuntu/Debian**: `/usr/share/wayland-sessions/` — create a `.desktop` file pointing to your compositor binary.
-- **Arch/Fedora**: same path, or use `environment.d`.
-- **NixOS**: register via `services.xserver.windowManager.<name>.enable`.
-
-### Nix Installation
-
-- **Ubuntu**: single-user mode (default in `install.sh`).
-- **NixOS**: Nix is pre-installed.
-- **Arch/Fedora**: can use multi-user mode (`nix install --daemon`).
-
-### Audio Stack
-
-- **Ubuntu 22.04+**: PipeWire (`pactl`/`paplay` work via compatibility layer).
-- **Fedora 34+**: PipeWire.
-- **Arch**: PipeWire (new default) or PulseAudio.
-- **Debian 11**: PulseAudio.
-
-All audio scripts in this repo use `pactl`/`paplay`, which work on both PipeWire and PulseAudio.
-
-### Brightness Control
-
-`brightnessctl` works on most distros. Older systems may need `xbacklight` or `light` instead.
+- Phím tắt i3: `Mod+i` xem `dotfiles/i3/keyshortcuts.txt`
+- Alias shell trong `modules/zsh.nix`
+- Config i3 kiểm tra parse: `i3 -t get_version` / xem log `~/.i3/log` khi lỗi
+- Không commit secret, SSH key, session trình duyệt
