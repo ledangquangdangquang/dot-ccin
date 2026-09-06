@@ -1,64 +1,75 @@
 # UbuntuConfig
 
-> Dotfiles Ubuntu quản lý bằng Nix flakes + Home Manager. Cài đặt mọi app, config và keybinding theo một lần `switch`.
+> Personal Ubuntu dotfiles managed with Nix flakes and Home Manager.
 
-## Dùng gì
+## What's installed
 
-| Nhóm | Công cụ |
+| Category | Tools |
 | --- | --- |
-| Window Manager | **i3** (cài ngoài, i3status-rust) |
-| Shell | **Zsh** + Starship |
-| Terminal | **Kitty**, Alacritty |
-| Launcher | **Rofi**, Fuzzel |
-| Editor | **Neovim** + fuzzyvim (Fzf) |
-| File Manager | **Yazi** (5 plugin) |
-| Browser | **Firefox** (custom CSS) |
-| Notification | **dunst** |
+| Window Manager | i3 (installed externally, i3status-rust) |
+| Shell | zsh + Starship |
+| Terminal | Kitty, Alacritty |
+| Application Launcher | Rofi, Fuzzel |
+| Notification Daemon | dunst |
+| File Manager | Yazi (with 5 plugins: smart-enter, full-border, jump-to-char, git, mount) |
+| Browser | Firefox (custom CSS) |
+| Editor | Neovim + fuzzyvim (Fzf) |
 | Screenshot | Grim + Slurp + Satty |
-| Power Menu | Menu + power (Fuzzel) |
-| Ngoài ra | Fcitx5+Unikey, Git, GTK, Tmux, Btop, Bat, Eza, Picom, Kanshi, Wallpaper, Clipboard, VLC, nix-cleanup |
+| Power Menu | Fuzzel-based suspend/logout/reboot |
+| Input Method | Fcitx5 + Unikey |
+| Terminal Multiplexer | Tmux |
+| System Monitor | Btop |
+| File Viewer | Bat |
+| File Explorer | Eza |
+| Fuzzy Finder | Fzf |
+| Theme | Catppuccin Mocha |
+| Beyond | zsh aliases, GTK theme, Git config, Tmux, Picom |
 
-## Cấu trúc
+## Structure
 
-```text
-flake.nix          # inputs, hostname, user, stateVersion
-home.nix           # entry point tối thiểu (import ./modules)
-modules/           # logic Home Manager, mỗi app một file
-  ├── default.nix  # index — đăng ký module mới ở đây
-  ├── packages.nix # danh sách gói cài chung
-  └── dotfiles.nix # symlink dotfiles/<app>/ → ~/.config/<app>
-dotfiles/          # config thô, thư mục con = 1 app
-Wallpapers/        # hình nền
+```
+.
+├── flake.nix       # flake inputs, hostname, user, stateVersion
+├── home.nix        # minimal Home Manager entry point
+├── modules/        # focused Home Manager modules
+│   └── default.nix # imports all modules
+├── dotfiles/       # app configs symlinked into ~/.config
+├── Wallpapers/     # wallpaper and avatar assets
+├── flake.lock      # locked dependency versions
+└── README.md       # this file
 ```
 
-## Cách vận hành
+## How to use
 
-1. **Thêm gói** → `modules/packages.nix`
-2. **Thêm config app** (file thường) → tạo `dotfiles/<app>/`, rồi thêm `"<app>"` vào danh sách `configApps` trong `modules/dotfiles.nix`
-3. **Logic Home Manager** (systemd, alias, env) → file mới trong `modules/`, import từ `modules/default.nix`
-4. **Áp dụng** → `home-manager switch --flake ".#$USER"`
+1. **Add a package** → edit `modules/packages.nix`
+2. **Add an app config** → create `dotfiles/<app>/`, then add `"<app>"` to `configApps` in `modules/dotfiles.nix`
+3. **Add Home Manager logic** → create a new file under `modules/`, import from `modules/default.nix`
+4. **Apply** → `home-manager switch --flake ".#$USER"`
 
-Cấu hình dạng file (i3, kitty, nvim...) là **symlink** vào repo, chỉnh là nhận ngay. Gói bám theo `flake.lock` — tái lập được. WM chạy ngoài; repo chỉ cấu hình.
+Config files in dotfiles are symlinked directly — edit and see changes immediately.
 
-## Lệnh thường dùng
+## Common commands
 
 ```bash
-home-manager switch --flake ".#\$(whoami)"   # áp dụng config
-nix flake check                              # kiểm tra trước khi switch
-nix fmt                                      # format file .nix
-nix store gc                                 # dọn /nix/store đầy
+home-manager switch --flake ".#$(whoami)"     # apply config
+nix flake check                               # validate before switching
+nix fmt                                       # format Nix files
+nix store gc                                  # clean /nix/store
 ```
 
-## Cài mới
+## Install
 
 ```bash
 bash <(curl -fsSL https://raw.githubusercontent.com/ledangquangdangquang/UbuntuConfig/main/install.sh)
 ```
-Cài Nix, clone repo về `~/UbuntuConfig`, gán user vào `flake.nix`, switch, đặt zsh mặc định.
 
-## Ghi chú
+The installer sets up Nix, clones the repo to `~/UbuntuConfig`, writes your username to `flake.nix`, applies Home Manager, sets zsh as default, and registers the Sway session with the display manager.
 
-- Phím tắt i3: `Mod+i` xem `dotfiles/i3/keyshortcuts.txt`
-- Alias shell trong `modules/zsh.nix`
-- Config i3 kiểm tra parse: `i3 -t get_version` / xem log `~/.i3/log` khi lỗi
-- Không commit secret, SSH key, session trình duyệt
+## Notes
+
+- i3 shortcuts: `Mod+i` (see `dotfiles/i3/keyshortcuts.txt`)
+- Shell aliases: `modules/zsh.nix`
+- Do not commit secrets, SSH keys, browser sessions, or generated logs
+- The system uses Catppuccin Mocha palette throughout
+- Audio: PipeWire (works with PulseAudio compatibility)
+- Brightness: `brightnessctl` on most distros
