@@ -5,6 +5,26 @@ theme = "native"
 icons = "awesome6"
 
 [[block]]
+block = "custom"
+command = "pomodoro-task show"
+watch_files = ["~/.cache/pomodoro-task"]
+interval = "once"
+format = " $text "
+[[block.click]]
+button = "left"
+cmd = "pomodoro-task set"
+[[block.click]]
+button = "right"
+cmd = "pomodoro-task clear"
+
+[[block]]
+block = "pomodoro"
+notify_cmd = "notify-send 'Pomodoro' '{msg}'"
+blocking_cmd = false
+[block.icons_overrides]
+pomodoro = "\uf2f2"
+
+[[block]]
 block = "cpu"
 interval = 2
 format = " CPU $utilization "
