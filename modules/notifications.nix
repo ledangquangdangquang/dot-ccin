@@ -11,7 +11,10 @@
     text = ''
       runtime_dir="''${XDG_RUNTIME_DIR:-/tmp}"
       lock_file="$runtime_dir/notification-sound.lock"
-      sound_file="${pkgs.sound-theme-freedesktop}/share/sounds/freedesktop/stereo/message.oga"
+      # Other options to try, swap the filename below:
+      #   complete.oga, dialog-information.oga, message-new-instant.oga,
+      #   alarm-clock-elapsed.oga, message.oga (previous default)
+      sound_file="${pkgs.sound-theme-freedesktop}/share/sounds/freedesktop/stereo/bell.oga"
 
       [[ "$DUNST_STACK_TAG" == "volume" ]] && exit 0
 
