@@ -5,6 +5,13 @@ theme = "native"
 icons = "awesome6"
 
 [[block]]
+block = "pomodoro"
+notify_cmd = "notify-send 'Pomodoro' '{msg}'"
+blocking_cmd = false
+[block.icons_overrides]
+pomodoro = ""
+
+[[block]]
 block = "custom"
 command = "pomodoro-task show"
 watch_files = ["~/.cache/pomodoro-task"]
@@ -18,39 +25,12 @@ button = "right"
 cmd = "pomodoro-task clear"
 
 [[block]]
-block = "pomodoro"
-notify_cmd = "notify-send 'Pomodoro' '{msg}'"
-blocking_cmd = false
-[block.icons_overrides]
-pomodoro = "\uf2f2"
-
-[[block]]
-block = "cpu"
+block = "custom"
 interval = 2
-format = " CPU $utilization "
-info_cpu = 30
-warning_cpu = 60
-critical_cpu = 90
+command = '''read -r _ u1 n1 s1 i1 _ < /proc/stat; sleep 0.3; read -r _ u2 n2 s2 i2 _ < /proc/stat; used=$(( (u2-u1)+(n2-n1)+(s2-s1) )); idle=$((i2-i1)); total=$((used+idle)); [ "$total" -gt 0 ] && cpu=$((used*100/total)) || cpu=0; mt=$(awk "/MemTotal/{print \$2}" /proc/meminfo); ma=$(awk "/MemAvailable/{print \$2}" /proc/meminfo); ram=$(( (mt-ma)*100/mt )); printf " CPU %d%%  RAM %d%% " "$cpu" "$ram"'''
 [[block.click]]
 button = "left"
 cmd = "alacritty -e btop"
-
-[[block]]
-block = "memory"
-interval = 5
-format = " RAM $mem_used_percents.eng(w:2) "
-warning_mem = 80
-critical_mem = 95
-[[block.click]]
-button = "left"
-cmd = "alacritty -e btop"
-
-[[block]]
-block = "battery"
-interval = 10
-format = " $icon $percentage "
-full_format = " $icon $percentage "
-missing_format = ""
 
 [[block]]
 block = "custom"
@@ -87,6 +67,13 @@ format = " $icon $volume "
 [[block.click]]
 button = "left"
 cmd = "pavucontrol"
+
+[[block]]
+block = "battery"
+interval = 10
+format = " $icon $percentage "
+full_format = " $icon $percentage "
+missing_format = ""
 
 [[block]]
 block = "time"

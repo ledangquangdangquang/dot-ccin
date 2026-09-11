@@ -89,6 +89,9 @@ in {
 
       set -g status-position top
 
+      set -g popup-style 'bg=default'
+      set -g popup-border-style 'bg=default'
+
       bind r source-file ~/.config/tmux/tmux.conf \; display-message 'tmux config reloaded'
       bind s display-popup -E -w 70% -h 70% '${tmuxSessionPicker}/bin/tmux-session-picker'
       bind | split-window -h -c '#{pane_current_path}'
