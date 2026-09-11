@@ -7,7 +7,7 @@
 
 > Personal Ubuntu (non-NixOS) desktop, managed declaratively with Nix flakes + Home Manager.
 
-![Desktop screenshot](assets/screenshot.png)
+![Desktop screenshot](assets/fuzzyvim+yazi+btop.png)
 
 ## What's installed
 
