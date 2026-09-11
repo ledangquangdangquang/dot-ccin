@@ -3,7 +3,6 @@
     name = "menu";
     runtimeInputs = with pkgs; [
       coreutils
-      fuzzel
       gawk
       gnugrep
       rofi
@@ -27,15 +26,6 @@
         esac
         shift
       done
-
-      if [[ -n "''${WAYLAND_DISPLAY:-}" ]]; then
-        args=(--dmenu)
-        [[ -n "$with_nth" ]] && args+=(--with-nth="$with_nth")
-        args+=(--prompt="$prompt" --lines="$lines" --width="$width")
-        [[ "$password" = 1 ]] && args+=(--password)
-        [[ -n "$prompt_only" ]] && args+=(--prompt-only="$prompt_only")
-        exec fuzzel "''${args[@]}"
-      fi
 
       tmpdir="''$(mktemp -d)"
       trap 'rm -rf "$tmpdir"' EXIT
@@ -66,13 +56,9 @@
 
   menu-launcher = pkgs.writeShellApplication {
     name = "menu-launcher";
-    runtimeInputs = with pkgs; [fuzzel rofi];
+    runtimeInputs = with pkgs; [rofi];
     text = ''
-      if [[ -n "''${WAYLAND_DISPLAY:-}" ]]; then
-        exec fuzzel
-      else
-        exec rofi -show drun
-      fi
+      exec rofi -show drun
     '';
   };
 in {

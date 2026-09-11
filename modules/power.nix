@@ -1,5 +1,8 @@
-{pkgs, ...}: let
-  menu = (import ./menu-util.nix {inherit pkgs;}).menu;
+{
+  pkgs,
+  menu,
+  ...
+}: let
   powerMenu = pkgs.writeShellApplication {
     name = "power-menu";
     runtimeInputs = with pkgs; [

@@ -1,9 +1,9 @@
 {
   pkgs,
   lib,
+  menu,
   ...
 }: let
-  menu = (import ./menu-util.nix {inherit pkgs;}).menu;
   pomodoroTask = pkgs.writeShellApplication {
     name = "pomodoro-task";
     runtimeInputs = with pkgs; [coreutils menu];

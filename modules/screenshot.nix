@@ -3,12 +3,9 @@
     name = "screenshot";
     runtimeInputs = with pkgs; [
       coreutils
-      grim
       libnotify
       maim
       satty
-      slurp
-      wl-clipboard
       xclip
     ];
     text = ''
@@ -20,27 +17,13 @@
 
       case "$mode" in
         region)
-          if [[ -n "''${WAYLAND_DISPLAY:-}" ]]; then
-            geometry="$(slurp -d -b '#1e1e2ecc' -c '#cba6f7ff' -s '#31324488' -w 2)" || exit 0
-            grim -g "$geometry" -t ppm - | satty --filename - --fullscreen --output-filename "$screenshot_file" --copy-command wl-copy
-          else
-            maim -s | satty --filename - --fullscreen --output-filename "$screenshot_file" --copy-command "xclip -selection clipboard -t image/png"
-          fi
+          maim -s | satty --filename - --fullscreen --output-filename "$screenshot_file" --copy-command "xclip -selection clipboard -t image/png"
           ;;
         full)
-          if [[ -n "''${WAYLAND_DISPLAY:-}" ]]; then
-            grim -t ppm - | satty --filename - --fullscreen --output-filename "$screenshot_file" --copy-command wl-copy
-          else
-            maim | satty --filename - --fullscreen --output-filename "$screenshot_file" --copy-command "xclip -selection clipboard -t image/png"
-          fi
+          maim | satty --filename - --fullscreen --output-filename "$screenshot_file" --copy-command "xclip -selection clipboard -t image/png"
           ;;
         copy)
-          if [[ -n "''${WAYLAND_DISPLAY:-}" ]]; then
-            geometry="$(slurp -d -b '#1e1e2ecc' -c '#cba6f7ff' -s '#31324488' -w 2)" || exit 0
-            grim -g "$geometry" -t png - | wl-copy --type image/png
-          else
-            maim -s | xclip -selection clipboard -t image/png
-          fi
+          maim -s | xclip -selection clipboard -t image/png
           notify-send \
             --app-name="Screenshot" \
             --expire-time=2500 \
@@ -56,10 +39,8 @@
   };
 in {
   home.packages = with pkgs; [
-    grim
     maim
     satty
-    slurp
     screenshot
     xclip
   ];

@@ -33,10 +33,5 @@ in {
     // {
       "i3/keyshortcuts.txt".source = createSymlink "${dotfiles}/i3/keyshortcuts.txt";
       "i3/show-keyshortcuts.sh".source = createSymlink "${dotfiles}/i3/show-keyshortcuts.sh";
-      # "DankMaterialShell/settings.json".text =
-      #   builtins.replaceStrings
-      #   ["$HOME"]
-      #   [config.home.homeDirectory]
-      #   (builtins.readFile ../dotfiles/DankMaterialShell/settings.json);
     };
 }

@@ -1,11 +1,13 @@
-{pkgs, ...}: let
-  menu = (import ./menu-util.nix {inherit pkgs;}).menu;
-
+{
+  pkgs,
+  menu,
+  ...
+}: let
   baseInputs = with pkgs; [
     coreutils
     feh
     gawk
-    xorg.xrandr
+    xrandr
   ];
 
   scriptInputs = baseInputs ++ [connectedOutputs];
@@ -93,7 +95,7 @@
     runtimeInputs =
       (with pkgs; [
         menu
-        xorg.xrandr
+        xrandr
       ])
       ++ [
         connectedOutputs

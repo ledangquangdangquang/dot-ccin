@@ -1,43 +1,31 @@
-{pkgs, ...}: let
-  menu = (import ./menu-util.nix {inherit pkgs;}).menu;
-
+{
+  pkgs,
+  menu,
+  ...
+}: let
   clipboardWatcher = pkgs.writeShellApplication {
     name = "clipboard-watcher";
     runtimeInputs = with pkgs; [
       cliphist
       coreutils
-      wl-clipboard
       xclip
     ];
     text = ''
-      if [[ -n "''${WAYLAND_DISPLAY:-}" ]]; then
-        wl-paste --type text --watch cliphist store &
-        text_pid=$!
-        wl-paste --type image --watch cliphist store &
-        image_pid=$!
-
-        cleanup() {
-          kill "$text_pid" "$image_pid" 2>/dev/null || true
-        }
-        trap cleanup EXIT INT TERM
-        wait
-      else
-        last_text=""
-        last_image=""
-        while true; do
-          cur_text="$(xclip -selection clipboard -o 2>/dev/null || true)"
-          if [[ "$cur_text" != "$last_text" ]]; then
-            last_text="$cur_text"
-            [[ -n "$cur_text" ]] && printf '%s\n' "$cur_text" | cliphist store 2>/dev/null
-          fi
-          cur_image="$(xclip -selection clipboard -t image/png -o 2>/dev/null || true)"
-          if [[ "$cur_image" != "$last_image" ]]; then
-            last_image="$cur_image"
-            [[ -n "$cur_image" ]] && printf '%s' "$cur_image" | cliphist store image/png 2>/dev/null
-          fi
-          sleep 0.5
-        done
-      fi
+      last_text=""
+      last_image=""
+      while true; do
+        cur_text="$(xclip -selection clipboard -o 2>/dev/null || true)"
+        if [[ "$cur_text" != "$last_text" ]]; then
+          last_text="$cur_text"
+          [[ -n "$cur_text" ]] && printf '%s\n' "$cur_text" | cliphist store 2>/dev/null
+        fi
+        cur_image="$(xclip -selection clipboard -t image/png -o 2>/dev/null || true)"
+        if [[ "$cur_image" != "$last_image" ]]; then
+          last_image="$cur_image"
+          [[ -n "$cur_image" ]] && printf '%s' "$cur_image" | cliphist store image/png 2>/dev/null
+        fi
+        sleep 0.5
+      done
     '';
   };
 
@@ -47,7 +35,6 @@
       cliphist
       coreutils
       menu
-      wl-clipboard
       xclip
     ];
     text = ''
@@ -55,11 +42,7 @@
       [[ -n "$choice" ]] || exit 0
       hash="$(printf '%s' "$choice" | awk '{print $1}')"
       [[ -n "$hash" ]] || exit 0
-      if [[ -n "''${WAYLAND_DISPLAY:-}" ]]; then
-        printf '%s' "$hash" | cliphist decode | wl-copy
-      else
-        printf '%s' "$hash" | cliphist decode | xclip -selection clipboard
-      fi
+      printf '%s' "$hash" | cliphist decode | xclip -selection clipboard
     '';
   };
 

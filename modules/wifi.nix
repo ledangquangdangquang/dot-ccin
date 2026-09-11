@@ -1,5 +1,8 @@
-{pkgs, ...}: let
-  menu = (import ./menu-util.nix {inherit pkgs;}).menu;
+{
+  pkgs,
+  menu,
+  ...
+}: let
   networkMenu = pkgs.writeShellApplication {
     name = "wifi-menu";
     runtimeInputs = with pkgs; [

@@ -1,4 +1,6 @@
-{
+{pkgs, ...}: {
+  _module.args.menu = (import ./menu-util.nix {inherit pkgs;}).menu;
+
   imports = [
     # --- File ---
     ./gtk.nix

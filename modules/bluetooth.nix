@@ -1,5 +1,8 @@
-{pkgs, ...}: let
-  menu = (import ./menu-util.nix {inherit pkgs;}).menu;
+{
+  pkgs,
+  menu,
+  ...
+}: let
   bluetoothMenu = pkgs.writeShellApplication {
     name = "bluetooth-menu";
     runtimeInputs = with pkgs; [

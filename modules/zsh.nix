@@ -7,7 +7,7 @@
     syntaxHighlighting.enable = true;
     history.size = 10000;
 
-    initExtra = ''
+    initContent = ''
       source ~/.config/zsh/.zshrc
     '';
 

@@ -1,5 +1,7 @@
 # Configuration Architecture
 
+See [architecture.html](architecture.html) for an interactive diagram of this flow.
+
 This repository is a Home Manager configuration for the user selected in
 `flake.nix` on a non-NixOS Ubuntu system. Nix builds the packages and generated commands, while
 Home Manager writes user-level configuration and links application dotfiles.

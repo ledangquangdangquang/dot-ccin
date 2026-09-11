@@ -1,5 +1,8 @@
-{pkgs, ...}: let
-  menu = (import ./menu-util.nix {inherit pkgs;}).menu;
+{
+  pkgs,
+  menu,
+  ...
+}: let
   wallpaperMenu = pkgs.writeShellApplication {
     name = "wallpaper-menu";
     runtimeInputs = with pkgs; [
