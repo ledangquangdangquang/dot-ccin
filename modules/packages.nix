@@ -31,7 +31,6 @@
     ddcutil # brightness
     eza # alternative ls
     bluetui
-    autotiling
     picom
   ];
 }

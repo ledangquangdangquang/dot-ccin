@@ -19,6 +19,7 @@
     ./wifi.nix
     ./bluetooth.nix
     ./pomodoro.nix
+    ./calendar.nix
     ./wallpaper.nix
     ./notifications.nix
     ./power.nix

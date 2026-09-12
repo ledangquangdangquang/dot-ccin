@@ -34,6 +34,8 @@ Keep `home.nix` minimal. Add packages, generated scripts, session variables, and
 
 Run validation before switching when editing `flake.nix`, `home.nix`, or `modules/*.nix`.
 
+Editing a file under `dotfiles/` needs no rebuild/switch: Home Manager symlinks these paths into `~/.config`, so changes apply immediately. Rebuild only when changing what's linked (`modules/dotfiles.nix`) or `modules/*.nix`/`home.nix`/`flake.nix`.
+
 ## Coding Style & Naming Conventions
 
 Use two-space indentation in Nix files and keep attribute sets compact but readable. Prefer descriptive lower-case names for local variables, matching existing examples such as `dotfiles`, `configApps`, and `hostMain`. Keep modules focused: shell aliases belong in `modules/zsh.nix`, Git settings in `modules/git.nix`, and app-specific files in `dotfiles/<app>/`.

@@ -7,6 +7,7 @@ in {
   home.packages = [
     (pkgs.yazi.override {
       settings = {
+        yazi.mgr.sort_by = "extension";
         yazi.plugin.prepend_fetchers = [
           {
             url = "*";
