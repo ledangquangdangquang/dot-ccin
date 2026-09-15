@@ -24,7 +24,7 @@
       stream_ids=()
       stream_volumes=()
 
-      wpctl set-mute @DEFAULT_SINK@ 0 2>/dev/null
+      pactl set-sink-mute @DEFAULT_SINK@ 0 2>/dev/null
 
       restore_volumes() {
         local index
