@@ -32,5 +32,6 @@
     eza # alternative ls
     bluetui
     picom
+    (python3.withPackages (ps: [ps.i3ipc]))
   ];
 }
