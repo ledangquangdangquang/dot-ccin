@@ -1,8 +1,8 @@
 # UbuntuConfig
 
 ![Nix](https://img.shields.io/badge/Nix-2.35-5277C3?logo=nixos&logoColor=white)
-![Home Manager](https://img.shields.io/badge/Home%20Manager-25.11-blue)
-![i3](https://img.shields.io/badge/i3-4.24-1793D1)
+![Home Manager](https://img.shields.io/badge/Home%20Manager-25.11-blue?logo=nixos&logoColor=white)
+![i3](https://img.shields.io/badge/i3-4.24-1793D1?logo=i3&logoColor=white)
 ![Catppuccin Mocha](https://img.shields.io/badge/Catppuccin-Mocha-cba6f7)
 
 > Personal Ubuntu (non-NixOS) desktop, managed declaratively with Nix flakes + Home Manager.
