@@ -10,7 +10,13 @@
 
 
 
-https://github.com/user-attachments/assets/27531307-e97f-446b-9237-6f42d2cc7d1f
+
+
+https://github.com/user-attachments/assets/70a78fb1-9ed9-40db-92ea-ff6ab22081fc
+
+
+
+
 
 
 ![Desktop screenshot](assets/fuzzyvim+yazi+btop.png)
