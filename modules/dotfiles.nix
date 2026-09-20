@@ -18,6 +18,7 @@
     "newtab"
     "picom"
     "zsh"
+    "wireplumber"
   ];
 in {
   xdg.configFile =
