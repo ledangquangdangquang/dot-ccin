@@ -1,3 +1,10 @@
 result
 result-*
 dotfiles/yazi/pref-by-location
+.agent/
+.agents/
+.claude/
+.codex/
+.opencode/
+.archify-out/
+skills-lock.json
