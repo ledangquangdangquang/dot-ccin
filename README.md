@@ -1,11 +1,12 @@
-# UbuntuConfig
+<h1 align="center">UbuntuConfig</h1>
+<p align="center">
+  <a href="https://nixos.org"><img src="https://img.shields.io/badge/Nix%202.35-5277C3?style=flat&logo=nixos&logoColor=white"></a>
+  <a href="https://github.com/nix-community/home-manager"><img src="https://img.shields.io/badge/Home%20Manager%2025.11-4a6fa5?style=flat&logo=nixos&logoColor=white"></a>
+  <a href="https://i3wm.org"><img src="https://img.shields.io/badge/i3%204.24-1793D1?style=flat&logo=i3&logoColor=white"></a>
+  <a href="https://github.com/catppuccin/catppuccin"><img src="https://img.shields.io/badge/Catppuccin%20Mocha-cba6f7?style=flat"></a>
+</p>
 
-![Nix](https://img.shields.io/badge/Nix-2.35-5277C3?logo=nixos&logoColor=white)
-![Home Manager](https://img.shields.io/badge/Home%20Manager-25.11-blue?logo=nixos&logoColor=white)
-![i3](https://img.shields.io/badge/i3-4.24-1793D1?logo=i3&logoColor=white)
-![Catppuccin Mocha](https://img.shields.io/badge/Catppuccin-Mocha-cba6f7)
-
-> Personal Ubuntu (non-NixOS) desktop, managed declaratively with Nix flakes + Home Manager.
+> A keyboard-driven i3 rice for plain Ubuntu (no NixOS), themed Catppuccin Mocha end to end. One Nix flake + Home Manager command rebuilds the whole desktop (Rofi menus, Kitty, Neovim, Yazi, Firefox, Vietnamese input), and dotfiles are symlinked so edits apply instantly.
 
 ![Desktop screenshot](assets/fuzzyvim+yazi+btop.png)
 
