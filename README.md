@@ -1,3 +1,9 @@
+
+
+https://github.com/user-attachments/assets/48d9f3bc-88d9-4c06-a4c0-6a3dcaafcf01
+
+
+
 <h1 align="center">UbuntuConfig</h1>
 <p align="center">
   <a href="https://nixos.org"><img src="https://img.shields.io/badge/Nix%202.35-5277C3?style=flat&logo=nixos&logoColor=white"></a>
@@ -7,6 +13,11 @@
 </p>
 
 > A keyboard-driven i3 rice for plain Ubuntu (no NixOS), themed Catppuccin Mocha end to end. One Nix flake + Home Manager command rebuilds the whole desktop (Rofi menus, Kitty, Neovim, Yazi, Firefox, Vietnamese input), and dotfiles are symlinked so edits apply instantly.
+
+
+
+https://github.com/user-attachments/assets/27531307-e97f-446b-9237-6f42d2cc7d1f
+
 
 ![Desktop screenshot](assets/fuzzyvim+yazi+btop.png)
 
