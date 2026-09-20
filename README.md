@@ -1,9 +1,3 @@
-
-
-https://github.com/user-attachments/assets/48d9f3bc-88d9-4c06-a4c0-6a3dcaafcf01
-
-
-
 <h1 align="center">UbuntuConfig</h1>
 <p align="center">
   <a href="https://nixos.org"><img src="https://img.shields.io/badge/Nix%202.35-5277C3?style=flat&logo=nixos&logoColor=white"></a>
