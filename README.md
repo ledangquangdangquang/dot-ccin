@@ -1,4 +1,4 @@
-<h1 align="center">UbuntuConfig</h1>
+<h1 align="center">dot-ccin</h1>
 <p align="center">
   <a href="https://nixos.org"><img src="https://img.shields.io/badge/Nix%202.35-5277C3?style=flat&logo=nixos&logoColor=white"></a>
   <a href="https://github.com/nix-community/home-manager"><img src="https://img.shields.io/badge/Home%20Manager%2025.11-4a6fa5?style=flat&logo=nixos&logoColor=white"></a>
@@ -80,10 +80,10 @@ nix store gc                                   # clean /nix/store
 ## Install
 
 ```bash
-bash <(curl -fsSL https://raw.githubusercontent.com/ledangquangdangquang/UbuntuConfig/main/install.sh)
+bash <(curl -fsSL https://raw.githubusercontent.com/ledangquangdangquang/dot-ccin/main/install.sh)
 ```
 
-The installer sets up Nix, installs i3, clones the repo to `~/UbuntuConfig`, applies Home Manager, and sets Zsh as the default shell.
+The installer sets up Nix, installs i3, clones the repo to `~/dot-ccin`, applies Home Manager, and sets Zsh as the default shell.
 
 ## Notes
 

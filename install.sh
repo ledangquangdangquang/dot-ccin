@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-repo_url="${REPO_URL:-https://github.com/ledangquangdangquang/UbuntuConfig.git}"
-repo_dir="${REPO_DIR:-$HOME/UbuntuConfig}"
+repo_url="${REPO_URL:-https://github.com/ledangquangdangquang/dot-ccin.git}"
+repo_dir="${REPO_DIR:-$HOME/dot-ccin}"
 profile=""
 backup_ext="${HM_BACKUP_EXT:-backup}"
 
@@ -152,7 +152,7 @@ install_nix() {
 }
 prepare_repo() {
 	if [ -d "$repo_dir/.git" ]; then
-		info "Found existing UbuntuConfig at $repo_dir"
+		info "Found existing dot-ccin at $repo_dir"
 		return
 	fi
 	if [ -e "$repo_dir" ]; then

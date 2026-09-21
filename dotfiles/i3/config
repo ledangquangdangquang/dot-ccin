@@ -77,8 +77,8 @@ bindsym $mod+p exec wallpaper-menu
 # Display management
 bindsym $mod+Shift+m exec display-menu
 
-# exec --no-startup-id feh --bg-fill --no-fehbg ~/UbuntuConfig/Wallpapers/catppuccin-abstract-eclipse-1920x1080.png
-exec --no-startup-id feh --bg-fill --no-fehbg "$(cat ~/.wallpaper 2>/dev/null || echo ~/UbuntuConfig/Wallpapers/wallpaper.png)"
+# exec --no-startup-id feh --bg-fill --no-fehbg ~/dot-ccin/Wallpapers/catppuccin-abstract-eclipse-1920x1080.png
+exec --no-startup-id feh --bg-fill --no-fehbg "$(cat ~/.wallpaper 2>/dev/null || echo ~/dot-ccin/Wallpapers/wallpaper.png)"
 
 default_orientation horizontal
 

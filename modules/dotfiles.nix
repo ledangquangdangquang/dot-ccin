@@ -1,5 +1,5 @@
 {config, ...}: let
-  dotfiles = "${config.home.homeDirectory}/UbuntuConfig/dotfiles";
+  dotfiles = "${config.home.homeDirectory}/dot-ccin/dotfiles";
   createSymlink = path: config.lib.file.mkOutOfStoreSymlink path;
   configApps = [
     "fuzzel"

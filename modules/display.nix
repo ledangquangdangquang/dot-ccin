@@ -14,7 +14,7 @@
 
   # Re-apply wallpaper so the background follows the new layout
   applyWallpaper = ''
-    feh --bg-fill --no-fehbg "$(cat "$HOME/.wallpaper" 2>/dev/null || echo "$HOME/UbuntuConfig/Wallpapers/wallpaper.png")"
+    feh --bg-fill --no-fehbg "$(cat "$HOME/.wallpaper" 2>/dev/null || echo "$HOME/dot-ccin/Wallpapers/wallpaper.png")"
   '';
 
   # List of connected outputs via xrandr

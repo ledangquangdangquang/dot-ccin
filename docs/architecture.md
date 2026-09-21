@@ -39,7 +39,7 @@ settings. `modules/default.nix` is the index for all feature modules.
 
 `modules/dotfiles.nix` uses `mkOutOfStoreSymlink`, so linked application files
 continue to point at the working tree instead of being copied into the Nix
-store. The repository is therefore expected at `~/UbuntuConfig`; moving it
+store. The repository is therefore expected at `~/dot-ccin`; moving it
 requires changing the `dotfiles` path in that module.
 
 ## Generated Desktop Commands

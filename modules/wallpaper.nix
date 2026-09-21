@@ -13,7 +13,7 @@
     ];
     text = ''
       state_file="$HOME/.wallpaper"
-      wallpaper_dir="$HOME/UbuntuConfig/Wallpapers"
+      wallpaper_dir="$HOME/dot-ccin/Wallpapers"
 
       rows=""
       while IFS= read -r file; do

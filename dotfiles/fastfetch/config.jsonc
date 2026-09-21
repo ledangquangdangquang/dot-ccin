@@ -3,7 +3,7 @@
 
     "logo": {
         "type": "file",
-        "source": "~/UbuntuConfig/dotfiles/fastfetch/images/sleepcat.txt",
+        "source": "~/dot-ccin/dotfiles/fastfetch/images/sleepcat.txt",
         "color": {
             "1": "#f5e0dc"
         }
