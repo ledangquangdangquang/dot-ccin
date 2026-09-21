@@ -64,8 +64,8 @@ bindsym $mod+Shift+r reload
 # Key shortcut reference
 bindsym $mod+i exec ~/.config/i3/show-keyshortcuts.sh
 # Notifications
-bindsym $mod+n exec dunstctl toggle
-bindsym $mod+Shift+n exec dunstctl close-all
+bindsym $mod+n exec dunstctl history-pop
+bindsym $mod+Shift+n exec dunstctl set-paused toggle
 # Screenshots
 bindsym F8 exec screenshot region
 bindsym Shift+F8 exec screenshot full
