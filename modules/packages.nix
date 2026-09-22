@@ -32,6 +32,7 @@
     eza # alternative ls
     bluetui
     picom
+    xdotool # replay real F-key press when media F-keys are toggled off
     (python3.withPackages (ps: [ps.i3ipc]))
   ];
 }

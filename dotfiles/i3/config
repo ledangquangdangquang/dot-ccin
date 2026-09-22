@@ -67,11 +67,11 @@ bindsym $mod+i exec ~/.config/i3/show-keyshortcuts.sh
 bindsym $mod+n exec dunstctl history-pop
 bindsym $mod+Shift+n exec dunstctl set-paused toggle
 # Screenshots
-bindsym F8 exec screenshot region
+bindsym F8 exec ~/.config/i3/fkeys-media.sh F8 screenshot region
 bindsym Shift+F8 exec screenshot full
 bindsym Ctrl+F8 exec screenshot copy
 # Toggle 4000K night light
-bindsym F9 exec system-control night-light
+bindsym F9 exec ~/.config/i3/fkeys-media.sh F9 system-control night-light
 # Wallpaper picker
 bindsym $mod+p exec wallpaper-menu
 # Display management
@@ -115,11 +115,13 @@ bindsym XF86AudioRaiseVolume exec system-control volume-up
 bindsym XF86AudioLowerVolume exec system-control volume-down
 bindsym XF86AudioMute exec system-control volume-mute
 # Function-key media controls
-bindsym F1 exec system-control volume-mute
-bindsym F2 exec system-control volume-down
-bindsym F3 exec system-control volume-up
-bindsym F6 exec system-control brightness-down
-bindsym F7 exec system-control brightness-up
+bindsym F1 exec ~/.config/i3/fkeys-media.sh F1 system-control volume-mute
+bindsym F2 exec ~/.config/i3/fkeys-media.sh F2 system-control volume-down
+bindsym F3 exec ~/.config/i3/fkeys-media.sh F3 system-control volume-up
+bindsym F6 exec ~/.config/i3/fkeys-media.sh F6 system-control brightness-down
+bindsym F7 exec ~/.config/i3/fkeys-media.sh F7 system-control brightness-up
+# Toggle F-key media functions on/off (F1-F3, F6-F9 pass through when off)
+bindsym $mod+F1 exec ~/.config/i3/fkeys-toggle.sh
 # Caps Lock status
 bindsym --release Caps_Lock exec system-control caps-lock
 
