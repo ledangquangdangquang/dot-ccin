@@ -55,8 +55,8 @@ cmd = "fcitx5-remote -t"
 block = "net"
 device = "^wl"
 interval = 2
-format = " $icon $signal_strength "
-inactive_format = " $icon "
+format = " $icon {$signal_strength|} "
+inactive_format = " 󰤭 "
 missing_format = ""
 [[block.click]]
 button = "left"
@@ -74,10 +74,15 @@ cmd = "alacritty -e bluetui"
 
 [[block]]
 block = "sound"
-format = " $icon $volume "
+format = " $icon {$volume|} "
+[block.icons_overrides]
+volume_muted = "󰝟"
 [[block.click]]
 button = "left"
 cmd = "pavucontrol"
+[[block.click]]
+button = "right"
+action = "toggle_mute"
 
 [[block]]
 block = "battery"

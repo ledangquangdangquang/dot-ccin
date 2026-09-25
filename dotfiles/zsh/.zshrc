@@ -5,6 +5,7 @@ export PATH="$HOME/.opencode/bin:$PATH"
 export PATH="$PATH:/snap/bin"
 #export PYTHONPATH="/usr/lib/python3/dist-packages:$PYTHONPATH"
 export LD_LIBRARY_PATH="/usr/lib:$LD_LIBRARY_PATH"
+# export LD_LIBRARY_PATH="/usr/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH"
 eval "$(starship init zsh)"
 export EDITOR=nvim
 export STARSHIP_CONFIG=~/.config/starship/starship.toml
