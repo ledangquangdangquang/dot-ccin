@@ -1,3 +1,4 @@
 include catppuccin-mocha
 set font "FiraCode Nerd Font 14"
 set recolor false
+set selection-clipboard clipboard

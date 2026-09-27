@@ -11,7 +11,7 @@ latitude = 21.0285
 longitude = 105.8542
 
 # Auto-detect location via IP (defaults to true if config missing)
-auto = false
+auto = true
 
 # Hide the location name in the UI
 hide = false

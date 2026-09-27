@@ -30,6 +30,7 @@
     brightnessctl # laptop/internal display brightness
     ddcutil # brightness
     eza # alternative ls
+    thunar
     bluetui
     picom
     xdotool # replay real F-key press when media F-keys are toggled off
