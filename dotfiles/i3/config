@@ -42,7 +42,8 @@ exec --no-startup-id xset dpms 0 0 0
 bindsym $mod+Return exec alacritty
 # Launch Nautilus file manager
 # bindsym $mod+e exec alacritty -e zsh -ic spf
-bindsym $mod+e exec nautilus
+# bindsym $mod+e exec nautilus
+bindsym $mod+e exec thunar
 # Launch Firefox
 bindsym $mod+Shift+f exec firefox
 # Zathura for documentation
@@ -199,6 +200,7 @@ assign [class="(?i)discord"] workspace 3
 assign [class="(?i)localsend"] workspace 2
 assign [class="(?i)omniget"] workspace 2
 assign [class="(?i)nautilus"] workspace 2
+assign [class="(?i)thunar"] workspace 2
 assign [class="(?i)ytdownloader"] workspace 2
 assign [class="(?i)qbittorrent"] workspace 2
 assign [class="(?i)pavucontrol"] workspace 2
@@ -211,6 +213,7 @@ for_window [class="(?i)discord"] workspace 3
 for_window [class="(?i)localsend"] workspace 2
 for_window [class="(?i)omniget"] workspace 2
 for_window [class="(?i)nautilus"] workspace 2
+for_window [class="(?i)thunar"] workspace 2
 for_window [class="(?i)ytdownloader"] workspace 2
 for_window [class="(?i)qbittorrent"] workspace 2
 for_window [class="(?i)pavucontrol"] workspace 2
