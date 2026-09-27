@@ -10,6 +10,26 @@
 
 /* ------------------------------------------------------------------------MEDIA QUERIES FOR ONELINE NAVBAR----------------------------------------------------------- */
 
+/* Firefox 133+ has no #titlebar; urlbar is a popover so it ignores nav-bar opacity */
+#navigator-toolbox:not(:hover, :focus-within) > #TabsToolbar,
+#navigator-toolbox:has(#PersonalToolbar:hover) > #TabsToolbar {
+  margin-top: -36px;
+}
+#navigator-toolbox:not(:hover, :focus-within) > :is(#TabsToolbar, #nav-bar),
+#navigator-toolbox:not(:hover, :focus-within) #urlbar,
+#navigator-toolbox:has(#PersonalToolbar:hover) > :is(#TabsToolbar, #nav-bar),
+#navigator-toolbox:has(#PersonalToolbar:hover) #urlbar {
+  opacity: 0;
+}
+
+#TabsToolbar, #nav-bar, #urlbar {
+  transition: all 0.3s ease-in-out !important;
+}
+
+/* Hover strip to reveal hidden toolbars */
+#navigator-toolbox {
+  padding-bottom: 4px !important;
+}
 /* Navbar size calc */
 :root{
   --tab-border-radius: 15px !important; /*  Tab border radius -- Changes the tabs rounding  *//*  Default: 6px  */

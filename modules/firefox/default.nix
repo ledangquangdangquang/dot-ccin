@@ -139,6 +139,7 @@ in {
         "browser.urlbar.suggest.engines" = false;
         "browser.urlbar.suggest.quickactions" = false;
         "browser.urlbar.quicksuggest.enabled" = false;
+        "browser.ctrlTab.sortByRecentlyUsed" = true; # Ctrl+Tab shows tab previews like Alt+Tab
       };
       search = {
         force = true;
