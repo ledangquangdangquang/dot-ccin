@@ -22,6 +22,14 @@
   opacity: 0;
 }
 
+/* Ctrl+Shift+B (bookmarks bar shown) pins toolbars visible */
+#navigator-toolbox:has(#PersonalToolbar:not([collapsed])) > #TabsToolbar {
+  margin-top: 0 !important;
+}
+#navigator-toolbox:has(#PersonalToolbar:not([collapsed])) :is(#TabsToolbar, #nav-bar, #urlbar) {
+  opacity: 1 !important;
+}
+
 #TabsToolbar, #nav-bar, #urlbar {
   transition: all 0.3s ease-in-out !important;
 }
