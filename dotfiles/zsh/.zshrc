@@ -1,5 +1,6 @@
 # Zsh configuration (editable - linked from dotfiles/zsh/.zshrc)
 fastfetch
+export PATH="$PATH:Y"
 export PATH="$HOME/bin:$HOME/.local/bin:$PATH"
 export PATH="$HOME/.opencode/bin:$PATH"
 export PATH="$PATH:/snap/bin"
