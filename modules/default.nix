@@ -16,14 +16,13 @@
     ./fcitx.nix
     ./fuzzyvim.nix
     ./screenshot.nix
-    ./wifi.nix
-    ./bluetooth.nix
     ./pomodoro.nix
     ./lofi.nix
     ./calendar.nix
     ./wallpaper.nix
     ./notifications.nix
     ./power.nix
+    ./lock.nix
     ./display.nix
     ./clipboard.nix
     ./menu.nix

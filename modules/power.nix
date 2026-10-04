@@ -8,14 +8,16 @@
     runtimeInputs = with pkgs; [
       menu
       systemd
+      xorg.xset
     ];
     text = ''
       choice="$({
+        printf '󰌾  Lock\tlock\n'
         printf '󰒲  Suspend\tsuspend\n'
         printf '󰍃  Logout\tlogout\n'
         printf '󰜉  Reboot\treboot\n'
         printf '󰐥  Shutdown\tshutdown\n'
-      } | menu --dmenu --with-nth=1 --prompt='Power ❯ ' --lines=4 --width=36)" || exit 0
+      } | menu --dmenu --with-nth=1 --prompt='Power ❯ ' --lines=5 --width=36)" || exit 0
 
       IFS=$'\t' read -r _ action <<< "$choice"
 
@@ -27,6 +29,9 @@
       }
 
       case "$action" in
+        lock)
+          xset s activate
+          ;;
         suspend)
           systemctl suspend
           ;;
