@@ -44,35 +44,6 @@ button = "left"
 cmd = "alacritty -e top"
 
 [[block]]
-block = "custom"
-command = '''state=$(fcitx5-remote 2>/dev/null); if [ "$state" = "2" ]; then echo VN; else echo EN; fi'''
-interval = 1
-[[block.click]]
-button = "left"
-cmd = "fcitx5-remote -t"
-
-[[block]]
-block = "net"
-device = "^wl"
-interval = 2
-format = " $icon {$signal_strength|} "
-inactive_format = " 󰤭 "
-missing_format = ""
-[[block.click]]
-button = "left"
-cmd = "alacritty -e nmtui"
-# cmd = "wifi-menu"
-
-[[block]]
-block = "custom"
-command = "b=$(bluetoothctl show 2>/dev/null | grep -q 'Powered: yes' && echo on || echo off); [ \"$b\" = on ] && c=$(bluetoothctl devices Connected 2>/dev/null | grep -q . && echo 󰂱 || echo 󰂲) || c=󰂲; echo \"$c BT\""
-interval = 5
-[[block.click]]
-button = "left"
-cmd = "alacritty -e bluetui"
-# cmd = "bluetooth-menu"
-
-[[block]]
 block = "sound"
 format = " $icon {$volume|} "
 [block.icons_overrides]
