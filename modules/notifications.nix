@@ -24,7 +24,7 @@
       stream_ids=()
       stream_volumes=()
 
-      pactl set-sink-mute @DEFAULT_SINK@ 0 2>/dev/null
+      pactl get-sink-mute @DEFAULT_SINK@ 2>/dev/null | grep -q yes && exit 0
 
       restore_volumes() {
         local index
