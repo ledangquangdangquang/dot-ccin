@@ -8,7 +8,7 @@
     runtimeInputs = with pkgs; [
       menu
       systemd
-      xorg.xset
+      xset
     ];
     text = ''
       choice="$({

@@ -6,7 +6,6 @@
     tree
     bat
     git
-    fuzzel
     rofi
     xclip
     maim
@@ -30,7 +29,14 @@
     brightnessctl # laptop/internal display brightness
     ddcutil # brightness
     eza # alternative ls
-    (thunar.override {thunarPlugins = [thunar-archive-plugin];}) # right-click extract/compress
+    # right-click extract/compress; plugin only reads .tap from its own libexec, so add xarchiver's
+    (thunar.override {
+      thunarPlugins = [
+        (thunar-archive-plugin.overrideAttrs (old: {
+          postInstall = (old.postInstall or "") + "cp ${xarchiver}/libexec/thunar-archive-plugin/xarchiver.tap $out/libexec/thunar-archive-plugin/";
+        }))
+      ];
+    })
     xarchiver # archive backend for thunar-archive-plugin
     bluetui
     picom

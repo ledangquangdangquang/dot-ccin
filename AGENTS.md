@@ -8,7 +8,7 @@ The active window manager is i3. Treat `dotfiles/i3/` as the window manager conf
 
 **App configuration priority**: Add packages to `modules/packages.nix` first. For app configuration files, create `dotfiles/<app>/` and link it via `configApps` in `modules/dotfiles.nix`. Home Manager declarative modules (e.g., `programs.rofi`, `services.dunst`) should only be used when they offer deep integration that a simple config file cannot replicate (e.g., systemd services, generated configs).
 
-- `flake.nix` defines inputs, the user-named Home Manager configuration, and shared arguments.
+- `flake.nix` defines inputs, the user-named Home Manager configuration, and shared arguments. Machine-specific values (`hostMain`: state version, audio sink, xrandr layout) live here.
 - `home.nix` is the minimal Home Manager entrypoint. It sets the user, home directory, state version, Catppuccin integration, and imports `./modules`.
 - `modules/default.nix` is the module index. Register every new Home Manager module there.
 - `modules/packages.nix` contains the shared package list. Feature-specific packages should remain in their owning module.
@@ -17,11 +17,15 @@ The active window manager is i3. Treat `dotfiles/i3/` as the window manager conf
 - Wi-Fi and Bluetooth use the Ubuntu tray applets `nm-applet` and `blueman-applet`, started from `dotfiles/i3/config`.
 - `modules/lock.nix` provides `lock-screen` (blurred wallpaper + Ubuntu's `/usr/bin/i3lock`), triggered by `xss-lock`.
 - `modules/notifications.nix` configures dunst notification daemon.
-- `modules/screenshot.nix` provides the Grim, Slurp, and Satty screenshot workflow.
+- `modules/screenshot.nix` provides the maim + Satty screenshot workflow.
 - `modules/fuzzyvim.nix` provides the Fzf-based project/file picker.
+- `modules/default-apps.nix` sets MIME defaults, Thunar prefs (xfconf), and the terminal used by Thunar/GLib (`xdg-terminal-exec` → Alacritty).
+- `modules/menu-util.nix` defines the shared rofi `menu` wrapper (passed to modules as the `menu` arg); `modules/menu.nix` installs it with `menu-launcher`.
+- `modules/display.nix` provides `display-menu` (xrandr extend/duplicate/only) and writes `~/.config/i3/host.conf` from `hostMain`.
+- `modules/clipboard.nix` (cliphist), `wallpaper.nix`, `power.nix`, `pomodoro.nix`, `lofi.nix`, `calendar.nix` (Vietnamese lunar date), `vlc.nix`, and `yazi.nix` provide their respective commands/config.
 - `modules/tmux.nix`, `zsh.nix`, `git.nix`, `gtk.nix`, `bash.nix`, and `nix-cleanup.nix` contain their respective focused Home Manager configuration.
 - `modules/firefox/` contains the Firefox Home Manager module, policies, profile settings, CSS, and related assets.
-- `dotfiles/` stores application configuration directories, for example `i3/`, `rofi/`, `kitty/`, `nvim/`, `fastfetch/`, and `yazi/`.
+- `dotfiles/` stores application configuration directories, for example `i3/`, `rofi/`, `alacritty/`, `nvim/`, `fastfetch/`, and `yazi/`.
 - `Wallpapers/` contains desktop image assets.
 
 Keep `home.nix` minimal. Add packages, generated scripts, session variables, and application logic to a focused file under `modules/`, then import it from `modules/default.nix`. Add application-owned configuration under `dotfiles/<app>/`; if the folder should be linked, add its name to `configApps` in `modules/dotfiles.nix`.
@@ -47,7 +51,7 @@ There is no dedicated test suite. Treat `nix flake check` and Home Manager evalu
 
 ## Catppuccin Mocha Theming
 
-This rice is centered around the Catppuccin Mocha palette. All themable apps (rofi, dunst, fastfetch, kitty, etc.) should use Catppuccin Mocha colors consistently:
+This rice is centered around the Catppuccin Mocha palette. All themable apps (rofi, dunst, fastfetch, alacritty, kitty, etc.) should use Catppuccin Mocha colors consistently:
 - `background` (#1e1e2e / `base`)
 - `foreground` (#cdd6f4 / `text`)
 - `red` (#f38ba8), `blue` (#89b4fa), `green` (#a6e3a1), `yellow` (#f9e2af), `mauve` (#cba6f7), `peach` (#fab387), `teal` (#94e2d5), `sapphire` (#74c7ec)

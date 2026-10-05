@@ -2,7 +2,6 @@
   dotfiles = "${config.home.homeDirectory}/dot-ccin/dotfiles";
   createSymlink = path: config.lib.file.mkOutOfStoreSymlink path;
   configApps = [
-    "fuzzel"
     "rofi"
     "zathura"
     "i3"
@@ -19,6 +18,7 @@
     "picom"
     "zsh"
     "wireplumber"
+    "Thunar"
   ];
 in {
   xdg.configFile =
