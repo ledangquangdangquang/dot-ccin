@@ -1,4 +1,23 @@
-{
+{config, ...}: {
+  # Firefox "show in folder" uses D-Bus FileManager1; override Ubuntu's Nautilus one
+  xdg.dataFile."dbus-1/services/org.freedesktop.FileManager1.service".text = ''
+    [D-BUS Service]
+    Name=org.freedesktop.FileManager1
+    Exec=${config.home.profileDirectory}/bin/Thunar --gapplication-service
+  '';
+
+  # Thunar (exo) terminal helper: "Open Terminal Here", Terminal=true apps
+  xdg.configFile."xfce4/helpers.rc".text = "TerminalEmulator=alacritty\n";
+  xdg.dataFile."xfce4/helpers/alacritty.desktop".text = ''
+    [Desktop Entry]
+    Version=1.0
+    Type=X-XFCE-Helper
+    Name=Alacritty
+    X-XFCE-Category=TerminalEmulator
+    X-XFCE-Commands=alacritty
+    X-XFCE-CommandsWithParameter=alacritty -e %s
+  '';
+
   xdg.configFile."mimeapps.list".force = true;
   xdg.dataFile."applications/mimeapps.list".force = true;
 

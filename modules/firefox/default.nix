@@ -127,6 +127,7 @@ in {
     profiles.default = {
       settings = {
         "layout.spellcheckDefault" = 0;
+        "widget.use-xdg-desktop-portal.file-picker" = 0; # GTK picker instead of GNOME portal (Nautilus)
         "browser.download.useDownloadDir" = false;
         "browser.download.always_ask_before_handling_new_types" = true;
         "browser.startup.homepage" = newtabUrl;

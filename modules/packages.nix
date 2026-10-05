@@ -30,7 +30,8 @@
     brightnessctl # laptop/internal display brightness
     ddcutil # brightness
     eza # alternative ls
-    thunar
+    (thunar.override {thunarPlugins = [thunar-archive-plugin];}) # right-click extract/compress
+    xarchiver # archive backend for thunar-archive-plugin
     bluetui
     picom
     xdotool # replay real F-key press when media F-keys are toggled off
