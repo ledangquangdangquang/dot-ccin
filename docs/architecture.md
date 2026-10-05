@@ -5,7 +5,7 @@ See [architecture.html](architecture.html) for an interactive diagram of this fl
 This repository is a Home Manager configuration for the user selected in
 `flake.nix` on a non-NixOS Ubuntu system. Nix builds the packages and generated commands, while
 Home Manager writes user-level configuration and links application dotfiles.
-Sway is the active Wayland compositor; the Niri files are experimental.
+i3 (X11, installed by Ubuntu) is the window manager; this repo configures the tools around it.
 
 ## Evaluation Flow
 
@@ -33,6 +33,9 @@ settings. `modules/default.nix` is the index for all feature modules.
 | Shared command-line packages | `modules/packages.nix` | Packages in the user profile |
 | Application configuration | `dotfiles/<app>/` | Out-of-store links under `~/.config/<app>` |
 | GTK, fonts, and cursor | `modules/gtk.nix` | GTK and pointer settings |
+| Default apps, Thunar, terminal | `modules/default-apps.nix`, `modules/vlc.nix` | MIME defaults, Thunar xfconf prefs, `xdg-terminal-exec` → Alacritty |
+| Input method | `modules/fcitx.nix` | Fcitx5 + Unikey and IM environment variables |
+| Machine-specific values | `hostMain` in `flake.nix` | `~/.config/i3/host.conf` (audio sink, xrandr layout) |
 | Shells and terminal multiplexer | `modules/zsh.nix`, `modules/bash.nix`, `modules/tmux.nix` | Shell initialization, aliases, and tmux configuration |
 | Firefox | `modules/firefox/` | Wrapped Firefox, policies, profile preferences, and CSS |
 | Desktop helpers | Focused modules described below | Commands installed into the user profile |
@@ -50,13 +53,18 @@ with its runtime dependencies and exposes the resulting command through
 
 | Command | Module | Purpose |
 | --- | --- | --- |
-| `wifi-menu` | `modules/wifi.nix` | Toggle Wi-Fi, scan, disconnect, and connect through Fuzzel |
-| `bluetooth-menu` | `modules/bluetooth.nix` | Toggle Bluetooth and pair, connect, or disconnect devices |
-| `power-menu` | `modules/power.nix` | Suspend or confirm session and power actions |
-| `clipboard-watcher` | `modules/clipboard.nix` | Store Wayland text and image clipboard history with Cliphist |
-| `clipboard-menu` | `modules/clipboard.nix` | Select a clipboard entry with Fuzzel and copy it again |
+| `menu` / `menu-launcher` | `modules/menu-util.nix`, `modules/menu.nix` | Shared rofi dmenu wrapper and app launcher |
+| `power-menu` | `modules/power.nix` | Lock, suspend, or confirm session and power actions |
+| `lock-screen` | `modules/lock.nix` | Blurred wallpaper + Ubuntu `/usr/bin/i3lock`, triggered by `xss-lock` |
+| `clipboard-watcher` | `modules/clipboard.nix` | Store X11 text and image clipboard history with Cliphist |
+| `clipboard-menu` | `modules/clipboard.nix` | Select a clipboard entry with rofi and copy it again |
 | `clipboard-clear` | `modules/clipboard.nix` | Confirm and clear clipboard history |
-| `screenshot` | `modules/screenshot.nix` | Capture a region or display, edit with Satty, or copy an image |
+| `display-menu` | `modules/display.nix` | Extend, duplicate, or pick outputs with xrandr |
+| `wallpaper-menu` | `modules/wallpaper.nix` | Pick a wallpaper from `Wallpapers/` with feh |
+| `pomodoro-task` | `modules/pomodoro.nix` | Set/show the current task for the i3status-rust pomodoro block |
+| `lofi` | `modules/lofi.nix` | Toggle a local lofi playlist in mpv |
+| `calendar-popup` / `lunar-date` | `modules/calendar.nix` | Month calendar with Vietnamese lunar date |
+| `screenshot` | `modules/screenshot.nix` | Capture with maim, edit with Satty, or copy an image |
 | `fuzzyvim` | `modules/fuzzyvim.nix` | Find a project file with ripgrep/Fzf and open it in Neovim |
 | `notification-sound` | `modules/notifications.nix` | Duck active audio, play the notification sound, then restore volume |
 | `system-control` | `modules/notifications.nix` | Control brightness, volume, Caps Lock indication, and night light |

@@ -19,11 +19,11 @@
   }: let
     system = "x86_64-linux";
     user = "quang";
-    envUser = builtins.getEnv "USER";
-
     hostMain = {
-      hostname = "ubuntu-nix"; # Tên định danh cấu hình (không ảnh hưởng hostname thật của Ubuntu)
-      stateVersion = "25.11"; # Hoặc 24.11 tùy thuộc vào config cũ của anh
+      stateVersion = "25.11";
+      # Machine-specific; written to ~/.config/i3/host.conf by modules/display.nix
+      audioSink = "alsa_output.pci-0000_00_1f.3-platform-skl_hda_dsp_generic.HiFi__hw_sofhdadsp__sink";
+      xrandrLayout = "--output eDP-1 --off --output HDMI-1-0 --auto";
     };
     pkgs = import nixpkgs {
       inherit system;
@@ -54,14 +54,6 @@
       '';
     };
 
-    homeConfigurations =
-      {
-        "${user}" = mkHome user;
-      }
-      // (
-        if envUser != "" && envUser != user
-        then {"${envUser}" = mkHome envUser;}
-        else {}
-      );
+    homeConfigurations."${user}" = mkHome user;
   };
 }

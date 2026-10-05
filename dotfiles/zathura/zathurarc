@@ -2,3 +2,5 @@ include catppuccin-mocha
 set font "FiraCode Nerd Font 14"
 set recolor false
 set selection-clipboard clipboard
+map = zoom in
+map + adjust_window best-fit

@@ -9,7 +9,7 @@
       coreutils
       gawk
       imagemagick
-      xorg.xdpyinfo
+      xdpyinfo
     ];
     text = ''
       wallpaper="$(cat ~/.wallpaper 2>/dev/null || echo ~/dot-ccin/Wallpapers/wallpaper.png)"

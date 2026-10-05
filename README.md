@@ -27,11 +27,11 @@ https://github.com/user-attachments/assets/70a78fb1-9ed9-40db-92ea-ff6ab22081fc
 | --- | --- |
 | Window Manager | i3 (installed externally) + i3status-rust |
 | Shell | Zsh + Starship |
-| Terminal | Kitty, Alacritty |
+| Terminal | Alacritty (Kitty also installed) |
 | Launcher | Rofi (`Mod+space`: run / drun / ssh) |
-| Quick menus | Rofi-driven power, Wi-Fi, Bluetooth, clipboard, display, and pomodoro-task pickers |
+| Quick menus | Rofi-driven power, clipboard, display, wallpaper, and pomodoro-task pickers (Wi-Fi/Bluetooth via nm-applet/blueman tray) |
 | Notifications | dunst (custom sound + volume ducking on notify) |
-| File Manager | Yazi (smart-enter, full-border, jump-to-char, git, mount plugins) |
+| File Manager | Thunar (archive plugin + xarchiver), Yazi (smart-enter, full-border, jump-to-char, git, mount plugins) |
 | Browser | Firefox (Catppuccin CSS, managed extensions, custom new-tab page) |
 | Editor | Neovim + fuzzyvim (`Ctrl+F` fzf file picker with preview) |
 | Screenshot | maim + Satty |
@@ -47,7 +47,7 @@ https://github.com/user-attachments/assets/70a78fb1-9ed9-40db-92ea-ff6ab22081fc
 
 ```
 .
-├── flake.nix       # flake inputs, hostname, user, stateVersion
+├── flake.nix       # flake inputs, user, hostMain (stateVersion, machine-specific values)
 ├── home.nix        # minimal Home Manager entry point
 ├── modules/        # focused Home Manager modules
 │   └── default.nix # imports all modules
