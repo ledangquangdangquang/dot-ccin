@@ -24,6 +24,14 @@ https://github.com/user-attachments/assets/06cc8fbe-c099-4a4b-9646-09af651e6922
 
 ![Desktop screenshot](assets/fuzzyvim+yazi+btop.png)
 
+## Screenshots
+
+| Clean | Busy (fastfetch + nvim + btop) |
+| --- | --- |
+| ![Clean desktop](assets/desktop-clean.png) | ![Busy desktop](assets/desktop-busy.png) |
+| **Rofi launcher** (`Mod+space`) | **Power menu** (`Mod+x`) |
+| ![Rofi launcher](assets/rofi-launcher.png) | ![Power menu](assets/rofi-power.png) |
+
 ## What's installed
 
 | Category | Tools |
