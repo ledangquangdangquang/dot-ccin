@@ -37,6 +37,7 @@ exec --no-startup-id nm-applet
 exec --no-startup-id blueman-applet
 exec_always --no-startup-id sh -c "pkill -f '^[^ ]*python3 [^ ]*auto-split-7030' || true && exec ~/.nix-profile/bin/python3 ~/.config/i3/auto-split-7030.py >/tmp/i3_autosplit_err.log 2>&1"
 # Host-specific audio sink + monitor layout, generated from hostMain in flake.nix (modules/display.nix)
+font pango:FiraCode Nerd Font 10
 include ~/.config/i3/host.conf
 exec --no-startup-id xset dpms 0 0 0
 # Screensaver: lock after 1 hour idle and before suspend.
@@ -62,6 +63,7 @@ bindsym $mod+q kill
 bindsym $mod+x exec power-menu
 # Launch menu (rofi)
 bindsym $mod+space exec menu-launcher
+# bindsym $mod+space exec menu-launcher
 # Clipboard history
 bindsym $mod+v exec clipboard-menu
 bindsym $mod+Shift+v exec clipboard-clear
@@ -76,12 +78,16 @@ bindsym $mod+Shift+n exec dunstctl set-paused toggle
 bindsym F8 exec ~/.config/i3/fkeys-media.sh F8 screenshot region
 bindsym Shift+F8 exec screenshot full
 bindsym Ctrl+F8 exec screenshot copy
+# popup/menu grabs keyboard so F8 is dead while open: press this, then open the popup within 3s
+bindsym $mod+F8 exec screenshot full 3
 # Toggle 4000K night light
 bindsym F9 exec ~/.config/i3/fkeys-media.sh F9 system-control night-light
 # Wallpaper picker
 bindsym $mod+p exec wallpaper-menu
 # Display management
 bindsym $mod+Shift+m exec display-menu
+# Audio output picker
+bindsym $mod+Shift+o exec audio-menu
 
 # exec --no-startup-id feh --bg-fill --no-fehbg ~/dot-ccin/Wallpapers/catppuccin-abstract-eclipse-1920x1080.png
 exec --no-startup-id feh --bg-fill --no-fehbg "$(cat ~/.wallpaper 2>/dev/null || echo ~/dot-ccin/Wallpapers/wallpaper.png)"
@@ -134,7 +140,6 @@ bindsym --release Caps_Lock exec system-control caps-lock
 # Workspace
 # Open it while starting up
 exec --no-startup-id i3-msg workspace 1
-for_window [title="^.*"] title_format ""
 default_border pixel 1
 gaps inner 2
 focus_follows_mouse no

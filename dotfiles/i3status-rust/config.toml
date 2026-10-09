@@ -38,7 +38,7 @@ cmd = "lofi stop"
 [[block]]
 block = "custom"
 interval = 2
-command = '''read -r _ u1 n1 s1 i1 _ < /proc/stat; sleep 0.3; read -r _ u2 n2 s2 i2 _ < /proc/stat; used=$(( (u2-u1)+(n2-n1)+(s2-s1) )); idle=$((i2-i1)); total=$((used+idle)); [ "$total" -gt 0 ] && cpu=$((used*100/total)) || cpu=0; mt=$(awk "/MemTotal/{print \$2}" /proc/meminfo); ma=$(awk "/MemAvailable/{print \$2}" /proc/meminfo); ram=$(( (mt-ma)*100/mt )); printf " CPU %d%%  RAM %d%% " "$cpu" "$ram"'''
+command = '''read -r _ u1 n1 s1 i1 _ < /proc/stat; sleep 0.3; read -r _ u2 n2 s2 i2 _ < /proc/stat; used=$(( (u2-u1)+(n2-n1)+(s2-s1) )); idle=$((i2-i1)); total=$((used+idle)); [ "$total" -gt 0 ] && cpu=$((used*100/total)) || cpu=0; mt=$(awk "/MemTotal/{print \$2}" /proc/meminfo); ma=$(awk "/MemAvailable/{print \$2}" /proc/meminfo); ram=$(( (mt-ma)*100/mt )); vram=$(nvidia-smi --query-gpu=memory.used,memory.total --format=csv,noheader,nounits | awk -F', ' '{printf "%d", $1*100/$2}'); printf " CPU %d%%  RAM %d%%  VRAM %d%% " "$cpu" "$ram" "${vram:-0}"'''
 [[block.click]]
 button = "left"
 cmd = "alacritty -e top"
