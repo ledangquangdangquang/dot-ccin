@@ -10,13 +10,13 @@ DefaultIM=unikey
 # Name
 Name=keyboard-us
 # Layout
-Layout=
+# Layout=
 
 [Groups/0/Items/1]
 # Name
 Name=unikey
 # Layout
-Layout=
+# Layout=
 
 [GroupOrder]
 0=Default

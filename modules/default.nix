@@ -24,6 +24,7 @@
     ./power.nix
     ./lock.nix
     ./display.nix
+    ./audio.nix
     ./clipboard.nix
     ./menu.nix
     ./yazi.nix
