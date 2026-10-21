@@ -16,6 +16,9 @@
   home.homeDirectory = "/home/${user}";
   home.stateVersion = hostMain.stateVersion;
   targets.genericLinux.enable = true;
-
+  # xsession.enable = true;
+  # xsession.windowManager.i3 = {
+  #   enable = true;
+  # };
   home.sessionVariables.TERMINAL = "alacritty";
 }

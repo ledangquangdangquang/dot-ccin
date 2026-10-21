@@ -48,6 +48,8 @@ command -v zsh | sudo tee -a /etc/shells
 chsh -s "$(command -v zsh)"
 ```
 
+Log out and back in to apply (`echo $SHELL` should show the Nix zsh path).
+
 ## 5. Register the i3 session in GDM
 
 The `i3` package installs `/usr/share/xsessions/i3.desktop`. Check it exists:

@@ -30,11 +30,13 @@ set $mod Mod4
 
 # Startup applications
 exec --no-startup-id fcitx5 -d
+exec --no-startup-id alacritty
 exec --no-startup-id picom --config ~/.config/picom/picom.conf
 exec --no-startup-id clipboard-watcher
 # Tray applets (Ubuntu apt): Wi-Fi/VPN/enterprise auth + Bluetooth pairing prompts
 exec --no-startup-id nm-applet
 exec --no-startup-id blueman-applet
+exec --no-startup-id udiskie --tray
 exec_always --no-startup-id sh -c "pkill -f '^[^ ]*python3 [^ ]*auto-split-7030' || true && exec ~/.nix-profile/bin/python3 ~/.config/i3/auto-split-7030.py >/tmp/i3_autosplit_err.log 2>&1"
 # Host-specific audio sink + monitor layout, generated from hostMain in flake.nix (modules/display.nix)
 font pango:FiraCode Nerd Font 10
