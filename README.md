@@ -2,7 +2,7 @@
 <p align="center">
   <a href="https://nixos.org"><img src="https://img.shields.io/badge/Nix%202.35-5277C3?style=flat&logo=nixos&logoColor=white"></a>
   <a href="https://github.com/nix-community/home-manager"><img src="https://img.shields.io/badge/Home%20Manager%2025.11-4a6fa5?style=flat&logo=nixos&logoColor=white"></a>
-  <a href="https://i3wm.org"><img src="https://img.shields.io/badge/i3%204.24-1793D1?style=flat&logo=i3&logoColor=white"></a>
+  <a href="https://i3wm.org"><img src="https://img.shields.io/badge/i3%204.25-1793D1?style=flat&logo=i3&logoColor=white"></a>
   <a href="https://github.com/catppuccin/catppuccin"><img src="https://img.shields.io/badge/Catppuccin%20Mocha-cba6f7?style=flat"></a>
 </p>
 
@@ -63,7 +63,7 @@
 ├── dotfiles/       # app configs symlinked into ~/.config
 ├── Wallpapers/     # wallpaper assets
 ├── docs/           # architecture notes
-├── install.sh      # one-shot bootstrap script
+├── INSTALL.md      # step-by-step install guide
 ├── flake.lock      # locked dependency versions
 └── README.md       # this file
 ```
@@ -88,11 +88,7 @@ nix store gc                                   # clean /nix/store
 
 ## Install
 
-```bash
-bash <(curl -fsSL https://raw.githubusercontent.com/ledangquangdangquang/dot-ccin/main/install.sh)
-```
-
-The installer sets up Nix, installs i3, clones the repo to `~/dot-ccin`, applies Home Manager, and sets Zsh as the default shell.
+See [INSTALL.md](INSTALL.md) for step-by-step setup and troubleshooting.
 
 ## Notes
 
