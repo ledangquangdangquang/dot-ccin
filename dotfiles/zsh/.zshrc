@@ -1,5 +1,5 @@
 # Zsh configuration (editable - linked from dotfiles/zsh/.zshrc)
-fastfetch
+# fastfetch
 export PATH="$PATH:Y"
 export PATH="$HOME/bin:$HOME/.local/bin:$PATH"
 export PATH="$HOME/.opencode/bin:$PATH"

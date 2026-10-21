@@ -3,7 +3,7 @@
 add_newline = false
 
 format = """
-[╭─](purple) $os$directory$git_branch$python$nix_shell$fill$time
+[╭─](purple) $os$directory$git_branch$python$nix_shelll$time
 [╰─](purple) $character
 """
 

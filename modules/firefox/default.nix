@@ -131,7 +131,8 @@ in {
         "browser.download.useDownloadDir" = false;
         "browser.download.always_ask_before_handling_new_types" = true;
         "browser.startup.homepage" = newtabUrl;
-        "browser.startup.page" = 1;
+        "browser.startup.page" = 3;
+        "browser.sessionstore.resume_from_crash" = true;
         "browser.urlbar.suggest.history" = false;
         "browser.urlbar.suggest.bookmark" = false;
         "browser.urlbar.suggest.topsites" = false;
