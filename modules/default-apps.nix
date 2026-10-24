@@ -29,6 +29,13 @@
     X-XFCE-CommandsWithParameter=alacritty -e %s
   '';
 
+  # Nix Thunar has no xfconfd registered on Ubuntu's session bus (xfconf-query: "Failed to set property")
+  xdg.dataFile."dbus-1/services/org.xfce.Xfconf.service".text = ''
+    [D-BUS Service]
+    Name=org.xfce.Xfconf
+    Exec=${pkgs.xfconf}/lib/xfce4/xfconf/xfconfd
+  '';
+
   # Thunar prefs; xfconfd owns thunar.xml (rewrites it), so set via xfconf-query instead of linking
   xfconf.settings.thunar = {
     default-view = "ThunarDetailsView";

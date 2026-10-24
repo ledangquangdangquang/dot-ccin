@@ -27,10 +27,15 @@ cmd = "pomodoro-task clear"
 [[block]]
 block = "custom"
 command = "lofi status"
+format = " $text.str() "
+signal = 8
 interval = 5
 [[block.click]]
 button = "left"
-cmd = "lofi toggle"
+cmd = "lofi click"
+[[block.click]]
+button = "middle"
+cmd = "lofi pick"
 [[block.click]]
 button = "right"
 cmd = "lofi stop"

@@ -50,7 +50,8 @@
         printf '%s\n' "$selected"
         exit 0
       fi
-      grep -F -m1 -e "$selected"$'\t' "$tmpdir/rows" || grep -F -m1 -e "$selected" "$tmpdir/rows"
+      # Exact match on the shown column; ENVIRON avoids awk -v backslash escapes.
+      S="$selected" awk -F '\t' -v n="''${with_nth:-1}" '$n == ENVIRON["S"] { print; f = 1; exit } END { exit !f }' "$tmpdir/rows"
     '';
   };
 

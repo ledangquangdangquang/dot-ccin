@@ -29,6 +29,8 @@ set $crust #11111b
 set $mod Mod4
 
 # Startup applications
+# D-Bus-activated apps (Thunar via FileManager1) otherwise lack ~/.nix-profile/bin, so archive actions can't find xarchiver
+exec --no-startup-id dbus-update-activation-environment --systemd PATH
 exec --no-startup-id fcitx5 -d
 exec --no-startup-id alacritty
 exec --no-startup-id picom --config ~/.config/picom/picom.conf
@@ -37,6 +39,8 @@ exec --no-startup-id clipboard-watcher
 exec --no-startup-id nm-applet
 exec --no-startup-id blueman-applet
 exec --no-startup-id udiskie --tray
+exec --no-startup-id usb-notify
+exec --no-startup-id env SOUND_NAME=service-login notification-sound
 exec_always --no-startup-id sh -c "pkill -f '^[^ ]*python3 [^ ]*auto-split-7030' || true && exec ~/.nix-profile/bin/python3 ~/.config/i3/auto-split-7030.py >/tmp/i3_autosplit_err.log 2>&1"
 # Host-specific audio sink + monitor layout, generated from hostMain in flake.nix (modules/display.nix)
 font pango:FiraCode Nerd Font 10
@@ -90,6 +94,10 @@ bindsym $mod+p exec wallpaper-menu
 bindsym $mod+Shift+m exec display-menu
 # Audio output picker
 bindsym $mod+Shift+o exec audio-menu
+# Lofi track picker
+bindsym $mod+m exec lofi pick
+# Lofi repeat current track on/off
+bindsym $mod+Ctrl+m exec lofi loop
 
 # exec --no-startup-id feh --bg-fill --no-fehbg ~/dot-ccin/Wallpapers/catppuccin-abstract-eclipse-1920x1080.png
 exec --no-startup-id feh --bg-fill --no-fehbg "$(cat ~/.wallpaper 2>/dev/null || echo ~/dot-ccin/Wallpapers/wallpaper.png)"
@@ -132,8 +140,8 @@ bindsym XF86AudioMute exec system-control volume-mute
 bindsym F1 exec ~/.config/i3/fkeys-media.sh F1 system-control volume-mute
 bindsym F2 exec ~/.config/i3/fkeys-media.sh F2 system-control volume-down
 bindsym F3 exec ~/.config/i3/fkeys-media.sh F3 system-control volume-up
-bindsym F6 exec ~/.config/i3/fkeys-media.sh F6 system-control brightness-down
-bindsym F7 exec ~/.config/i3/fkeys-media.sh F7 system-control brightness-up
+bindsym F6 exec ~/.config/i3/fkeys-media.sh F6 system-control brightness-set 30
+bindsym F7 exec ~/.config/i3/fkeys-media.sh F7 system-control brightness-set 80
 # Toggle F-key media functions on/off (F1-F3, F6-F9 pass through when off)
 bindsym $mod+F1 exec ~/.config/i3/fkeys-toggle.sh
 # Caps Lock status

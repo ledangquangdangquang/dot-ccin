@@ -11,26 +11,31 @@
 /* ------------------------------------------------------------------------MEDIA QUERIES FOR ONELINE NAVBAR----------------------------------------------------------- */
 
 /* Firefox 133+ has no #titlebar; urlbar is a popover so it ignores nav-bar opacity */
-#navigator-toolbox:not(:hover, :focus-within) > #TabsToolbar,
-#navigator-toolbox:has(#PersonalToolbar:hover) > #TabsToolbar {
+#navigator-toolbox:not(:hover, :focus-within) > #TabsToolbar {
   margin-top: -36px;
 }
 #navigator-toolbox:not(:hover, :focus-within) > :is(#TabsToolbar, #nav-bar),
-#navigator-toolbox:not(:hover, :focus-within) #urlbar,
-#navigator-toolbox:has(#PersonalToolbar:hover) > :is(#TabsToolbar, #nav-bar),
-#navigator-toolbox:has(#PersonalToolbar:hover) #urlbar {
+#navigator-toolbox:not(:hover, :focus-within) #urlbar {
   opacity: 0;
 }
 
-/* Ctrl+Shift+B (bookmarks bar shown) pins toolbars visible */
-#navigator-toolbox:has(#PersonalToolbar:not([collapsed])) > #TabsToolbar {
+/* Bookmarks bar (always enabled via pref) only shows on hover */
+#navigator-toolbox:not(:hover, :focus-within) #PersonalToolbar {
+  max-height: 0 !important;
+  min-height: 0 !important;
+  opacity: 0;
+  overflow: hidden;
+}
+
+/* Ctrl+Shift+B (bar collapsed) pins tabs + nav visible, bookmarks bar stays hidden */
+#navigator-toolbox:has(#PersonalToolbar[collapsed]) > #TabsToolbar {
   margin-top: 0 !important;
 }
-#navigator-toolbox:has(#PersonalToolbar:not([collapsed])) :is(#TabsToolbar, #nav-bar, #urlbar) {
+#navigator-toolbox:has(#PersonalToolbar[collapsed]) :is(#TabsToolbar, #nav-bar, #urlbar) {
   opacity: 1 !important;
 }
 
-#TabsToolbar, #nav-bar, #urlbar {
+#TabsToolbar, #nav-bar, #urlbar, #PersonalToolbar {
   transition: all 0.3s ease-in-out !important;
 }
 
@@ -41,7 +46,7 @@
 /* Navbar size calc */
 :root{
   --tab-border-radius: 15px !important; /*  Tab border radius -- Changes the tabs rounding  *//*  Default: 6px  */
-  --NavbarWidth: 43; /*  Default values: 36 - 43  */
+  --NavbarWidth: 36; /*  Default values: 36 - 43  */
   --TabsHeight: 25; /*  Minimum: 30  *//*  Default: 36  */
   --TabsBorder: 8; /*  Doesnt do anything on small layout  *//*  Default: 8  */
   --NavbarHeightSmall: calc(var(--TabsHeight) + var(--TabsBorder))  /*  Only on small layout  *//*  Default: calc(var(--TabsHeight) + var(--TabsBorder))  *//*  Default as a number: 44  */}
@@ -171,6 +176,11 @@
 /*  Removes annoying border  */
 #navigator-toolbox {
     border: none !important
+}
+
+/* Match the new tab page's top edge (Catppuccin mantle, dotfiles/newtab/index.html) */
+#navigator-toolbox, #navigator-toolbox-background {
+    background: #181825 !important;
 }
 
 /* Fades window while not in focus */

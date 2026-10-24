@@ -36,7 +36,7 @@
           systemctl suspend
           ;;
         logout)
-          confirm "Logout" && i3-msg exit
+          confirm "Logout" && { SOUND_NAME=service-logout notification-sound || true; i3-msg exit; }
           ;;
         reboot)
           confirm "Reboot" && systemctl reboot

@@ -11,12 +11,17 @@
     text = ''
       runtime_dir="''${XDG_RUNTIME_DIR:-/tmp}"
       lock_file="$runtime_dir/notification-sound.lock"
-      # Other options to try, swap the filename below:
-      #   complete.oga, dialog-information.oga, message-new-instant.oga,
-      #   alarm-clock-elapsed.oga, message.oga (previous default)
-      sound_file="${pkgs.sound-theme-freedesktop}/share/sounds/freedesktop/stereo/bell.oga"
+      # Other options to try, swap "message" below:
+      #   complete, dialog-information, message-new-instant, alarm-clock-elapsed, bell
+      case "''${DUNST_CATEGORY:-}" in
+        device.added) sound="device-added" ;;
+        device.removed) sound="device-removed" ;;
+        *) sound="message" ;;
+      esac
+      # SOUND_NAME lets non-dunst callers (login/logout) pick a sound
+      sound_file="${pkgs.sound-theme-freedesktop}/share/sounds/freedesktop/stereo/''${SOUND_NAME:-$sound}.oga"
 
-      [[ "$DUNST_STACK_TAG" == "volume" ]] && exit 0
+      [[ "''${DUNST_STACK_TAG:-}" == "volume" || "''${DUNST_STACK_TAG:-}" == "brightness" ]] && exit 0
 
       exec 9>"$lock_file"
       flock --nonblock 9 || exit 0
@@ -69,15 +74,46 @@
     '';
   };
 
+  usb-notify = pkgs.writeShellApplication {
+    name = "usb-notify";
+    runtimeInputs = with pkgs; [
+      libnotify
+      systemd
+    ];
+    text = ''
+      # shortcut: hubs re-enumerating after suspend also notify, filter by vendor if it gets noisy
+      udevadm monitor --udev --property --subsystem-match=usb/usb_device | while IFS= read -r line; do
+        case "$line" in
+          ACTION=*) action="''${line#*=}" ;;
+          ID_VENDOR=*) vendor="''${line#*=}" ;;
+          ID_VENDOR_FROM_DATABASE=*) db_vendor="''${line#*=}" ;;
+          ID_MODEL=*) model="''${line#*=}" ;;
+          ID_MODEL_FROM_DATABASE=*) db_model="''${line#*=}" ;;
+          "")
+            name="''${db_vendor:-''${vendor:-}} ''${db_model:-''${model:-USB device}}"
+            name="''${name//_/ }"
+            case "''${action:-}" in
+              add) notify-send --app-name=USB --category=device.added --icon=drive-removable-media "USB connected" "$name" ;;
+              remove) notify-send --app-name=USB --category=device.removed --icon=drive-removable-media "USB removed" "$name" ;;
+            esac
+            action="" vendor="" db_vendor="" model="" db_model=""
+            ;;
+        esac
+      done
+    '';
+  };
+
   system-control = pkgs.writeShellApplication {
     name = "system-control";
     runtimeInputs = with pkgs; [
       brightnessctl
       coreutils
+      ddcutil
       gammastep
       gawk
       libnotify
       pulseaudio
+      xset
     ];
     text = ''
       notify_level() {
@@ -95,16 +131,27 @@
           "$title" "$value%"
       }
 
+      # $1: brightnessctl value (laptop panel), rest: ddcutil value (external monitor via DDC/CI)
+      set_brightness() {
+        brightnessctl -q set "$1" || true
+        shift
+        if ddcutil --noverify setvcp 10 "$@" 2>/dev/null; then
+          value="$(ddcutil -t getvcp 10 | awk '{print $4}')"
+        else
+          value="$(brightnessctl -m | awk -F, '{gsub(/%/, "", $4); print $4}')"
+        fi
+        notify_level brightness display-brightness-symbolic "Brightness" "$value"
+      }
+
       case "''${1:-}" in
         brightness-up)
-          brightnessctl set +5%
-          value="$(brightnessctl -m | awk -F, '{gsub(/%/, "", $4); print $4}')"
-          notify_level brightness display-brightness-symbolic "Brightness" "$value"
+          set_brightness +5% + 5
           ;;
         brightness-down)
-          brightnessctl set 5%-
-          value="$(brightnessctl -m | awk -F, '{gsub(/%/, "", $4); print $4}')"
-          notify_level brightness display-brightness-symbolic "Brightness" "$value"
+          set_brightness 5%- - 5
+          ;;
+        brightness-set)
+          set_brightness "''${2:?percent}%" "''${2}"
           ;;
         volume-up)
           pactl set-sink-volume @DEFAULT_SINK@ +5%
@@ -128,15 +175,13 @@
           fi
           ;;
         caps-lock)
-          state_file="''${XDG_RUNTIME_DIR:-/tmp}/caps-lock-state"
-          if [[ -e "$state_file" ]]; then
-            rm -f "$state_file"
-            state="Off"
-            icon="changes-prevent-symbolic"
-          else
-            touch "$state_file"
+          # read the real LED state; a toggled state file drifts when a press is missed
+          if xset q | grep -q 'Caps Lock: *on'; then
             state="On"
             icon="changes-allow-symbolic"
+          else
+            state="Off"
+            icon="changes-prevent-symbolic"
           fi
           notify-send --app-name="System" --expire-time=1500 \
             --hint="string:x-canonical-private-synchronous:caps-lock" \
@@ -164,7 +209,7 @@
           fi
           ;;
         *)
-          echo "Usage: system-control {brightness-up|brightness-down|volume-up|volume-down|volume-mute|caps-lock|night-light}" >&2
+          echo "Usage: system-control {brightness-up|brightness-down|brightness-set N|volume-up|volume-down|volume-mute|caps-lock|night-light}" >&2
           exit 2
           ;;
       esac
@@ -175,6 +220,7 @@ in {
     libnotify
     notification-sound
     system-control
+    usb-notify
     pulseaudio
   ];
 

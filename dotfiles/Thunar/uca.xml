@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+
 <actions>
 <action>
 	<icon>utilities-terminal</icon>
@@ -9,7 +9,7 @@
 	<description>Example for a custom action</description>
 	<range></range>
 	<patterns>*</patterns>
-	<startup-notify/>
-	<directories/>
+	<startup-notify />
+	<directories />
 </action>
-</actions>
+<action><icon>document-save-as</icon><name>Convert with Filee</name><unique-id>filee-convert</unique-id><command>'/home/quang/.local/share/filee/application/Filee' --convert %F</command><description>Convert with Filee</description><patterns>*</patterns><audio-files /><image-files /><other-files /><text-files /><video-files /></action></actions>

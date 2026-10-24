@@ -12,6 +12,7 @@
     '';
 
     shellAliases = {
+      t = "tmux new-session -A -s main";
       rebuild = "nix flake check && nix run github:nix-community/home-manager -- switch --flake .#${user}";
     };
   };

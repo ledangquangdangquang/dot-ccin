@@ -15,6 +15,8 @@ Mod + Escape            Lock screen
 Mod + p                 Open wallpaper picker
 Mod + Shift + m         Open display menu (extend / duplicate / only)
 Mod + Shift + o         Open audio output menu
+Mod + m                 Open lofi track picker
+Mod + Ctrl + m          Toggle lofi repeat current track
 
 NOTIFICATIONS AND SCREENSHOTS
 ────────────────────────────────────────────────────────────
@@ -50,7 +52,7 @@ HARDWARE
 ────────────────────────────────────────────────────────────
 F1                      Toggle audio mute
 F2 / F3                 Decrease / increase volume by 5%
-F6 / F7                 Decrease / increase brightness by 5%
+F6 / F7                 Set brightness to 30% / 80%
 F9                      Toggle 4000K Night Light
 Mod + F1                Toggle F-key media functions on/off
 Media brightness keys   Change brightness by 5%

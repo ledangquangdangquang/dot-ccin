@@ -14,7 +14,7 @@
         selection="$(${pkgs.tmux}/bin/tmux list-sessions -F '#{session_name}' \
           | ${pkgs.fzf}/bin/fzf \
             --expect=enter,r,x \
-            --header='Enter: switch  r: rename  x: kill' \
+            --header='Enter: open  r: rename  x: kill' \
             --preview="$previewCommand" \
             --preview-window='right,65%,border-left' \
             --prompt='Sessions> ')" || exit 0
@@ -93,6 +93,7 @@ in {
       set -g popup-border-style 'bg=default'
 
       bind r source-file ~/.config/tmux/tmux.conf \; display-message 'tmux config reloaded'
+      bind S command-prompt -p "New session:" "new -s '%%'"
       bind s display-popup -E -w 70% -h 70% '${tmuxSessionPicker}/bin/tmux-session-picker'
       bind | split-window -h -c '#{pane_current_path}'
       bind - split-window -v -c '#{pane_current_path}'

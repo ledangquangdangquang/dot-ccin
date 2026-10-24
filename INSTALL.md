@@ -80,7 +80,20 @@ WaylandEnable=false
 
 Then `sudo systemctl restart gdm3` (or reboot), pick **i3** from the gear icon on the login screen.
 
-## 6. Check for errors
+## 6. External monitor brightness (optional)
+
+F6/F7 and the brightness keys set external-monitor brightness via `ddcutil` (DDC/CI), which needs access to `/dev/i2c-*`:
+
+```bash
+echo 'KERNEL=="i2c-[0-9]*", TAG+="uaccess"' | sudo tee /etc/udev/rules.d/60-ddcutil-i2c.rules
+echo i2c-dev | sudo tee /etc/modules-load.d/i2c-dev.conf
+sudo udevadm control --reload
+sudo udevadm trigger --action=add --subsystem-match=i2c-dev --settle
+```
+
+Check with `ddcutil detect`: the monitor should list a `VCP version`. If it still says `Permission denied`, reboot. DDC/CI must be enabled in the monitor's OSD menu. Laptop panels use `brightnessctl` and need none of this.
+
+## 7. Check for errors
 
 | Symptom | Check / fix |
 | --- | --- |
