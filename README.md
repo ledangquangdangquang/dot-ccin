@@ -39,8 +39,8 @@
 | Terminal | Alacritty (Kitty also installed) |
 | Launcher | Rofi (`Mod+space`: run / drun / ssh) |
 | Quick menus | Rofi-driven power, clipboard, display, wallpaper, and pomodoro-task pickers (Wi-Fi/Bluetooth via nm-applet/blueman tray) |
-| Notifications | dunst (custom sound + volume ducking on notify) |
-| File Manager | Thunar (archive plugin + xarchiver), Yazi (smart-enter, full-border, jump-to-char, git, mount plugins) |
+| Notifications | dunst (sound + volume ducking on notify, silent volume/brightness OSD, Caps Lock state), login/logout sounds, USB plug/unplug alerts |
+| File Manager | Thunar (archive plugin + xarchiver: zip/7z/rar/tar), Yazi (smart-enter, full-border, jump-to-char, git, mount plugins) |
 | Browser | Firefox (Catppuccin CSS, managed extensions, custom new-tab page) |
 | Editor | Neovim + fuzzyvim (`Ctrl+F` fzf file picker with preview) |
 | Screenshot | maim + Satty |
@@ -96,4 +96,4 @@ See [INSTALL.md](INSTALL.md) for step-by-step setup and troubleshooting.
 - Shell aliases: `modules/zsh.nix`
 - Do not commit secrets, SSH keys, browser sessions, or generated logs
 - Audio: PipeWire (PulseAudio-compatible, controlled via `pactl`/`wpctl`)
-- Brightness: `brightnessctl` / `ddcutil`
+- Brightness: `F6`/`F7` set 30% / 80%, media keys ±5%. Laptop panel via `brightnessctl`, external monitor via `ddcutil` (DDC/CI, needs the one-time i2c setup in [INSTALL.md](INSTALL.md#6-external-monitor-brightness-optional))
