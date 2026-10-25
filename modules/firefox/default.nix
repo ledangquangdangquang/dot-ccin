@@ -142,7 +142,7 @@ in {
         "browser.urlbar.suggest.engines" = false;
         "browser.urlbar.suggest.quickactions" = false;
         "browser.urlbar.quicksuggest.enabled" = false;
-        "browser.toolbars.bookmarks.visibility" = "always"; # userChrome.css hides it until hover
+        "browser.toolbars.bookmarks.visibility" = "never"; # collapsed = tabs + nav pinned (userChrome.css); Ctrl+Shift+B toggles to auto-hide
         "browser.ctrlTab.sortByRecentlyUsed" = true; # Ctrl+Tab shows tab previews like Alt+Tab
         # Smoothfox "Natural Smooth Scrolling V3" (spring physics, tuned for 100Hz+)
         "apz.overscroll.enabled" = true;

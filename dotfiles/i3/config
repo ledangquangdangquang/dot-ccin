@@ -164,20 +164,26 @@ client.urgent           #f38ba8 #1e1e2e #f38ba8 #f38ba8 #f38ba8
 client.background       #1e1e2e
 bar {
   position top
-  height 28
+  height 34
   # mode hide
-  font pango:FiraCode Nerd Font 15
+  # pixel font: only 11px/22px land on its grid (pt sizes blur)
+  font pango:DepartureMono Nerd Font 18px
+  padding 0 4px
+  workspace_min_width 28
+  tray_padding 2
   status_command i3status-rs ~/.config/i3status-rust/config.toml
 
   colors {
-    background         $base
-    statusline         $text
+    background         #11111b
+    statusline         #cdd6f4
+    separator          #45475a
 
-    # target           border bg        text
-    focused_workspace  $base  $mauve    $crust
-    active_workspace   $base  $surface2 $text
-    inactive_workspace $base  $base     $text
-    urgent_workspace   $base  $red      $crust
+    # target           border  bg      text
+    focused_workspace  #cba6f7 #cba6f7 #11111b
+    active_workspace   #45475a #45475a #cdd6f4
+    inactive_workspace #11111b #11111b #7f849c
+    urgent_workspace   #f38ba8 #f38ba8 #11111b
+    binding_mode       #fab387 #fab387 #11111b
   }
 }
 

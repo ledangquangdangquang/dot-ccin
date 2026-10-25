@@ -9,6 +9,7 @@
     pkgs.noto-fonts-color-emoji
     pkgs.nerd-fonts.noto
     pkgs.nerd-fonts.jetbrains-mono
+    pkgs.nerd-fonts.departure-mono
   ];
 
   catppuccin.gtk = {
