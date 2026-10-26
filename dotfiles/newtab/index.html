@@ -1,462 +1,1165 @@
 <!doctype html>
-<html lang="vi">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Home</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
-  <style>
-    /* Hallmark · genre: atmospheric · macrostructure: Stat-Led · tone: luxury · theme: catppuccin-mocha · enrichment: typography / stat-hero */
-    :root {
-      /* Catppuccin Mocha */
-      --bg-base: #1e1e2e;
-      --bg-mantle: #181825;
-      --bg-crust: #11111b;
-      --ink: #cdd6f4;
-      --muted: #a6adc8;
-      --subtext: #bac2de;
-      --rule: #45475a;
-      --accent: #cba6f7;
-      --green: #a6e3a1;
-      /* typographic registers */
-      --font-display: "Inter", ui-sans-serif, system-ui, sans-serif;
-      --font-body: "Inter", ui-sans-serif, system-ui, sans-serif;
-      /* spacing (4pt) */
-      --space-xs: 0.25rem;
-      --space-sm: 0.5rem;
-      --space-md: 1rem;
-      --space-lg: 2rem;
-      /* motion */
-      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-      --dur-micro: 120ms;
-      --dur-long: 420ms;
+<meta charset="utf-8" />
+<meta name="color-scheme" content="dark light" />
+<meta name="robots" content="noindex" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Home</title>
+<!-- fetch at parse time: the dial lives in shadow DOM, which would request the font late -->
+<link rel="preload" href="DepartureMono-Regular.woff2" as="font" type="font/woff2" crossorigin />
+
+<style>
+  /* tilde (github.com/xvvvyz/tilde), Catppuccin Mocha + bundled pixel font:
+     Firefox can't see Nix-profile system fonts */
+  @font-face {
+    font-family: 'Departure Mono';
+    src: url('DepartureMono-Regular.woff2') format('woff2');
+    font-display: block; /* local file: brief invisible text beats a fallback-font flash */
+  }
+
+  :root {
+    /* Catppuccin Mocha; mantle matches the Firefox toolbar (userChrome.css) */
+    --color-background: #181825;
+    --color-text-subtle: #7f849c;
+    --color-text: #cdd6f4;
+    --font-family: 'Departure Mono', monospace;
+    /* pixel font: only multiples of 11px land on its grid */
+    --font-size: 22px;
+    --color-accent: #f38ba8;
+    --transition-speed: 200ms;
+    /* names used by the background popup */
+    --bg-mantle: #181825;
+    --rule: #45475a;
+    --muted: #a6adc8;
+    --subtext: #bac2de;
+    --accent: #cba6f7;
+    --space-xs: 0.25rem;
+    --space-sm: 0.5rem;
+    --space-md: 1rem;
+  }
+
+  /* popup buttons */
+  .btns {
+    display: flex;
+    gap: var(--space-sm);
+  }
+  .btn {
+    background: none;
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    color: var(--muted);
+    font-family: var(--font-family);
+    font-size: 0.5rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.3em 0.9em;
+    cursor: pointer;
+    transition: color var(--transition-speed), border-color var(--transition-speed);
+  }
+  .btn:hover,
+  .btn:focus-visible {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+
+  /* custom background layer, tuned from the settings popup */
+  .bg {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background: center / cover no-repeat;
+    transform: scale(1.06); /* hide blurred edges */
+    pointer-events: none;
+  }
+
+  .bg-menu {
+    position: fixed;
+    top: var(--space-md);
+    right: var(--space-md);
+    z-index: 1;
+  }
+  #bg-open { display: grid; place-items: center; padding: 0.45em; }
+  .bg-panel {
+    position: absolute;
+    top: calc(100% + var(--space-sm));
+    right: 0;
+    width: 16rem;
+    padding: var(--space-md);
+    display: grid;
+    gap: var(--space-md);
+    background: var(--bg-mantle);
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+  }
+  .bg-panel[hidden] { display: none; }
+  .bg-panel label {
+    display: grid;
+    gap: var(--space-xs);
+    font-size: 0.5rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .bg-panel label div { display: flex; justify-content: space-between; }
+  .bg-panel label span { color: var(--subtext); text-transform: none; }
+  .bg-panel input[type="range"] { width: 100%; accent-color: var(--accent); }
+</style>
+
+<script type="module">
+  /** @type {AppConfig} */
+  const CONFIG = {
+    commandPathDelimiter: '/',
+    commandSearchDelimiter: ' ',
+    defaultSearchTemplate: 'https://www.google.com/search?q={}',
+    openLinksInNewTab: false,
+    suggestionLimit: 4,
+  };
+
+  // named entries appear on the dial, in insertion order. suggestions are curated.
+  /** @type {Map<string, Command>} */
+  // prettier-ignore
+  const COMMANDS = new Map([
+    ['a', { name: 'AI', suggestions: ['a/chatgpt', 'a/gemini', 'a/deepseek', 'a/notebooklm'], url: 'https://claude.ai/new' }],
+    ['a/chatgpt', { url: 'https://chatgpt.com/' }],
+    ['a/gemini', { url: 'https://gemini.google.com/app' }],
+    ['a/deepseek', { url: 'https://chat.deepseek.com/' }],
+    ['a/notebooklm', { url: 'https://notebooklm.google.com/' }],
+    ['d', { name: 'Discord', url: 'https://discord.com/channels/@me' }],
+    ['e', { name: 'Shopee', searchTemplate: '/search?keyword={}', url: 'https://shopee.vn/user/purchase' }],
+    ['g', { name: 'GitHub', searchTemplate: '/search?q={}', suggestions: ['g/trending', 'g/trendshift'], url: 'https://github.com' }],
+    ['g/trendshift', { url: 'https://trendshift.io/' }],
+    ['h', { name: 'HUST', suggestions: ['h/sis', 'h/ctt', 'h/tkb', 'h/ctsv'], url: 'https://student.hust.edu.vn/learn/timetable' }],
+    ['h/sis', { url: 'https://ctt-sis.hust.edu.vn/Students/StudentCheckInputGradeTerm.aspx' }],
+    ['h/ctt', { url: 'https://ctt.hust.edu.vn/Services' }],
+    ['h/tkb', { url: 'https://hungitb.github.io/tkb-hust/' }],
+    ['h/ctsv', { url: 'https://ctsv.hust.edu.vn/#/danh-sach-su-kien' }],
+    ['k', { name: 'MATLAB', url: 'https://matlab.mathworks.com/' }],
+    ['l', { name: 'Local', suggestions: ['l/dsh'], url: 'http://127.0.0.1:8787/' }],
+    ['l/dsh', { url: 'http://127.0.0.1:3080/' }],
+    ['m', { name: 'Messenger', url: 'https://www.messenger.com/' }],
+    ['n', { name: 'News', suggestions: ['n/hellogithub', 'n/vnlf', 'n/steamdb'], url: 'https://vnexpress.net/khoa-hoc-cong-nghe' }],
+    ['n/hellogithub', { url: 'https://hellogithub.com/en' }],
+    ['n/vnlf', { url: 'https://vietnamlinuxfamily.net/' }],
+    ['n/steamdb', { url: 'https://steamdb.info/' }],
+    ['o', { name: 'Overleaf', url: 'https://www.overleaf.com/project' }],
+    ['r', { name: 'Translate', searchTemplate: '/?sl=en&tl=vi&text={}&op=translate', url: 'https://translate.google.com/?hl=vi&sl=en&tl=vi&op=translate' }],
+    ['s', { name: 'Spotify', searchTemplate: '/search/{}', suggestions: ['s/soundcloud'], url: 'https://open.spotify.com/' }],
+    ['s/soundcloud', { url: 'https://soundcloud.com/discover' }],
+    ['t', { name: 'Teams', suggestions: ['t/outlook'], url: 'https://teams.microsoft.com/v2/' }],
+    ['t/outlook', { url: 'https://outlook.office365.com/mail/' }],
+    ['x', { name: 'X', searchTemplate: '/search?q={}', url: 'https://x.com/explore/tabs/trending' }],
+    ['y', { name: 'YouTube', searchTemplate: '/results?search_query={}', suggestions: ['y/channels', 'y/lofi'], url: 'https://www.youtube.com/feed/subscriptions' }],
+    ['y/channels', { url: 'https://www.youtube.com/feed/channels' }],
+    ['y/lofi', { url: 'https://www.youtube.com/watch?v=X4VbdwhkE10' }],
+    ['z', { name: 'Zalo', url: 'https://chat.zalo.me/' }],
+  ]);
+
+  /**
+   * @typedef {object} AppConfig
+   * @property {string} commandPathDelimiter
+   * @property {string} commandSearchDelimiter
+   * @property {string} defaultSearchTemplate
+   * @property {boolean} openLinksInNewTab
+   * @property {number} suggestionLimit
+   */
+
+  /**
+   * @typedef {object} Command
+   * @property {string} url
+   * @property {string=} name
+   * @property {string=} searchTemplate
+   * @property {string[]=} suggestions
+   */
+
+  /**
+   * @typedef {object} ParsedQuery
+   * @property {string} query
+   * @property {string} url
+   * @property {string=} key
+   * @property {string=} path
+   * @property {string=} search
+   * @property {string=} splitBy
+   */
+
+  /**
+   * @param {string} id
+   * @returns {HTMLTemplateElement}
+   */
+  function getTemplate(id) {
+    const template = document.getElementById(id);
+
+    if (!(template instanceof HTMLTemplateElement)) {
+      throw new Error(`Template #${id} not found`);
     }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    return template;
+  }
 
-    html { font-size: 130%; }
+  const TEMPLATES = {
+    command: getTemplate('command-template'),
+    commands: getTemplate('commands-template'),
+    match: getTemplate('match-template'),
+    search: getTemplate('search-template'),
+    suggestion: getTemplate('suggestion-template'),
+  };
 
-    html, body { overflow-x: clip; }
+  /**
+   * @param {string} value
+   * @returns {string}
+   */
+  function escapeRegexCharacters(value) {
+    return value.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+  }
 
-    body {
-      min-height: 100vh;
-      display: grid;
-      grid-template-rows: 1fr auto;
-      background:
-        radial-gradient(120% 90% at 15% 8%, var(--bg-mantle) 0%, var(--bg-base) 55%, var(--bg-crust) 100%);
-      color: var(--ink);
-      font-family: var(--font-body);
-      -webkit-font-smoothing: antialiased;
-    }
+  /**
+   * @param {string} template
+   * @param {string} search
+   * @returns {string}
+   */
+  function formatSearchUrl(template, search) {
+    return template.replace(/{}/g, encodeURIComponent(search));
+  }
 
-    .wrap {
-      align-self: center;
-      width: min(94vw, 1600px);
-      margin: 0 auto;
-      padding: var(--space-xl) 0;
-      display: grid;
-      grid-template-columns: 1.2fr auto 1fr;
-      align-items: end;
-      gap: var(--space-lg);
-    }
+  /**
+   * @param {string} value
+   * @returns {boolean}
+   */
+  function hasProtocol(value) {
+    return /^[a-zA-Z]+:\/\//i.test(value);
+  }
 
-    /* left — the hero stat */
-    .stat {
-      position: relative;
-      --i: 0;
-      animation: rise var(--dur-long) var(--ease-out) forwards;
-      animation-delay: calc(var(--i) * 60ms);
-    }
+  /**
+   * @param {string} value
+   * @returns {boolean}
+   */
+  function isUrl(value) {
+    return /^((https?:\/\/)?[\w-]+(\.[\w-]+)+\.?(:\d+)?(\/\S*)?)$/i.test(value);
+  }
 
-    .stat__label {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.6em;
-      font-family: var(--font-body);
-      font-size: 0.75rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      font-variant-caps: all-small-caps;
-      color: var(--muted);
-      margin-bottom: var(--space-md);
-    }
-    .stat__label::before {
-      content: "";
-      width: 2.5em;
-      height: 1px;
-      background: var(--rule);
-    }
+  /**
+   * @param {string} value
+   * @param {string} delimiter
+   * @returns {[string, string?]}
+   */
+  function splitOnce(value, delimiter) {
+    const delimiterIndex = value.indexOf(delimiter);
 
-    .stat__time {
-      font-family: var(--font-display);
-      font-weight: 300;
-      font-size: clamp(5rem, 18vw + 1rem, 11rem);
-      line-height: 0.95;
-      letter-spacing: -0.02em;
-      font-variant-numeric: tabular-nums;
-    }
+    if (delimiterIndex === -1) return [value];
 
-    .stat__date {
-      margin-top: var(--space-md);
-      font-style: italic;
-      color: var(--muted);
-      font-size: clamp(1rem, 1.6vw, 1.4rem);
-    }
+    return [
+      value.slice(0, delimiterIndex),
+      value.slice(delimiterIndex + delimiter.length),
+    ];
+  }
 
-    .greeting__icon {
-      font-size: 0.55em;
-      line-height: 1;
-    }
-    .greeting__range {
-      margin-top: var(--space-sm);
-      font-size: 0.75rem;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
+  /**
+   * @param {string} raw
+   * @param {Map<string, Command>} commands
+   * @param {AppConfig} config
+   * @returns {ParsedQuery}
+   */
+  function parseQuery(raw, commands, config) {
+    const query = raw.trim();
+
+    if (isUrl(query)) {
+      const url = hasProtocol(query) ? query : `https://${query}`;
+      return { query, url };
     }
 
-    /* centre hairline */
-    .indicator {
-      align-self: center;
-      justify-self: center;
-      position: relative;
-      width: 26px;
-      height: 26px;
-    }
-    .indicator .ring {
-      position: absolute;
-      inset: 0;
-      border: 1px solid var(--rule);
-      border-radius: 50%;
-    }
-    .indicator .dot {
-      position: absolute;
-      inset: 50% 0 0 50%;
-      width: 6px;
-      height: 6px;
-      margin: -3px 0 0 -3px;
-      border-radius: 50%;
-      background: var(--accent);
+    if (commands.has(query)) {
+      const { url } = commands.get(query);
+      return { key: query, query, url };
     }
 
-    /* right greeting */
-    .greeting {
-      text-align: right;
-      --i: 1;
-      animation: rise var(--dur-long) var(--ease-out) forwards;
-      animation-delay: calc(var(--i) * 60ms);
-    }
-    .greeting small {
-      display: block;
-      font-family: var(--font-body);
-      font-size: 0.7rem;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: var(--space-sm);
-    }
-    .greeting h1 {
-      font-family: var(--font-display);
-      font-weight: 400;
-      font-size: clamp(1.6rem, 3vw, 2.6rem);
-      line-height: 1.15;
-      max-width: 18ch;
-      margin-left: auto;
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-      gap: 0.3em;
-      font-variant-numeric: tabular-nums;
+    let splitBy = config.commandSearchDelimiter;
+    const [searchKey, rawSearch] = splitOnce(query, splitBy);
+
+    if (commands.has(searchKey)) {
+      const command = commands.get(searchKey);
+      const template = new URL(command.searchTemplate ?? '', command.url);
+      const search = rawSearch.trim();
+      const url = formatSearchUrl(decodeURI(template.href), search);
+      return { key: searchKey, query, search, splitBy, url };
     }
 
-    @keyframes rise {
-      from { opacity: 0; transform: translateY(10px); }
-      to   { opacity: 1; transform: none; }
+    splitBy = config.commandPathDelimiter;
+    const [pathKey, path] = splitOnce(query, splitBy);
+
+    if (commands.has(pathKey)) {
+      const command = commands.get(pathKey);
+      const url = `${new URL(command.url).origin}/${path}`;
+      return { key: pathKey, path, query, splitBy, url };
     }
 
-    /* footer strip */
-    .quick {
-      border-top: 1px solid var(--rule);
-      padding: var(--space-md);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: var(--space-lg);
-      --i: 2;
-      animation: rise var(--dur-long) var(--ease-out) forwards;
-      animation-delay: calc(var(--i) * 60ms);
-    }
-    .quick__quote {
-      color: var(--muted);
-      font-size: 0.95rem;
-      font-style: italic;
-      text-align: left;
-      text-align-last: left;
-      opacity: 0.85;
-      flex: 1 1 0%;
-      min-width: 0;
-    }
-    a:focus-visible {
-      outline: 2px solid var(--accent);
-      outline-offset: 3px;
+    const url = formatSearchUrl(config.defaultSearchTemplate, query);
+    return { query, search: query, url };
+  }
+
+  /**
+   * @param {ParsedQuery} parsedQuery
+   * @param {Map<string, Command>} commands
+   * @param {AppConfig} config
+   * @returns {string[]}
+   */
+  function collectLocalSuggestions(parsedQuery, commands, config) {
+    const parentKey = parsedQuery.query.split(config.commandPathDelimiter)[0];
+    const exactMatch = commands.has(parsedQuery.query);
+    let suggestions = [
+      ...(commands.get(parsedQuery.query)?.suggestions ??
+        commands.get(parentKey)?.suggestions ??
+        []),
+    ];
+
+    if (exactMatch) {
+      suggestions = suggestions.filter((suggestion) =>
+        suggestion.startsWith(parsedQuery.query)
+      );
     }
 
-    /* stopwatch */
-    .stopwatch {
-      display: flex;
-      align-items: center;
-      gap: var(--space-md);
-    }
-    .stopwatch__label {
-      font-size: 0.7rem;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: var(--space-xs);
-    }
-    .stopwatch__time {
-      font-family: var(--font-display);
-      font-weight: 300;
-      font-size: 1.35rem;
-      line-height: 1;
-      color: var(--subtext);
-      font-variant-numeric: tabular-nums;
-      min-width: 8ch;
-      text-align: right;
-    }
-    .stopwatch__btns {
-      display: flex;
-      gap: var(--space-sm);
-    }
-    .stopwatch__btn {
-      background: none;
-      border: 1px solid var(--rule);
-      border-radius: 999px;
-      color: var(--muted);
-      font-family: var(--font-body);
-      font-size: 0.75rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      padding: 0.3em 0.9em;
-      cursor: pointer;
-      transition: color var(--dur-micro) var(--ease-out), border-color var(--dur-micro) var(--ease-out);
-    }
-    .stopwatch__btn:hover,
-    .stopwatch__btn:focus-visible {
-      color: var(--accent);
-      border-color: var(--accent);
-    }
-    .stopwatch__btn--running {
-      color: var(--green);
-      border-color: var(--green);
-    }
-
-    .greeting .stopwatch {
-      justify-content: flex-end;
-      margin-top: var(--space-lg);
-    }
-
-    @media (max-width: 720px) {
-      .wrap { grid-template-columns: 1fr; align-items: center; text-align: center; }
-      .indicator { display: none; }
-      .greeting { text-align: center; }
-      .greeting h1 { margin-left: auto; margin-right: auto; justify-content: center; }
-      .stopwatch { justify-content: center; }
-      .quick { flex-direction: column; align-items: center; gap: var(--space-md); padding: var(--space-md); }
-      .quick__quote { text-align: center; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        animation-duration: 150ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 150ms !important;
+    for (const [key, command] of commands.entries()) {
+      if (key !== parsedQuery.query && !suggestions.includes(key)) {
+        if (key.includes(parsedQuery.query)) {
+          suggestions.push(key);
+        }
       }
-      .stat, .greeting, .quick { animation: none; opacity: 1; transform: none; }
+
+      for (const suggestion of command.suggestions ?? []) {
+        if (
+          suggestion !== parsedQuery.query &&
+          !suggestions.includes(suggestion)
+        ) {
+          if (suggestion.includes(parsedQuery.query)) {
+            suggestions.push(suggestion);
+          }
+        }
+      }
     }
-  </style>
-</head>
-<body>
-  <div class="wrap">
-    <div class="stat">
-      <span class="stat__label">Local time</span>
-      <div class="stat__time" id="clock">--:--</div>
-      <div class="stat__date" id="date">—</div>
-    </div>
 
-    <div class="indicator" aria-hidden="true">
-      <span class="ring"></span>
-      <span class="dot"></span>
-    </div>
+    return suggestions.filter((suggestion) =>
+      suggestion.includes(parsedQuery.query)
+    );
+  }
 
-    <div class="greeting">
-      <small>Hà Nội</small>
-      <h1 id="greeting">
-        <span class="greeting__icon" id="weather-icon"></span>
-        <span id="greeting-temp">--°</span>
-      </h1>
-      <p class="greeting__range" id="weather-range">--°/--°</p>
+  /**
+   * @param {string} search
+   * @returns {Promise<string[]>}
+   */
+  function fetchDuckDuckGoSuggestions(search) {
+    return new Promise((resolve) => {
+      window.autocompleteCallback = (response) => {
+        const suggestions = [];
 
-      <div class="stopwatch">
-        <div>
-          <p class="stopwatch__label">Stopwatch</p>
-          <span class="stopwatch__time" id="sw-time">00:00</span>
-        </div>
-        <div class="stopwatch__btns">
-          <button class="stopwatch__btn" id="sw-toggle" type="button">Start</button>
-          <button class="stopwatch__btn" id="sw-reset" type="button">Reset</button>
-        </div>
-      </div>
-    </div>
-  </div>
+        for (const item of response) {
+          if (item.phrase === search.toLowerCase()) continue;
+          suggestions.push(item.phrase);
+        }
 
-  <footer class="quick">
-    <p class="quick__quote" id="quote">—</p>
-  </footer>
+        resolve(suggestions);
+      };
 
-  <script>
-    const clockEl = document.getElementById("clock");
-    const dateEl = document.getElementById("date");
-    let current = "";
+      const script = document.createElement('script');
+      document.querySelector('head').appendChild(script);
+      script.src = `https://duckduckgo.com/ac/?callback=autocompleteCallback&q=${search}`;
+      script.onload = script.remove;
 
-    function pad(n) { return String(n).padStart(2, "0"); }
+      script.onerror = () => {
+        script.remove();
+        resolve([]);
+      };
+    });
+  }
 
-    function update() {
-      const now = new Date();
-      const hh = pad(now.getHours());
-      const mm = pad(now.getMinutes());
-      const t = `${hh}:${mm}`;
-      clockEl.textContent = t;
+  class CommandRing extends HTMLElement {
+    #clockInterval = null;
 
-      // gentle emphasis flash on each minute change
-      if (t !== current) {
-        clockEl.animate(
-          [{ opacity: 0.35 }, { opacity: 1 }],
-          { duration: 500, easing: "cubic-bezier(0.16, 1, 0.3, 1)", fill: "forwards" }
+    constructor() {
+      super();
+      this.attachShadow({ mode: 'open' });
+      const componentFragment = TEMPLATES.commands.content.cloneNode(true);
+      const commands = componentFragment.querySelector('.commands');
+
+      const entries = [...COMMANDS.entries()].filter(
+        ([, { name, url }]) => name && url
+      );
+
+      const total = entries.length;
+
+      commands.style.setProperty(
+        '--item-size',
+        Math.sin(Math.PI / total) / 0.8
+      );
+
+      for (const [index, [key, { name, url }]] of entries.entries()) {
+        const commandFragment = TEMPLATES.command.content.cloneNode(true);
+        const item = commandFragment.querySelector('li');
+        const angle = (index / total) * 2 * Math.PI - Math.PI / 2;
+        item.style.setProperty('--x', 0.5 + 0.5 * Math.cos(angle));
+        item.style.setProperty('--y', 0.5 + 0.5 * Math.sin(angle));
+
+        const commandLink = commandFragment.querySelector('.command');
+        commandLink.href = url;
+        commandLink.setAttribute('aria-label', name);
+        if (CONFIG.openLinksInNewTab) commandLink.target = '_blank';
+        commandFragment.querySelector('.key').textContent = key;
+        commandFragment.querySelector('.name').textContent = name;
+        commands.append(commandFragment);
+      }
+
+      this.shadowRoot.append(componentFragment);
+      const items = commands.querySelectorAll('li');
+
+      for (const [index] of entries.entries()) {
+        const item = items[index];
+
+        item.addEventListener('mouseenter', () => {
+          for (const [otherIndex] of entries.entries()) {
+            const distance = Math.min(
+              Math.abs(otherIndex - index),
+              total - Math.abs(otherIndex - index)
+            );
+
+            if (distance === 0) {
+              items[otherIndex].style.transform =
+                'translate(-50%, -50%) scale(1)';
+            } else if (distance === 1) {
+              items[otherIndex].style.opacity = '0.25';
+            } else if (distance === 2) {
+              items[otherIndex].style.opacity = '0.5';
+            } else if (distance === 3) {
+              items[otherIndex].style.opacity = '0.75';
+            }
+          }
+        });
+
+        item.addEventListener('mouseleave', () => {
+          for (const otherItem of items) {
+            otherItem.style.opacity = '';
+            otherItem.style.transform = '';
+          }
+        });
+      }
+    }
+
+    connectedCallback() {
+      this.#startClock();
+    }
+
+    disconnectedCallback() {
+      if (this.#clockInterval === null) return;
+
+      clearInterval(this.#clockInterval);
+      this.#clockInterval = null;
+    }
+
+    #startClock() {
+      if (this.#clockInterval !== null) return;
+
+      const hour = this.shadowRoot.querySelector('.hand--hour');
+      const minute = this.shadowRoot.querySelector('.hand--minute');
+      const second = this.shadowRoot.querySelector('.hand--second');
+
+      const tick = () => {
+        const now = new Date();
+        const hours = now.getHours() % 12;
+        const minutes = now.getMinutes();
+        const seconds = now.getSeconds();
+        second.style.transform = `rotate(${seconds * 6}deg)`;
+        minute.style.transform = `rotate(${(minutes + seconds / 60) * 6}deg)`;
+        hour.style.transform = `rotate(${(hours + minutes / 60) * 30}deg)`;
+      };
+
+      tick();
+      this.#clockInterval = setInterval(tick, 1000);
+    }
+  }
+
+  class SearchOverlay extends HTMLElement {
+    #dialog;
+    #form;
+    #input;
+    #suggestions;
+    #lastSuggestions = [];
+    #closeController = null;
+    #documentController = null;
+
+    constructor() {
+      super();
+      this.attachShadow({ mode: 'open' });
+      const componentFragment = TEMPLATES.search.content.cloneNode(true);
+      this.#dialog = componentFragment.querySelector('.dialog');
+      this.#form = componentFragment.querySelector('.form');
+      this.#input = componentFragment.querySelector('.input');
+      this.#suggestions = componentFragment.querySelector('.suggestions');
+      this.#form.addEventListener('submit', this.#onSubmit, false);
+      this.#input.addEventListener('input', this.#onInput);
+      this.#suggestions.addEventListener('click', this.#onSuggestionClick);
+      this.shadowRoot.append(componentFragment);
+    }
+
+    connectedCallback() {
+      if (this.#documentController) return;
+
+      this.#documentController = new AbortController();
+      const { signal } = this.#documentController;
+      document.addEventListener('keydown', this.#onKeydown, { signal });
+      document.addEventListener('paste', this.#onPaste, { signal });
+    }
+
+    disconnectedCallback() {
+      this.#documentController?.abort();
+      this.#documentController = null;
+      this.#cancelPendingClose();
+    }
+
+    #cancelPendingClose() {
+      this.#closeController?.abort();
+      this.#closeController = null;
+    }
+
+    #reset() {
+      this.#input.value = '';
+      this.#input.blur();
+      this.#suggestions.innerHTML = '';
+    }
+
+    #prepareOpen() {
+      this.#cancelPendingClose();
+      this.#dialog.show();
+      this.#input.focus();
+    }
+
+    #open() {
+      this.#prepareOpen();
+      requestAnimationFrame(() => this.#dialog.classList.add('visible'));
+    }
+
+    #close() {
+      this.#cancelPendingClose();
+      this.#closeController = new AbortController();
+      this.#dialog.classList.remove('visible');
+      this.#reset();
+
+      this.#dialog.addEventListener(
+        'transitionend',
+        () => {
+          if (!this.#dialog.classList.contains('visible')) {
+            this.#dialog.close();
+          }
+
+          this.#closeController = null;
+        },
+        { once: true, signal: this.#closeController.signal }
+      );
+    }
+
+    #hideImmediately() {
+      this.#cancelPendingClose();
+      this.#reset();
+      this.#dialog.close();
+    }
+
+    #execute(query) {
+      const parsedQuery = parseQuery(query, COMMANDS, CONFIG);
+      if (CONFIG.openLinksInNewTab) window.open(parsedQuery.url, '_blank', 'noopener noreferrer');
+      else location.href = parsedQuery.url;
+      this.#close();
+    }
+
+    #focusNextSuggestion(previous = false) {
+      const activeElement = this.shadowRoot.activeElement;
+      let nextIndex;
+
+      if (activeElement.dataset.index) {
+        const activeIndex = Number(activeElement.dataset.index);
+        nextIndex = previous ? activeIndex - 1 : activeIndex + 1;
+      } else {
+        nextIndex = previous ? this.#suggestions.childElementCount - 1 : 0;
+      }
+
+      const nextItem = this.#suggestions.children[nextIndex];
+      if (nextItem) nextItem.querySelector('.suggestion').focus();
+      else this.#input.focus();
+    }
+
+    #onInput = async () => {
+      const parsedQuery = parseQuery(this.#input.value, COMMANDS, CONFIG);
+
+      if (!parsedQuery.query) {
+        this.#close();
+        return;
+      }
+
+      let suggestions = collectLocalSuggestions(parsedQuery, COMMANDS, CONFIG);
+
+      const suggestionsWithStale = [
+        ...suggestions,
+        ...this.#lastSuggestions.filter((suggestion) =>
+          suggestion.includes(parsedQuery.query)
+        ),
+      ].slice(0, CONFIG.suggestionLimit);
+
+      if (suggestionsWithStale.length) {
+        this.#renderSuggestions(suggestionsWithStale, parsedQuery.query);
+      } else if (!(parsedQuery.search?.length > 1)) {
+        this.#suggestions.innerHTML = '';
+      }
+
+      if (parsedQuery.search?.length > 1) {
+        const results = await fetchDuckDuckGoSuggestions(parsedQuery.search);
+        const currentQuery = parseQuery(this.#input.value, COMMANDS, CONFIG);
+        if (currentQuery.query !== parsedQuery.query) return;
+
+        const duckDuckGoSuggestions = parsedQuery.splitBy
+          ? results.map(
+              (search) => `${parsedQuery.key}${parsedQuery.splitBy}${search}`
+            )
+          : results;
+
+        this.#lastSuggestions = duckDuckGoSuggestions;
+
+        suggestions = [...suggestions, ...duckDuckGoSuggestions].slice(
+          0,
+          CONFIG.suggestionLimit
         );
+
+        if (suggestions.length) {
+          this.#renderSuggestions(suggestions, parsedQuery.query);
+        } else {
+          this.#suggestions.innerHTML = '';
+        }
       }
-      current = t;
-
-      dateEl.textContent = now.toLocaleDateString("en-US", {
-        weekday: "long", day: "numeric", month: "long", year: "numeric"
-      });
-    }
-
-    // weather (Open-Meteo, Hanoi)
-    const weatherIcon = document.getElementById("weather-icon");
-    const greetingTemp = document.getElementById("greeting-temp");
-    const weatherRange = document.getElementById("weather-range");
-    const WEATHER_URL =
-      "https://api.open-meteo.com/v1/forecast" +
-      "?latitude=21.0285&longitude=105.8542" +
-      "&current=temperature_2m,weather_code" +
-      "&daily=temperature_2m_max,temperature_2m_min" +
-      "&timezone=Asia%2FHo_Chi_Minh&forecast_days=1";
-
-    const WMO_ICONS = {
-      0: "☀️", 1: "🌤️", 2: "⛅", 3: "☁️",
-      45: "🌫️", 48: "🌫️",
-      51: "🌦️", 53: "🌦️", 55: "🌦️",
-      56: "🌧️", 57: "🌧️",
-      61: "🌧️", 63: "🌧️", 65: "🌧️",
-      66: "🌧️", 67: "🌧️",
-      71: "🌨️", 73: "🌨️", 75: "🌨️", 77: "🌨️",
-      80: "🌦️", 81: "🌧️", 82: "⛈️",
-      85: "🌨️", 86: "🌨️",
-      95: "⛈️", 96: "⛈️", 99: "⛈️"
     };
 
-    async function loadWeather() {
-      try {
-        const res = await fetch(WEATHER_URL);
-        if (!res.ok) throw new Error(res.status);
-        const data = await res.json();
-        const t = Math.round(data.current.temperature_2m);
-        const hi = Math.round(data.daily.temperature_2m_max[0]);
-        const lo = Math.round(data.daily.temperature_2m_min[0]);
-        weatherIcon.textContent = WMO_ICONS[data.current.weather_code] ?? "🌡️";
-        greetingTemp.textContent = `${t}°`;
-        weatherRange.textContent = `${hi}°/${lo}°`;
-      } catch (e) { /* keep placeholders offline */ }
-    }
-    loadWeather();
-    setInterval(loadWeather, 30 * 60 * 1000);
+    #onPaste = (event) => {
+      if (this.#dialog.classList.contains('visible')) return;
+      const text = event.clipboardData?.getData('text');
+      if (!text) return;
+      event.preventDefault();
+      this.#open();
+      this.#input.value = text;
+      this.#onInput();
+    };
 
-    // stopwatch
-    const swTime = document.getElementById("sw-time");
-    const swToggle = document.getElementById("sw-toggle");
-    const swReset = document.getElementById("sw-reset");
-    let swElapsed = 0;
-    let swRunning = false;
-    let swStart = 0;
-    let swRaf = 0;
+    #onKeydown = (event) => {
+      if (event.target.closest?.('.bg-menu')) return;
 
-    function swFormat(ms) {
-      const s = Math.floor(ms / 1000) % 60;
-      const m = Math.floor(ms / 60000) % 60;
-      const h = Math.floor(ms / 3600000);
-      const hh = h > 0 ? String(h).padStart(2, "0") + ":" : "";
-      return `${hh}${String(m).padStart(2, "0")}:${pad(s)}`;
-    }
+      if (!this.#dialog.classList.contains('visible')) {
+        if (event.key === 'Escape') {
+          if (this.#dialog.open) {
+            this.#hideImmediately();
+          }
 
-    function swTick() {
-      swTime.textContent = swFormat(swElapsed + (performance.now() - swStart));
-      swRaf = requestAnimationFrame(swTick);
-    }
+          return;
+        }
 
-    swToggle.addEventListener("click", () => {
-      if (swRunning) {
-        swElapsed += performance.now() - swStart;
-        swRunning = false;
-        cancelAnimationFrame(swRaf);
-        swToggle.textContent = "Start";
-        swToggle.classList.remove("stopwatch__btn--running");
-      } else {
-        swStart = performance.now();
-        swRunning = true;
-        swToggle.textContent = "Pause";
-        swToggle.classList.add("stopwatch__btn--running");
-        swTick();
+        this.#prepareOpen();
+
+        requestAnimationFrame(() => {
+          // close the search dialog before the next repaint if a character is
+          // not produced (e.g. if you type shift, control, alt etc.)
+          if (!this.#input.value) {
+            this.#hideImmediately();
+          } else {
+            this.#dialog.classList.add('visible');
+          }
+        });
+
+        return;
       }
+
+      if (event.key === 'Escape') {
+        this.#close();
+        return;
+      }
+
+      const alt = event.altKey ? 'alt-' : '';
+      const ctrl = event.ctrlKey ? 'ctrl-' : '';
+      const meta = event.metaKey ? 'meta-' : '';
+      const shift = event.shiftKey ? 'shift-' : '';
+      const modifierPrefixedKey = `${alt}${ctrl}${meta}${shift}${event.key}`;
+
+      if (/^(ArrowDown|Tab|ctrl-n)$/.test(modifierPrefixedKey)) {
+        event.preventDefault();
+        this.#focusNextSuggestion();
+        return;
+      }
+
+      if (/^(ArrowUp|ctrl-p|shift-Tab)$/.test(modifierPrefixedKey)) {
+        event.preventDefault();
+        this.#focusNextSuggestion(true);
+      }
+    };
+
+    #onSubmit = () => {
+      this.#execute(this.#input.value);
+    };
+
+    #onSuggestionClick = (event) => {
+      const button = event.target.closest('.suggestion');
+      if (!button) return;
+      this.#execute(button.dataset.suggestion);
+    };
+
+    #renderSuggestions(suggestions, query) {
+      const focusedSuggestion =
+        this.shadowRoot.activeElement?.dataset?.suggestion;
+
+      this.#suggestions.innerHTML = '';
+      const pattern = new RegExp(escapeRegexCharacters(query), 'i');
+
+      for (const [index, suggestion] of suggestions.entries()) {
+        const suggestionFragment = TEMPLATES.suggestion.content.cloneNode(true);
+        const button = suggestionFragment.querySelector('.suggestion');
+        button.dataset.index = index;
+        button.dataset.suggestion = suggestion;
+        const matched = suggestion.match(pattern);
+
+        if (matched) {
+          const matchFragment = TEMPLATES.match.content.cloneNode(true);
+          const match = matchFragment.querySelector('.match');
+          const beforeMatch = suggestion.slice(0, matched.index);
+
+          const afterMatch = suggestion.slice(
+            matched.index + matched[0].length
+          );
+
+          match.textContent = matched[0];
+          match.insertAdjacentText('beforebegin', beforeMatch);
+          match.insertAdjacentText('afterend', afterMatch);
+          button.append(matchFragment);
+        } else {
+          button.textContent = suggestion;
+        }
+
+        this.#suggestions.append(suggestionFragment);
+      }
+
+      if (focusedSuggestion) {
+        const buttonToRefocus = this.#suggestions.querySelector(
+          `[data-suggestion="${CSS.escape(focusedSuggestion)}"]`
+        );
+
+        buttonToRefocus?.focus();
+      }
+    }
+  }
+
+  // render the dial only once the pixel font is ready (no fallback-font flash)
+  await document.fonts.load("1rem 'Departure Mono'").catch(() => {});
+  customElements.define('commands-component', CommandRing);
+  customElements.define('search-component', SearchOverlay);
+</script>
+
+<template id="commands-template">
+  <style>
+    nav {
+      --dial-size: min(55vh, 55vw);
+      align-items: center;
+      box-sizing: border-box;
+      display: flex;
+      justify-content: center;
+      min-height: 100dvh;
+      position: relative;
+      width: 100%;
+    }
+
+    .commands {
+      aspect-ratio: 1;
+      height: var(--dial-size);
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      position: relative;
+    }
+
+    .commands li {
+      border-radius: 50%;
+      height: calc(var(--item-size) * 100%);
+      left: calc(var(--x) * 100%);
+      position: absolute;
+      top: calc(var(--y) * 100%);
+      transform: translate(-50%, -50%) scale(0.8);
+      transition:
+        opacity var(--transition-speed),
+        transform var(--transition-speed);
+      width: calc(var(--item-size) * 100%);
+    }
+
+    .command {
+      align-items: center;
+      border-radius: 50%;
+      color: var(--color-text);
+      display: flex;
+      height: 100%;
+      justify-content: center;
+      outline: 0;
+      position: relative;
+      text-align: center;
+      text-decoration: none;
+      width: 100%;
+    }
+
+    .key {
+      color: var(--color-text-subtle);
+      position: absolute;
+      transition:
+        opacity var(--transition-speed),
+        transform var(--transition-speed);
+    }
+
+    .command:where(:focus, :hover) .key {
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(1.5em) scale(0.9);
+    }
+
+    .name {
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(-1.5em) scale(0.9);
+      transition:
+        opacity var(--transition-speed),
+        transform var(--transition-speed);
+    }
+
+    .command:where(:focus, :hover) .name {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .clock {
+      aspect-ratio: 1;
+      height: calc(var(--dial-size) * 0.85);
+      left: 50%;
+      pointer-events: none;
+      position: absolute;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .hand {
+      background: var(--color-text);
+      border-radius: 2px;
+      bottom: 50%;
+      left: 50%;
+      position: absolute;
+      transform-origin: bottom center;
+    }
+
+    .hand--hour {
+      height: 30%;
+      width: 3px;
+      margin-left: -1.5px;
+    }
+
+    .hand--minute {
+      height: 40%;
+      width: 2px;
+      margin-left: -1px;
+    }
+
+    .hand--second {
+      background: var(--color-accent);
+      height: 45%;
+      width: 1px;
+      margin-left: -0.5px;
+    }
+
+    .dot {
+      background: var(--color-text);
+      border-radius: 50%;
+      height: 6px;
+      left: 50%;
+      position: absolute;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 6px;
+    }
+  </style>
+  <nav>
+    <menu class="commands"></menu>
+    <div class="clock">
+      <div class="hand hand--hour"></div>
+      <div class="hand hand--minute"></div>
+      <div class="hand hand--second"></div>
+      <div class="dot"></div>
+    </div>
+  </nav>
+</template>
+
+<template id="command-template">
+  <li>
+    <a class="command" rel="noopener noreferrer" aria-label="">
+      <span class="key" aria-hidden="true"></span>
+      <span class="name"></span>
+    </a>
+  </li>
+</template>
+
+<template id="search-template">
+  <style>
+    input,
+    button {
+      -moz-appearance: none;
+      font-family: var(--font-family);
+      -webkit-appearance: none;
+      background: transparent;
+      border: 0;
+      display: block;
+      outline: 0;
+    }
+
+    .dialog {
+      align-items: center;
+      background: rgba(24, 24, 37, 0.92);
+      border: none;
+      display: none;
+      flex-direction: column;
+      height: 100%;
+      justify-content: center;
+      left: 0;
+      opacity: 0;
+      padding: 0;
+      top: 0;
+      transform: translateY(10px);
+      transition:
+        opacity var(--transition-speed),
+        transform var(--transition-speed);
+      width: 100%;
+    }
+
+    .dialog[open] {
+      display: flex;
+    }
+
+    .dialog.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .form {
+      width: 100%;
+    }
+
+    .sr-only {
+      clip: rect(0 0 0 0);
+      clip-path: inset(50%);
+      height: 1px;
+      overflow: hidden;
+      position: absolute;
+      white-space: nowrap;
+      width: 1px;
+    }
+
+    .input {
+      color: var(--color-text);
+      font-size: 2rem;
+      padding: 0;
+      text-align: center;
+      width: 100%;
+    }
+
+    .suggestions {
+      align-items: center;
+      display: flex;
+      flex-direction: column;
+      flex-wrap: wrap;
+      justify-content: center;
+      list-style: none;
+      margin: 1rem 0 0;
+      overflow: hidden;
+      padding: 0;
+    }
+
+    .suggestion {
+      color: var(--color-text);
+      cursor: pointer;
+      font-size: 1rem;
+      padding: 1rem;
+      position: relative;
+      transition: color var(--transition-speed);
+      white-space: nowrap;
+      z-index: 1;
+    }
+
+    .suggestion:where(:focus, :hover) {
+      color: var(--color-background);
+    }
+
+    .suggestions:hover .suggestion:focus:not(:hover) {
+      color: var(--color-text);
+    }
+
+    .suggestion::before {
+      background-color: var(--color-text);
+      border-radius: 1em;
+      content: ' ';
+      inset: 0.8em 0.4em;
+      opacity: 0;
+      position: absolute;
+      transform: translateY(0.3em) scale(0.9);
+      transition:
+        opacity var(--transition-speed),
+        transform var(--transition-speed);
+      z-index: -1;
+    }
+
+    .suggestion:where(:focus, :hover)::before {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .suggestions:hover .suggestion:focus:not(:hover)::before {
+      opacity: 0;
+      transform: translateY(0.3em) scale(0.9);
+    }
+
+    .match {
+      color: var(--color-text-subtle);
+      transition: color var(--transition-speed);
+    }
+
+    .suggestion:where(:focus, :hover) .match {
+      color: var(--color-background);
+    }
+
+    .suggestions:hover .suggestion:focus:not(:hover) .match {
+      color: var(--color-text-subtle);
+    }
+
+    @media (min-width: 700px) {
+      .suggestions {
+        flex-direction: row;
+      }
+    }
+  </style>
+  <dialog class="dialog" aria-label="Search">
+    <form autocomplete="off" class="form" method="dialog" spellcheck="false">
+      <label for="search-input" class="sr-only">Search</label>
+      <input class="input" id="search-input" type="text" />
+      <menu class="suggestions"></menu>
+    </form>
+  </dialog>
+</template>
+
+<template id="suggestion-template">
+  <li>
+    <button class="suggestion" type="button"></button>
+  </li>
+</template>
+
+<template id="match-template">
+  <span class="match"></span>
+</template>
+
+<style>
+  html {
+    background-color: var(--color-background);
+    font-family: var(--font-family);
+    font-size: var(--font-size);
+    line-height: 1.4;
+    user-select: none;
+    font-synthesis: none; /* no fake bold on the pixel font */
+  }
+
+  body {
+    margin: 0;
+  }
+</style>
+
+<div class="bg" id="bg" aria-hidden="true"></div>
+
+<div class="bg-menu">
+  <button class="btn" id="bg-open" type="button" aria-expanded="false" aria-controls="bg-panel" aria-label="Background" title="Background"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.1-3.1a2 2 0 0 0-2.8 0L6 21"/></svg></button>
+  <div class="bg-panel" id="bg-panel" hidden>
+    <div class="btns">
+      <button class="btn" id="bg-pick" type="button">Choose image</button>
+      <button class="btn" id="bg-reset" type="button">Default</button>
+    </div>
+    <label><div>Blur <span id="bg-blur-val"></span></div>
+      <input type="range" id="bg-blur" min="0" max="30" step="1" /></label>
+    <label><div>Opacity <span id="bg-opacity-val"></span></div>
+      <input type="range" id="bg-opacity" min="0" max="100" step="1" /></label>
+    <label><div>Brightness <span id="bg-bright-val"></span></div>
+      <input type="range" id="bg-bright" min="10" max="100" step="1" /></label>
+    <input type="file" id="bg-file" accept="image/*" hidden />
+  </div>
+</div>
+<commands-component></commands-component>
+<search-component></search-component>
+
+<script>
+  // custom background: image Blob in Cache API (no localStorage size limit), sliders in localStorage
+  const bgEl = document.getElementById("bg");
+  const bgOpen = document.getElementById("bg-open");
+  const bgPanel = document.getElementById("bg-panel");
+  const bgPick = document.getElementById("bg-pick");
+  const bgReset = document.getElementById("bg-reset");
+  const bgFile = document.getElementById("bg-file");
+  const BG_KEY = "/__bg";
+  const BG_DEFAULTS = { blur: 0, opacity: 100, bright: 60 };
+  const BG_UNITS = { blur: "px", opacity: "%", bright: "%" };
+  let bgUrl = "";
+  let bgOpts = { ...BG_DEFAULTS };
+  try { Object.assign(bgOpts, JSON.parse(localStorage.getItem("newtab-bg") || "{}")); } catch (e) {}
+
+  function renderBgOpts() {
+    bgEl.style.filter = `blur(${bgOpts.blur}px) brightness(${bgOpts.bright}%)`;
+    bgEl.style.opacity = bgOpts.opacity / 100;
+    for (const k in BG_DEFAULTS) {
+      document.getElementById(`bg-${k}`).value = bgOpts[k];
+      document.getElementById(`bg-${k}-val`).textContent = bgOpts[k] + BG_UNITS[k];
+    }
+  }
+
+  function applyBg(blob) {
+    if (bgUrl) URL.revokeObjectURL(bgUrl);
+    bgUrl = blob ? URL.createObjectURL(blob) : "";
+    bgEl.style.backgroundImage = bgUrl ? `url("${bgUrl}")` : "none";
+  }
+
+  async function loadBg() {
+    try {
+      const res = await (await caches.open("newtab")).match(BG_KEY);
+      if (res) applyBg(await res.blob());
+    } catch (e) { /* storage unavailable: keep gradient */ }
+  }
+
+  for (const k in BG_DEFAULTS) {
+    document.getElementById(`bg-${k}`).addEventListener("input", (e) => {
+      bgOpts[k] = Number(e.target.value);
+      renderBgOpts();
+      try { localStorage.setItem("newtab-bg", JSON.stringify(bgOpts)); } catch (e) {}
     });
+  }
 
-    swReset.addEventListener("click", () => {
-      swElapsed = 0;
-      swRunning = false;
-      cancelAnimationFrame(swRaf);
-      swTime.textContent = "00:00";
-      swToggle.textContent = "Start";
-      swToggle.classList.remove("stopwatch__btn--running");
-    });
+  function toggleBgPanel(open) {
+    bgPanel.hidden = !open;
+    bgOpen.setAttribute("aria-expanded", open);
+  }
+  bgOpen.addEventListener("click", () => toggleBgPanel(bgPanel.hidden));
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest(".bg-menu")) toggleBgPanel(false);
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") toggleBgPanel(false);
+  });
 
-    update();
-    setInterval(update, 1000);
-
-    const quotes = [
-      "Discipline is choosing between what you want now and what you want most.",
-      "Do something today that your future self will thank you for.",
-      "The secret of getting ahead is getting started.",
-      "Focus on the step in front of you, not the summit.",
-      "You don't have to be great to start, but you have to start to be great.",
-      "Small progress is still progress.",
-      "Make it happen. One tab at a time.",
-      "Better than yesterday, one session at a time.",
-      "The best time to plant a tree was twenty years ago. The second best time is now.",
-      "Don't watch the clock; do what it does. Keep going.",
-      "Success is the sum of small efforts repeated day in and day out.",
-      "Do it with passion or not at all.",
-      "It always seems impossible until it's done.",
-      "Well done is better than well said.",
-      "Energy and persistence conquer all things.",
-      "What you do today can improve all your tomorrows.",
-      "Believe you can and you're halfway there.",
-      "The only way to do great work is to love what you do.",
-      "Everything you've ever wanted is on the other side of fear.",
-      "Great things never come from comfort zones."
-    ];
-    document.getElementById("quote").textContent = quotes.join("  ·  ");
-  </script>
-</body>
-</html>
+  bgPick.addEventListener("click", () => bgFile.click());
+  bgFile.addEventListener("change", async () => {
+    const file = bgFile.files[0];
+    bgFile.value = "";
+    if (!file) return;
+    applyBg(file);
+    try { await (await caches.open("newtab")).put(BG_KEY, new Response(file)); } catch (e) {}
+  });
+  bgReset.addEventListener("click", async () => {
+    applyBg(null);
+    bgOpts = { ...BG_DEFAULTS };
+    renderBgOpts();
+    try { localStorage.removeItem("newtab-bg"); } catch (e) {}
+    try { await (await caches.open("newtab")).delete(BG_KEY); } catch (e) {}
+  });
+  renderBgOpts();
+  loadBg();
+</script>

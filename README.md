@@ -6,29 +6,27 @@
   <a href="https://github.com/catppuccin/catppuccin"><img src="https://img.shields.io/badge/Catppuccin%20Mocha-cba6f7?style=flat"></a>
 </p>
 
-> A keyboard-driven i3 rice for plain Ubuntu (no NixOS), themed Catppuccin Mocha end to end. One Nix flake + Home Manager command rebuilds the whole desktop (Rofi menus, Kitty, Neovim, Yazi, Firefox, Vietnamese input), and dotfiles are symlinked so edits apply instantly.
+> A keyboard-driven i3 rice for plain Ubuntu (no NixOS), themed Catppuccin Mocha end to end. One Nix flake + Home Manager command rebuilds the whole desktop (Rofi menus, Alacritty, Neovim, Yazi, Firefox, Vietnamese input), and dotfiles are symlinked so edits apply instantly.
 
+![Desktop: btop, Neovim, fastfetch](assets/desktop-busy.png)
 
+## Philosophy
 
-
-
-[demo.webm](https://github.com/user-attachments/assets/84f04267-aeff-49eb-a212-983af98ae4b9)
-
-
-
-
-
-
-
-![Desktop screenshot](assets/fuzzyvim+yazi+btop.png)
+- **Performance first.** i3 instead of a full desktop environment. picom renders on the GPU (`glx`) with blur off and 0.1 s animations, and fullscreen games/video bypass the compositor. No always-on tray applets: Wi-Fi and Bluetooth are TUIs opened on demand (the two GTK applets they replace used ~500 MB). Firefox ships with telemetry, studies, and background AI models off.
+- **Simple to use.** Every action is a key (`Mod+i` lists them all). Daily tasks (power, clipboard, display, audio, wallpaper) are one Rofi menu away. One command rebuilds the whole desktop, and config edits apply without a rebuild.
+- **No bloatware.** One small tool per job, terminal first. Nothing runs in the background unless it earns its place, and the Nix store is garbage-collected weekly.
 
 ## Screenshots
 
-| Clean | Busy (fastfetch + nvim + btop) |
+| Clean | fuzzyvim + Yazi |
 | --- | --- |
-| ![Clean desktop](assets/desktop-clean.png) | ![Busy desktop](assets/desktop-busy.png) |
+| ![Clean desktop](assets/desktop-clean.png) | ![fuzzyvim and Yazi](assets/fuzzyvim-yazi.png) |
 | **Rofi launcher** (`Mod+space`) | **Power menu** (`Mod+x`) |
 | ![Rofi launcher](assets/rofi-launcher.png) | ![Power menu](assets/rofi-power.png) |
+
+**Firefox start page**: a [tilde](https://github.com/xvvvyz/tilde)-style dial. Type a key to jump (`y` YouTube, `g` GitHub), `y lofi` to search a site, anything else to search the web. The background image, blur, and brightness can be changed from the top-right button.
+
+![Firefox start page](assets/firefox-newtab.png)
 
 ## What's installed
 
@@ -38,10 +36,11 @@
 | Shell | Zsh + Starship |
 | Terminal | Alacritty (Kitty also installed) |
 | Launcher | Rofi (`Mod+space`: run / drun / ssh) |
-| Quick menus | Rofi-driven power, clipboard, display, wallpaper, and pomodoro-task pickers (Wi-Fi/Bluetooth via nm-applet/blueman tray) |
+| Quick menus | Rofi-driven power, clipboard, display, audio, wallpaper, and pomodoro-task pickers |
+| Wi-Fi / Bluetooth | wifitui (`Mod+w`) and bluetui (`Mod+Shift+w`) in floating terminals, no tray applets |
 | Notifications | dunst (sound + volume ducking on notify, silent volume/brightness OSD, Caps Lock state), login/logout sounds, USB plug/unplug alerts |
 | File Manager | Thunar (archive plugin + xarchiver: zip/7z/rar/tar), Yazi (smart-enter, full-border, jump-to-char, git, mount plugins) |
-| Browser | Firefox (Catppuccin CSS, managed extensions, custom new-tab page) |
+| Browser | Firefox (Catppuccin CSS, managed extensions, tilde-style start page) |
 | Editor | Neovim + fuzzyvim (`Ctrl+F` fzf file picker with preview) |
 | Screenshot | maim + Satty |
 | Clipboard History | cliphist |

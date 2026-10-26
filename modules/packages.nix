@@ -20,6 +20,7 @@
     tree-sitter
     nil
     btop
+    wifitui # Wi-Fi TUI (NetworkManager), replaces nm-applet
     gcc
     alacritty
     starship

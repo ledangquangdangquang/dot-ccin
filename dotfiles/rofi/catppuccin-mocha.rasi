@@ -23,7 +23,7 @@
     surface2:                    rgba ( 88, 91, 112, 100 % );
     surface1:                    rgba ( 69, 71, 90, 100 % );
     surface0:                    rgba ( 49, 50, 68, 100 % );
-    base:                        rgba ( 30, 30, 46, 10 % );
+    base:                        rgba ( 30, 30, 46, 90 % );
     mantle:                      rgba ( 24, 24, 37, 100 % );
     crust:                       rgba ( 17, 17, 27, 100 % );
     background-color:            transparent;

@@ -28,8 +28,7 @@ These must come from apt (they need system PAM, Xorg drivers, or system services
 
 ```bash
 sudo apt install -y i3 i3lock xss-lock \
-  xserver-xorg-input-libinput \
-  network-manager-gnome blueman
+  xserver-xorg-input-libinput
 ```
 
 ## 4. Apply Home Manager

@@ -14,7 +14,6 @@
     "kitty"
     "alacritty"
     "starship"
-    "newtab"
     "picom"
     "zsh"
     "wireplumber"
@@ -38,5 +37,7 @@ in {
       # that `recursive = true` bakes in (it won't pick up added files
       # without a nix-store rebuild-cache workaround).
       "nvim".source = createSymlink "${dotfiles}/nvim";
+      # Same reason: new tab page assets (fonts) are added over time.
+      "newtab".source = createSymlink "${dotfiles}/newtab";
     };
 }

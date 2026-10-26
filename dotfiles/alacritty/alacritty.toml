@@ -4,7 +4,7 @@ TERM = "xterm-256color"
 WINIT_X11_IGNORE_XIM = "1"
 
 [window]
-opacity = 0.7
+opacity = 0.9
 padding = { x = 10, y = 10 }
 
 [font]

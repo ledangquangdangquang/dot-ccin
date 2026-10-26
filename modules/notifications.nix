@@ -241,7 +241,7 @@ in {
         frame_color = "#89b4fa";
         separator_color = "frame";
         font = "FiraCode Nerd Font Mono 14";
-        transparency = 30;
+        transparency = 10;
         separator_height = 2;
         notification_limit = 10;
       };
