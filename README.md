@@ -92,6 +92,7 @@ See [INSTALL.md](INSTALL.md) for step-by-step setup and troubleshooting.
 ## Notes
 
 - i3 shortcuts: `Mod+i` (see `dotfiles/i3/keyshortcuts.txt`)
+- Screenshots: `bash assets/capture.sh` retakes every README image on an empty workspace 9
 - Shell aliases: `modules/zsh.nix`
 - Do not commit secrets, SSH keys, browser sessions, or generated logs
 - Audio: PipeWire (PulseAudio-compatible, controlled via `pactl`/`wpctl`)
