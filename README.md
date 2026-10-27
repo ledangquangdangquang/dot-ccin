@@ -72,14 +72,15 @@
 1. **Add a package** → edit `modules/packages.nix`
 2. **Add an app config** → create `dotfiles/<app>/`, then add `"<app>"` to `configApps` in `modules/dotfiles.nix`
 3. **Add Home Manager logic** → create a new file under `modules/`, import it from `modules/default.nix`
-4. **Apply** → `home-manager switch --flake ".#$USER"`
+4. **Apply** → `rebuild` (zsh alias: `nix flake check` + switch)
 
 Config files in `dotfiles/` are symlinked directly — edit and see changes immediately, no rebuild needed.
 
 ## Common commands
 
 ```bash
-home-manager switch --flake ".#$(whoami)"     # apply config
+rebuild                                        # check + apply config
+nix run github:nix-community/home-manager -- switch --flake ".#$USER"  # apply without the alias
 nix flake check                               # validate before switching
 nix fmt                                        # format Nix files
 nix store gc                                   # clean /nix/store
@@ -93,6 +94,7 @@ See [INSTALL.md](INSTALL.md) for step-by-step setup and troubleshooting.
 
 - i3 shortcuts: `Mod+i` (see `dotfiles/i3/keyshortcuts.txt`)
 - Screenshots: `bash assets/capture.sh` retakes every README image on an empty workspace 9
+- Extra apps outside this config: recommended to install with Ubuntu's default tools (`apt`, App Center) to avoid conflicts
 - Shell aliases: `modules/zsh.nix`
 - Do not commit secrets, SSH keys, browser sessions, or generated logs
 - Audio: PipeWire (PulseAudio-compatible, controlled via `pactl`/`wpctl`)
