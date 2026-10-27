@@ -235,3 +235,5 @@
 /* Remove duplicated window control buttons*/ 
 #nav-bar .titlebar-buttonbox{display: none !important}
 #tabbrowser-arrowscrollbox {max-height: 34px !important;}
+/* Tab hover preview anchors to the 68px tab box, not the 34px visible row */
+#tab-preview-panel {margin-top: -34px !important;}
