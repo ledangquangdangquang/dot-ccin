@@ -20,6 +20,26 @@
         "type": "github"
       }
     },
+    "fcitx5-ngosen": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1793081317,
+        "narHash": "sha256-g+CCid+MKPg/nr404ue2P7u4N1WM95vJSCRRocGAIfs=",
+        "owner": "ngosen",
+        "repo": "ngosen",
+        "rev": "23a5d39f2b013d0380674cbb19959767d0473908",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ngosen",
+        "repo": "ngosen",
+        "type": "github"
+      }
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -60,6 +80,7 @@
     "root": {
       "inputs": {
         "catppuccin": "catppuccin",
+        "fcitx5-ngosen": "fcitx5-ngosen",
         "home-manager": "home-manager",
         "nixpkgs": "nixpkgs"
       }

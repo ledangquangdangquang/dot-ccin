@@ -42,8 +42,9 @@ Mod + Shift + t         Toggle status bar
 
 WORKSPACES
 ────────────────────────────────────────────────────────────
-Mod + a/s/d/c/b         Go to workspace A/S/D/C/B
+Mod + a/d/b             Go to workspace A/D/B
 Mod + 1/2/3/4/5         Go to workspace 1/2/3/4/5
+Mod + Left / Right      Previous / next active workspace
 Mod + Shift + key       Move window to the matching workspace
 Firefox                 Opens automatically on workspace B
 Zathura                 Opens automatically on workspace D

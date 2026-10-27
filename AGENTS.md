@@ -13,7 +13,7 @@ The active window manager is i3. Treat `dotfiles/i3/` as the window manager conf
 - `modules/default.nix` is the module index. Register every new Home Manager module there.
 - `modules/packages.nix` contains the shared package list. Feature-specific packages should remain in their owning module.
 - `modules/dotfiles.nix` maps selected folders from `dotfiles/` into `~/.config`. Its `configApps` list is the place to register newly linked application folders.
-- `modules/fcitx.nix` configures Fcitx5, Unikey, and input-method environment variables.
+- `modules/fcitx.nix` configures Fcitx5, the Ngó Sen input method (flake input `fcitx5-ngosen`), and input-method environment variables.
 - Wi-Fi and Bluetooth use on-demand TUIs `wifitui` (`Mod+w`) and `bluetui` (`Mod+Shift+w`) in floating Alacritty windows, bound in `dotfiles/i3/config`; no tray applets run.
 - `modules/lock.nix` provides `lock-screen` (blurred wallpaper + Ubuntu's `/usr/bin/i3lock`), triggered by `xss-lock`.
 - `modules/notifications.nix` configures dunst notification daemon.

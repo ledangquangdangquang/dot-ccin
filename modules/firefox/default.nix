@@ -65,9 +65,11 @@ in {
     nativeMessagingHosts = with pkgs; [ff2mpv-rust];
     policies = {
       PromptForDownloadLocation = true;
-      # Keep DNS on WARP Families (modules/warp.nix); Firefox DoH would bypass the filter.
+      # Cloudflare Families (1.1.1.3, malware + adult blocking) over DoH; no fallback to system DNS.
       DNSOverHTTPS = {
-        Enabled = false;
+        Enabled = true;
+        ProviderURL = "https://family.cloudflare-dns.com/dns-query";
+        Fallback = false;
         Locked = true;
       };
 

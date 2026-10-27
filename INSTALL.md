@@ -33,20 +33,6 @@ sudo apt install -y i3 i3lock xss-lock \
   xserver-xorg-input-libinput
 ```
 
-Cloudflare WARP (DNS filter: malware + adult content; Home Manager sets Families mode via `modules/warp.nix`):
-
-```bash
-curl -fsSL https://pkg.cloudflareclient.com/pubkey.gpg | sudo gpg --yes --dearmor --output /usr/share/keyrings/cloudflare-warp-archive-keyring.gpg
-echo "deb [signed-by=/usr/share/keyrings/cloudflare-warp-archive-keyring.gpg] https://pkg.cloudflareclient.com/ $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/cloudflare-client.list
-sudo apt-get update && sudo apt-get install -y cloudflare-warp
-
-sudo systemctl enable --now warp-svc   # start with the system
-warp-cli --accept-tos registration new
-warp-cli --accept-tos connect          # stays connected across reboots
-```
-
-Check: `warp-cli settings | grep Resolve` shows `family.cloudflare-dns.com` after step 4.
-
 ## 4. Apply Home Manager
 
 ```bash

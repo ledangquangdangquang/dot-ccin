@@ -12,17 +12,6 @@ step "apt packages"
 sudo apt update
 sudo apt install -y git curl xz-utils i3 i3lock xss-lock xserver-xorg-input-libinput fcitx5-frontend-gtk3 fcitx5-frontend-gtk4 fcitx5-frontend-qt5 fcitx5-frontend-qt6
 
-step "Cloudflare WARP"
-if ! command -v warp-cli >/dev/null; then
-  curl -fsSL https://pkg.cloudflareclient.com/pubkey.gpg | sudo gpg --yes --dearmor --output /usr/share/keyrings/cloudflare-warp-archive-keyring.gpg
-  echo "deb [signed-by=/usr/share/keyrings/cloudflare-warp-archive-keyring.gpg] https://pkg.cloudflareclient.com/ $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/cloudflare-client.list >/dev/null
-  sudo apt-get update && sudo apt-get install -y cloudflare-warp
-fi
-sudo systemctl enable --now warp-svc
-sleep 2 # warp-svc needs a moment before accepting CLI calls
-warp-cli --accept-tos registration show >/dev/null 2>&1 || warp-cli --accept-tos registration new
-warp-cli --accept-tos connect
-
 step "flake user -> $USER"
 sed -i "s/^\(\s*user = \)\"[^\"]*\";/\1\"$USER\";/" flake.nix
 grep -q "user = \"$USER\";" flake.nix || { echo "failed to set user in flake.nix" >&2; exit 1; }
