@@ -180,7 +180,8 @@ bar {
   padding 0 4px
   workspace_min_width 28
   tray_padding 2
-  status_command i3status-rs ~/.config/i3status-rust/config.toml
+  # touch: watch_files needs ~/.cache/pomodoro-task to exist or the task block errors
+  status_command sh -c 'touch -a ~/.cache/pomodoro-task; exec i3status-rs ~/.config/i3status-rust/config.toml'
 
   colors {
     background         #11111b

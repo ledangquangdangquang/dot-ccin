@@ -10,7 +10,7 @@ ddc=false
 
 step "apt packages"
 sudo apt update
-sudo apt install -y git curl xz-utils i3 i3lock xss-lock xserver-xorg-input-libinput
+sudo apt install -y git curl xz-utils i3 i3lock xss-lock xserver-xorg-input-libinput fcitx5-frontend-gtk3 fcitx5-frontend-gtk4 fcitx5-frontend-qt5 fcitx5-frontend-qt6
 
 step "Cloudflare WARP"
 if ! command -v warp-cli >/dev/null; then
@@ -40,7 +40,7 @@ grep -qs 'flakes' ~/.config/nix/nix.conf || echo "experimental-features = nix-co
 nix --version
 
 step "Home Manager switch"
-nix run github:nix-community/home-manager -- switch -b backup --flake ".#$USER"
+nix run --inputs-from . home-manager -- switch -b backup --flake ".#$USER"
 
 step "zsh default shell"
 zsh="$HOME/.nix-profile/bin/zsh"

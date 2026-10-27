@@ -80,7 +80,7 @@ Config files in `dotfiles/` are symlinked directly — edit and see changes imme
 
 ```bash
 rebuild                                        # check + apply config
-nix run github:nix-community/home-manager -- switch --flake ".#$USER"  # apply without the alias
+nix run --inputs-from . home-manager -- switch --flake ".#$USER"  # apply without the alias
 nix flake check                               # validate before switching
 nix fmt                                        # format Nix files
 nix store gc                                   # clean /nix/store

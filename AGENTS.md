@@ -34,7 +34,7 @@ Keep `home.nix` minimal. Add packages, generated scripts, session variables, and
 
 - `nix flake check` validates the flake outputs.
 - `nix fmt` formats Nix files with the flake formatter.
-- `nix run github:nix-community/home-manager -- switch --flake ".#$USER"` applies the Home Manager configuration. The `home-manager` CLI is not installed on this system; never use bare `home-manager switch`.
+- `nix run --inputs-from . home-manager -- switch --flake ".#$USER"` applies the Home Manager configuration. The `home-manager` CLI is not installed on this system; never use bare `home-manager switch`.
 - `rebuild` (alias in `modules/zsh.nix`/`bash.nix`) runs `nix flake check` then the switch above.
 
 New files must be git-tracked (`git add <file>`) before `nix flake check`/switch: flakes ignore untracked files.
