@@ -49,7 +49,24 @@ interval = 2
 command = '''read -r _ u1 n1 s1 i1 _ < /proc/stat; sleep 0.3; read -r _ u2 n2 s2 i2 _ < /proc/stat; used=$(( (u2-u1)+(n2-n1)+(s2-s1) )); idle=$((i2-i1)); total=$((used+idle)); [ "$total" -gt 0 ] && cpu=$((used*100/total)) || cpu=0; mt=$(awk "/MemTotal/{print \$2}" /proc/meminfo); ma=$(awk "/MemAvailable/{print \$2}" /proc/meminfo); ram=$(( (mt-ma)*100/mt )); vram=$(nvidia-smi --query-gpu=memory.used,memory.total --format=csv,noheader,nounits | awk -F', ' '{printf "%d", $1*100/$2}'); printf "  %d%%  󰍛 %d%%  󰢮 %d%% " "$cpu" "$ram" "${vram:-0}"'''
 [[block.click]]
 button = "left"
-cmd = "alacritty -e top"
+cmd = "alacritty --class top -e top"
+
+[[block]]
+block = "net"
+device = "^wl"
+format = " $icon {$ssid|} "
+missing_format = " 󰤭 "
+[[block.click]]
+button = "left"
+cmd = "alacritty --class wifitui -e wifitui"
+
+[[block]]
+block = "custom"
+interval = 5
+command = '''bluetoothctl show | grep -q 'Powered: yes' || { echo " 󰂲 "; exit; }; d=$(bluetoothctl devices Connected | cut -d' ' -f3- | head -1); [ -n "$d" ] && echo " 󰂱 $d " || echo " 󰂯 "'''
+[[block.click]]
+button = "left"
+cmd = "alacritty --class bluetui -e bluetui"
 
 [[block]]
 block = "sound"

@@ -65,6 +65,11 @@ in {
     nativeMessagingHosts = with pkgs; [ff2mpv-rust];
     policies = {
       PromptForDownloadLocation = true;
+      # Keep DNS on WARP Families (modules/warp.nix); Firefox DoH would bypass the filter.
+      DNSOverHTTPS = {
+        Enabled = false;
+        Locked = true;
+      };
 
       # about:support
       ExtensionSettings = {

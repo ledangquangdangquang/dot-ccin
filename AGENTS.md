@@ -34,8 +34,10 @@ Keep `home.nix` minimal. Add packages, generated scripts, session variables, and
 
 - `nix flake check` validates the flake outputs.
 - `nix fmt` formats Nix files with the flake formatter.
-- `nix run github:nix-community/home-manager -- switch --flake ".#$USER"` applies the Home Manager configuration locally.
-- `home-manager switch --flake ".#$USER"` applies the same config when Home Manager is already installed.
+- `nix run github:nix-community/home-manager -- switch --flake ".#$USER"` applies the Home Manager configuration. The `home-manager` CLI is not installed on this system; never use bare `home-manager switch`.
+- `rebuild` (alias in `modules/zsh.nix`/`bash.nix`) runs `nix flake check` then the switch above.
+
+New files must be git-tracked (`git add <file>`) before `nix flake check`/switch: flakes ignore untracked files.
 
 Run validation before switching when editing `flake.nix`, `home.nix`, or `modules/*.nix`.
 
@@ -65,7 +67,7 @@ When adding app themes, ensure the colors are actual Catppuccin Mocha values (no
 
 The Git history uses short, direct commit messages such as `eza and alias update`, `firefox css fix bookmark bar`, and `foot catppuccin mocha`. Follow that style: summarize the changed area and outcome in one concise line.
 
-Pull requests should include a brief description, any commands run, and screenshots for visible UI changes such as themes, Firefox CSS, terminal styling, or wallpapers. Mention whether `home-manager switch --flake ".#$USER"` was tested.
+Pull requests should include a brief description, any commands run, and screenshots for visible UI changes such as themes, Firefox CSS, terminal styling, or wallpapers. Mention whether the switch (`rebuild`) was tested.
 
 ## Security & Configuration Tips
 

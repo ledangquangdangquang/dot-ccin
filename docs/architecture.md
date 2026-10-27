@@ -91,13 +91,7 @@ by a Home Manager systemd user timer.
 
 ### Apply the profile
 
-If Home Manager is already available:
-
-```bash
-home-manager switch --flake ".#$USER"
-```
-
-Otherwise, run it through Nix:
+Home Manager is not installed globally; run it through Nix (or the `rebuild` alias):
 
 ```bash
 nix run github:nix-community/home-manager -- switch --flake ".#$USER"

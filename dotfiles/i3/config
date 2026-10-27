@@ -40,6 +40,8 @@ exec --no-startup-id clipboard-watcher
 # exec --no-startup-id blueman-applet
 exec --no-startup-id udiskie --tray
 exec --no-startup-id usb-notify
+# warp-svc starts at boot but the tunnel stays disconnected; connect on login
+exec --no-startup-id /usr/bin/warp-cli --accept-tos connect
 exec --no-startup-id env SOUND_NAME=service-login notification-sound
 exec_always --no-startup-id sh -c "pkill -f '^[^ ]*python3 [^ ]*auto-split-7030' || true && exec ~/.nix-profile/bin/python3 ~/.config/i3/auto-split-7030.py >/tmp/i3_autosplit_err.log 2>&1"
 # Host-specific audio sink + monitor layout, generated from hostMain in flake.nix (modules/display.nix)
@@ -97,7 +99,7 @@ bindsym $mod+Shift+o exec audio-menu
 # Wi-Fi / Bluetooth (own class: escapes the alacritty -> workspace 1 rule, floats)
 bindsym $mod+w exec alacritty --class wifitui -e wifitui
 bindsym $mod+Shift+w exec alacritty --class bluetui -e bluetui
-for_window [class="^(wifitui|bluetui)$"] floating enable, resize set 960 600, move position center
+for_window [class="^(wifitui|bluetui|top|pavucontrol)$"] floating enable, resize set 960 600, move position center
 # Lofi track picker
 bindsym $mod+m exec lofi pick
 # Lofi repeat current track on/off
@@ -236,7 +238,6 @@ assign [class="(?i)nautilus"] workspace 2
 assign [class="(?i)thunar"] workspace 2
 assign [class="(?i)ytdownloader"] workspace 2
 assign [class="(?i)qbittorrent"] workspace 2
-assign [class="(?i)pavucontrol"] workspace 2
 assign [class="(?i)matlab"] workspace 3
 for_window [class="(?i)firefox"] workspace B
 for_window [class="(?i)zathura"] workspace D
@@ -249,5 +250,4 @@ for_window [class="(?i)nautilus"] workspace 2
 for_window [class="(?i)thunar"] workspace 2
 for_window [class="(?i)ytdownloader"] workspace 2
 for_window [class="(?i)qbittorrent"] workspace 2
-for_window [class="(?i)pavucontrol"] workspace 2
 for_window [class="(?i)matlab"] workspace 3
