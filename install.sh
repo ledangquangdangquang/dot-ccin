@@ -10,7 +10,13 @@ ddc=false
 
 step "apt packages"
 sudo apt update
-sudo apt install -y git curl xz-utils i3 i3lock xss-lock xserver-xorg-input-libinput fcitx5-frontend-gtk3 fcitx5-frontend-gtk4 fcitx5-frontend-qt5 fcitx5-frontend-qt6
+sudo apt install -y git curl xz-utils i3 i3lock xss-lock xserver-xorg-input-libinput
+# Fcitx5 frontends: gtk4/qt6 are missing on older releases (e.g. 20.04), install what exists
+frontends=()
+for pkg in fcitx5-frontend-gtk3 fcitx5-frontend-gtk4 fcitx5-frontend-qt5 fcitx5-frontend-qt6; do
+  if apt-cache show "$pkg" >/dev/null 2>&1; then frontends+=("$pkg"); else echo "skip $pkg (not in apt)"; fi
+done
+[ ${#frontends[@]} -eq 0 ] || sudo apt install -y "${frontends[@]}"
 
 step "flake user -> $USER"
 sed -i "s/^\(\s*user = \)\"[^\"]*\";/\1\"$USER\";/" flake.nix
@@ -69,4 +75,4 @@ if $ddc; then
 fi
 
 step "Done"
-echo "Check hostMain (audioSink, xrandrLayout) in flake.nix for this machine, then reboot and pick i3 from the GDM gear icon."
+echo "Check hostMain (xrandrLayout) in flake.nix for this machine, then reboot and pick i3 from the GDM gear icon."
