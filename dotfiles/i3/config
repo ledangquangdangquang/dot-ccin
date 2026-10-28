@@ -97,7 +97,7 @@ bindsym $mod+Shift+o exec audio-menu
 # Wi-Fi / Bluetooth (own class: escapes the alacritty -> workspace 1 rule, floats)
 bindsym $mod+w exec alacritty --class wifitui -e wifitui
 bindsym $mod+Shift+w exec alacritty --class bluetui -e bluetui
-for_window [class="^(wifitui|bluetui|top|pavucontrol)$"] floating enable, resize set 960 600, move position center
+for_window [class="^(wifitui|bluetui|htop|pavucontrol)$"] floating enable, resize set 960 600, move position center
 # Lofi track picker
 bindsym $mod+m exec lofi pick
 # Lofi repeat current track on/off

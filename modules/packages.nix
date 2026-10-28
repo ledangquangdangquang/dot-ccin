@@ -2,6 +2,7 @@
   home.packages = with pkgs; [
     i3status-rust
     nerd-fonts.fira-code
+    fum
     fzf
     tree
     bat
@@ -20,6 +21,7 @@
     tree-sitter
     nil
     btop
+    htop
     wifitui # Wi-Fi TUI (NetworkManager), replaces nm-applet
     gcc
     alacritty
