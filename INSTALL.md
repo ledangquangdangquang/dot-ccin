@@ -30,14 +30,17 @@ These must come from apt (they need system PAM, Xorg drivers, or system services
 
 ```bash
 sudo apt install -y i3 i3lock xss-lock \
-  xserver-xorg-input-libinput
+  xserver-xorg-input-libinput \
+  fcitx5-frontend-gtk3 fcitx5-frontend-gtk4 fcitx5-frontend-qt5 fcitx5-frontend-qt6
 ```
+
+Needs i3 4.22+ (`gaps`, `tiling_drag`): Ubuntu 24.04 or newer. On 20.04/22.04, drop the missing `gtk4`/`qt6` frontends.
 
 ## 4. Apply Home Manager
 
 ```bash
 cd ~/dot-ccin
-nix run github:nix-community/home-manager -- switch -b backup --flake ".#$USER"
+nix run --inputs-from . home-manager -- switch -b backup --flake ".#$USER"
 ```
 
 Let Nix GPU apps (Alacritty, Kitty) find the system drivers (once, and again when Home Manager warns):

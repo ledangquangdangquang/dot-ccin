@@ -6,7 +6,12 @@ cd "$(dirname "$0")"
 step() { printf '\n\033[1;34m==> %s\033[0m\n' "$*"; }
 
 ddc=false
-[ "${1:-}" = "--ddc" ] && ddc=true
+for arg in "$@"; do
+  case "$arg" in
+    --ddc) ddc=true ;;
+    *) echo "unknown option: $arg (usage: ./install.sh [--ddc])" >&2; exit 1 ;;
+  esac
+done
 
 step "apt packages"
 sudo apt update
@@ -17,6 +22,11 @@ for pkg in fcitx5-frontend-gtk3 fcitx5-frontend-gtk4 fcitx5-frontend-qt5 fcitx5-
   if apt-cache show "$pkg" >/dev/null 2>&1; then frontends+=("$pkg"); else echo "skip $pkg (not in apt)"; fi
 done
 [ ${#frontends[@]} -eq 0 ] || sudo apt install -y "${frontends[@]}"
+# i3 config uses gaps (4.22+) and tiling_drag (4.21+)
+i3ver="$(i3 --version | awk '{print $3}')"
+if [ "$(printf '%s\n' 4.22 "$i3ver" | sort -V | head -1)" != 4.22 ]; then
+  echo "warning: i3 $i3ver < 4.22, gaps/tiling_drag will error (use Ubuntu 24.04+)" >&2
+fi
 
 step "flake user -> $USER"
 sed -i "s/^\(\s*user = \)\"[^\"]*\";/\1\"$USER\";/" flake.nix
@@ -27,8 +37,10 @@ if ! command -v nix >/dev/null && [ ! -e ~/.nix-profile/etc/profile.d/nix.sh ]; 
   curl -fsSL https://nixos.org/nix/install | sh -s -- --no-daemon
 fi
 set +u # nix.sh reads unset variables
-# shellcheck source=/dev/null
-. ~/.nix-profile/etc/profile.d/nix.sh
+for nixsh in ~/.nix-profile/etc/profile.d/nix.sh /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh; do
+  # shellcheck source=/dev/null
+  if [ -e "$nixsh" ]; then . "$nixsh"; break; fi
+done
 set -u
 mkdir -p ~/.config/nix
 grep -qs 'flakes' ~/.config/nix/nix.conf || echo "experimental-features = nix-command flakes" >>~/.config/nix/nix.conf

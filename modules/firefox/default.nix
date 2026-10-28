@@ -1,5 +1,6 @@
 {
   pkgs,
+  lib,
   config,
   ...
 }: let
@@ -28,7 +29,10 @@
       passthru =
         firefox.passthru
         // {
-          override = args: wrapFirefox (firefox.override args);
+          # Keep override's args visible so Home Manager can inject policies
+          override =
+            lib.setFunctionArgs (args: wrapFirefox (firefox.override args))
+            (lib.functionArgs firefox.override);
         };
     };
 
