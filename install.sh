@@ -37,6 +37,10 @@ nix --version
 step "Home Manager switch"
 nix run --inputs-from . home-manager -- switch -b backup --flake ".#$USER"
 
+step "GPU drivers for Nix apps"
+# OpenGL apps (alacritty, kitty) need /run/opengl-driver (targets.genericLinux)
+sudo "$(readlink -f ~/.nix-profile/bin/non-nixos-gpu-setup)"
+
 step "zsh default shell"
 zsh="$HOME/.nix-profile/bin/zsh"
 grep -qxF "$zsh" /etc/shells || echo "$zsh" | sudo tee -a /etc/shells >/dev/null

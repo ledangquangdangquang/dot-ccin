@@ -59,7 +59,7 @@ in {
     enable = true;
     configPath = ".mozilla/firefox";
     package =
-      if pkgs.stdenv.isDarwin
+      if pkgs.stdenv.hostPlatform.isDarwin
       then pkgs.firefox-bin
       else firefoxWithFcitx;
     nativeMessagingHosts = with pkgs; [ff2mpv-rust];
