@@ -40,9 +40,10 @@ exec --no-startup-id clipboard-watcher
 # exec --no-startup-id blueman-applet
 exec --no-startup-id udiskie --tray
 exec --no-startup-id usb-notify
+exec --no-startup-id audio-notify
 exec --no-startup-id env SOUND_NAME=service-login notification-sound
 exec_always --no-startup-id sh -c "pkill -f '^[^ ]*python3 [^ ]*auto-split-7030' || true && exec ~/.nix-profile/bin/python3 ~/.config/i3/auto-split-7030.py >/tmp/i3_autosplit_err.log 2>&1"
-# Host-specific audio sink + monitor layout, generated from hostMain in flake.nix (modules/display.nix)
+# Host-specific monitor layout, generated from hostMain in flake.nix (modules/display.nix)
 font pango:FiraCode Nerd Font 10
 include ~/.config/i3/host.conf
 exec --no-startup-id xset dpms 0 0 0
@@ -94,6 +95,8 @@ bindsym $mod+p exec wallpaper-menu
 bindsym $mod+Shift+m exec display-menu
 # Audio output picker
 bindsym $mod+Shift+o exec audio-menu
+# Task manager popup
+bindsym Ctrl+Shift+Escape exec alacritty --class htop -e htop
 # Wi-Fi / Bluetooth (own class: escapes the alacritty -> workspace 1 rule, floats)
 bindsym $mod+w exec alacritty --class wifitui -e wifitui
 bindsym $mod+Shift+w exec alacritty --class bluetui -e bluetui
@@ -157,14 +160,13 @@ bindsym --release Caps_Lock exec system-control caps-lock
 # Workspace
 # Open it while starting up
 exec --no-startup-id i3-msg workspace 1
-default_border pixel 1
+default_border pixel 3
 gaps inner 2
 focus_follows_mouse no
 # Mouse: Mod+left drag moves; Mod+right drag resizes tiled or floating (modules/mouse-resize.nix)
 floating_modifier $mod
 tiling_drag modifier titlebar
 bindsym --whole-window $mod+button3 focus, exec --no-startup-id mouse-resize
-client.focused          #89b4fa #1e1e2e #cdd6f4 #89b4fa #89b4fa
 # Focus
 client.focused          #b4befe #1e1e2e #cdd6f4 #b4befe #b4befe
 # Không focus

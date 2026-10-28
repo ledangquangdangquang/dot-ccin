@@ -15,6 +15,7 @@ Mod + Escape            Lock screen
 Mod + p                 Open wallpaper picker
 Mod + Shift + m         Open display menu (extend / duplicate / only)
 Mod + Shift + o         Open audio output menu
+Ctrl + Shift + Escape   Open htop task manager
 Mod + w                 Open Wi-Fi manager (wifitui)
 Mod + Shift + w         Open Bluetooth manager (bluetui)
 Mod + m                 Open lofi track picker

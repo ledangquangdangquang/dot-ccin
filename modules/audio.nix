@@ -7,7 +7,6 @@
     name = "audio-menu";
     runtimeInputs = with pkgs; [
       gawk
-      libnotify
       menu
       pulseaudio
     ];
@@ -21,7 +20,7 @@
         }
       ' | menu --dmenu --with-nth=1 --prompt='Audio ❯ ' --lines=6 --width=50)" || exit 0
 
-      IFS=$'\t' read -r label sink <<< "$choice"
+      IFS=$'\t' read -r _ sink <<< "$choice"
       [[ -z "$sink" ]] && exit 0
 
       pactl set-default-sink "$sink"
@@ -29,9 +28,46 @@
       pactl list short sink-inputs | awk '{print $1}' | while read -r id; do
         pactl move-sink-input "$id" "$sink" || true
       done
-      notify-send -a audio-menu -i audio-speakers-symbolic "Audio output" "''${label#*  }"
+      # audio-notify announces the change
+    '';
+  };
+
+  # Notifies whenever the default sink changes (menu, Bluetooth connect/drop)
+  audioNotify = pkgs.writeShellApplication {
+    name = "audio-notify";
+    runtimeInputs = with pkgs; [
+      gawk
+      coreutils
+      libnotify
+      pulseaudio
+    ];
+    text = ''
+      describe() {
+        pactl list sinks | awk -v want="$1" '
+          /^\tName: / { name = $2 }
+          /^\tDescription: / && name == want { sub(/^\tDescription: /, ""); print; exit }
+        '
+      }
+
+      last="$(pactl get-default-sink || true)"
+      # pactl subscribe exits when pipewire-pulse restarts; reconnect
+      while true; do
+        pactl subscribe | while IFS= read -r event; do
+          [[ "$event" == *"on server"* ]] || continue
+          sink="$(pactl get-default-sink || true)"
+          [[ -z "$sink" || "$sink" == "$last" ]] && continue
+          last="$sink"
+          case "$sink" in
+            bluez_*) icon=audio-headphones-symbolic ;;
+            *) icon=audio-speakers-symbolic ;;
+          esac
+          notify-send -a audio -i "$icon" -h string:x-dunst-stack-tag:audio-output \
+            "Audio output" "$(describe "$sink")"
+        done
+        sleep 2
+      done
     '';
   };
 in {
-  home.packages = [audioMenu];
+  home.packages = [audioMenu audioNotify];
 }
