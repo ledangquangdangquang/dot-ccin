@@ -43,9 +43,10 @@ exec --no-startup-id usb-notify
 exec --no-startup-id audio-notify
 exec --no-startup-id env SOUND_NAME=service-login notification-sound
 exec_always --no-startup-id sh -c "pkill -f '^[^ ]*python3 [^ ]*auto-split-7030' || true && exec ~/.nix-profile/bin/python3 ~/.config/i3/auto-split-7030.py >/tmp/i3_autosplit_err.log 2>&1"
-# Host-specific monitor layout, generated from hostMain in flake.nix (modules/display.nix)
 font pango:FiraCode Nerd Font 10
-include ~/.config/i3/host.conf
+# Monitor: external only when plugged in, else laptop panel; follows hotplug (modules/display.nix)
+exec --no-startup-id display-auto
+exec --no-startup-id display-hotplug
 exec --no-startup-id xset dpms 0 0 0
 # Screensaver: lock after 1 hour idle and before suspend.
 # lock-screen (modules/lock.nix) wraps Ubuntu's /usr/bin/i3lock (system PAM).

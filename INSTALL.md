@@ -101,7 +101,7 @@ Check with `ddcutil detect`: the monitor should list a `VCP version`. If it stil
 | i3 starts but mouse/keyboard dead | `grep "No input driver" ~/.local/share/xorg/Xorg.0.log` → `sudo apt install xserver-xorg-input-libinput` |
 | i3 missing from GDM | `ls /usr/share/xsessions/`, `WaylandEnable=false` in `/etc/gdm3/custom.conf` |
 | Black screen / session exits | `~/.local/share/xorg/Xorg.0.log`, `journalctl --user -b`, `i3 -C -c ~/.config/i3/config` (validate config) |
-| Wrong monitor layout / no audio | `hostMain.xrandrLayout` / `audioSink` in `flake.nix`, then `rebuild` |
+| Wrong monitor layout / no audio | `display-auto` / `display-menu` (`Mod+Shift+m`), audio output via `Mod+Shift+o` |
 | Lock screen doesn't unlock | `/usr/bin/i3lock` must exist → `sudo apt install i3lock` |
 | `nix: command not found` | `. ~/.nix-profile/etc/profile.d/nix.sh` or open a new terminal |
 | `switch` fails: "would be clobbered" | rerun with `-b backup` |
