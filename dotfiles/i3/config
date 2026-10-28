@@ -163,10 +163,9 @@ exec --no-startup-id i3-msg workspace 1
 default_border pixel 3
 gaps inner 2
 focus_follows_mouse no
-# Mouse: Mod+left drag moves; Mod+right drag resizes tiled or floating (modules/mouse-resize.nix)
+# Mouse: Mod+left drag moves; Mod+right drag resizes tiled or floating (i3 native)
 floating_modifier $mod
 tiling_drag modifier titlebar
-bindsym --whole-window $mod+button3 focus, exec --no-startup-id mouse-resize
 # Focus
 client.focused          #b4befe #1e1e2e #cdd6f4 #b4befe #b4befe
 # Không focus

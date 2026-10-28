@@ -22,7 +22,6 @@ The active window manager is i3. Treat `dotfiles/i3/` as the window manager conf
 - `modules/default-apps.nix` sets MIME defaults, Thunar prefs (xfconf), and the terminal used by Thunar/GLib (`xdg-terminal-exec` → Alacritty).
 - `modules/menu-util.nix` defines the shared rofi `menu` wrapper (passed to modules as the `menu` arg); `modules/menu.nix` installs it with `menu-launcher`.
 - `modules/display.nix` provides `display-menu` (xrandr extend/duplicate/only) and writes `~/.config/i3/host.conf` from `hostMain`.
-- `modules/mouse-resize.nix` provides `mouse-resize` (Mod+right drag resizes tiled/floating windows).
 - `modules/clipboard.nix` (cliphist), `wallpaper.nix`, `power.nix`, `pomodoro.nix`, `lofi.nix`, `calendar.nix` (Vietnamese lunar date), `vlc.nix`, and `yazi.nix` provide their respective commands/config.
 - `modules/tmux.nix`, `zsh.nix`, `git.nix`, `gtk.nix`, `bash.nix`, and `nix-cleanup.nix` contain their respective focused Home Manager configuration.
 - `modules/firefox/` contains the Firefox Home Manager module, policies, profile settings, CSS, and related assets.

@@ -41,7 +41,7 @@ Mod + u                 Split horizontally, 70% / 30%
 Mod + g                 Toggle big gaps (show wallpaper)
 Mod + Shift + t         Toggle status bar
 Mod + Left drag         Move window (tiled: swap / re-split)
-Mod + Right drag        Resize window from nearest edge (tiled or floating)
+Mod + Right drag        Resize window (tiled or floating)
 
 WORKSPACES
 ────────────────────────────────────────────────────────────
