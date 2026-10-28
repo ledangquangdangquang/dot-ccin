@@ -47,6 +47,8 @@ Editing a file under `dotfiles/` needs no rebuild/switch: Home Manager symlinks 
 
 Use two-space indentation in Nix files and keep attribute sets compact but readable. Prefer descriptive lower-case names for local variables, matching existing examples such as `dotfiles`, `configApps`, and `hostMain`. Keep modules focused: shell aliases belong in `modules/zsh.nix`, Git settings in `modules/git.nix`, and app-specific files in `dotfiles/<app>/`.
 
+When adding or changing a keybinding (i3, tmux, etc.), update `dotfiles/i3/keyshortcuts.txt` (shown by `Mod+i`).
+
 ## Testing Guidelines
 
 There is no dedicated test suite. Treat `nix flake check` and Home Manager evaluation as the main safety checks. For dotfile-only edits, verify the target application still parses the file, such as opening Kitty, Fastfetch, or Neovim after switching.
