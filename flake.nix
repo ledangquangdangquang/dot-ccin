@@ -26,7 +26,6 @@
     hostMain = {
       stateVersion = "25.11";
       # Machine-specific; written to ~/.config/i3/host.conf by modules/display.nix
-      audioSink = "alsa_output.pci-0000_00_1f.3-platform-skl_hda_dsp_generic.HiFi__hw_sofhdadsp__sink";
       xrandrLayout = "--output eDP-1 --off --output HDMI-1-0 --auto";
     };
     pkgs = import nixpkgs {

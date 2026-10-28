@@ -146,7 +146,6 @@ in {
 
   # Included by dotfiles/i3/config; keeps machine-specific values in flake.nix
   xdg.configFile."i3/host.conf".text = ''
-    exec --no-startup-id pactl set-default-sink ${hostMain.audioSink}
     exec --no-startup-id xrandr ${hostMain.xrandrLayout}
   '';
 }

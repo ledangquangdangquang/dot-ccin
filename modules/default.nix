@@ -25,6 +25,7 @@
     ./lock.nix
     ./display.nix
     ./audio.nix
+    ./mouse-resize.nix
     ./clipboard.nix
     ./menu.nix
     ./yazi.nix
