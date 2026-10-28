@@ -25,6 +25,8 @@
     user = "quang";
     hostMain = {
       stateVersion = "25.11";
+      # Machine-specific; written to ~/.config/i3/host.conf by modules/display.nix
+      xrandrLayout = "--output eDP-1 --off --output HDMI-1-0 --auto";
     };
     pkgs = import nixpkgs {
       inherit system;

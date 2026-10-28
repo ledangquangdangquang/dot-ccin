@@ -8,7 +8,7 @@ The active window manager is i3. Treat `dotfiles/i3/` as the window manager conf
 
 **App configuration priority**: Add packages to `modules/packages.nix` first. For app configuration files, create `dotfiles/<app>/` and link it via `configApps` in `modules/dotfiles.nix`. Home Manager declarative modules (e.g., `programs.rofi`, `services.dunst`) should only be used when they offer deep integration that a simple config file cannot replicate (e.g., systemd services, generated configs).
 
-- `flake.nix` defines inputs, the user-named Home Manager configuration, and shared arguments. Machine-specific values (`hostMain`: state version) live here.
+- `flake.nix` defines inputs, the user-named Home Manager configuration, and shared arguments. Machine-specific values (`hostMain`: state version, xrandr layout) live here.
 - `home.nix` is the minimal Home Manager entrypoint. It sets the user, home directory, state version, Catppuccin integration, and imports `./modules`.
 - `modules/default.nix` is the module index. Register every new Home Manager module there.
 - `modules/packages.nix` contains the shared package list. Feature-specific packages should remain in their owning module.
@@ -21,7 +21,7 @@ The active window manager is i3. Treat `dotfiles/i3/` as the window manager conf
 - `modules/fuzzyvim.nix` provides the Fzf-based project/file picker.
 - `modules/default-apps.nix` sets MIME defaults, Thunar prefs (xfconf), and the terminal used by Thunar/GLib (`xdg-terminal-exec` → Alacritty).
 - `modules/menu-util.nix` defines the shared rofi `menu` wrapper (passed to modules as the `menu` arg); `modules/menu.nix` installs it with `menu-launcher`.
-- `modules/display.nix` provides `display-menu` (xrandr extend/duplicate/only), `display-auto` (external monitor only if connected, else laptop panel) and `display-hotplug` (reruns it on plug/unplug).
+- `modules/display.nix` provides `display-menu` (xrandr extend/duplicate/only) and writes `~/.config/i3/host.conf` from `hostMain`.
 - `modules/mouse-resize.nix` provides `mouse-resize` (Mod+right drag resizes tiled/floating windows).
 - `modules/clipboard.nix` (cliphist), `wallpaper.nix`, `power.nix`, `pomodoro.nix`, `lofi.nix`, `calendar.nix` (Vietnamese lunar date), `vlc.nix`, and `yazi.nix` provide their respective commands/config.
 - `modules/tmux.nix`, `zsh.nix`, `git.nix`, `gtk.nix`, `bash.nix`, and `nix-cleanup.nix` contain their respective focused Home Manager configuration.

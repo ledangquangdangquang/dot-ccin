@@ -43,10 +43,9 @@ exec --no-startup-id usb-notify
 exec --no-startup-id audio-notify
 exec --no-startup-id env SOUND_NAME=service-login notification-sound
 exec_always --no-startup-id sh -c "pkill -f '^[^ ]*python3 [^ ]*auto-split-7030' || true && exec ~/.nix-profile/bin/python3 ~/.config/i3/auto-split-7030.py >/tmp/i3_autosplit_err.log 2>&1"
+# Host-specific monitor layout, generated from hostMain in flake.nix (modules/display.nix)
 font pango:FiraCode Nerd Font 10
-# Monitor: external only when plugged in, else laptop panel; follows hotplug (modules/display.nix)
-exec --no-startup-id display-auto
-exec --no-startup-id display-hotplug
+include ~/.config/i3/host.conf
 exec --no-startup-id xset dpms 0 0 0
 # Screensaver: lock after 1 hour idle and before suspend.
 # lock-screen (modules/lock.nix) wraps Ubuntu's /usr/bin/i3lock (system PAM).
@@ -151,7 +150,7 @@ bindsym XF86AudioMute exec system-control volume-mute
 bindsym F1 exec ~/.config/i3/fkeys-media.sh F1 system-control volume-mute
 bindsym F2 exec ~/.config/i3/fkeys-media.sh F2 system-control volume-down
 bindsym F3 exec ~/.config/i3/fkeys-media.sh F3 system-control volume-up
-bindsym F6 exec ~/.config/i3/fkeys-media.sh F6 system-control brightness-set 30
+bindsym F6 exec ~/.config/i3/fkeys-media.sh F6 system-control brightness-set 5
 bindsym F7 exec ~/.config/i3/fkeys-media.sh F7 system-control brightness-set 80
 # Toggle F-key media functions on/off (F1-F3, F6-F9 pass through when off)
 bindsym $mod+F1 exec ~/.config/i3/fkeys-toggle.sh

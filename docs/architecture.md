@@ -35,7 +35,7 @@ settings. `modules/default.nix` is the index for all feature modules.
 | GTK, fonts, and cursor | `modules/gtk.nix` | GTK and pointer settings |
 | Default apps, Thunar, terminal | `modules/default-apps.nix`, `modules/vlc.nix` | MIME defaults, Thunar xfconf prefs, `xdg-terminal-exec` → Alacritty |
 | Input method | `modules/fcitx.nix` | Fcitx5 + Unikey and IM environment variables |
-| Machine-specific values | `hostMain` in `flake.nix` | Home Manager state version |
+| Machine-specific values | `hostMain` in `flake.nix` | `~/.config/i3/host.conf` (audio sink, xrandr layout) |
 | Shells and terminal multiplexer | `modules/zsh.nix`, `modules/bash.nix`, `modules/tmux.nix` | Shell initialization, aliases, and tmux configuration |
 | Firefox | `modules/firefox/` | Wrapped Firefox, policies, profile preferences, and CSS |
 | Desktop helpers | Focused modules described below | Commands installed into the user profile |

@@ -98,4 +98,5 @@ See [INSTALL.md](INSTALL.md) for step-by-step setup and troubleshooting.
 - Shell aliases: `modules/zsh.nix`
 - Do not commit secrets, SSH keys, browser sessions, or generated logs
 - Audio: PipeWire (PulseAudio-compatible, controlled via `pactl`/`wpctl`)
+- Monitor: HDMI is preferred (`hostMain.xrandrLayout` in `flake.nix` turns the laptop panel off). Laptop only and black screen → `Mod+Shift+m`, `↓`, `Enter`
 - Brightness: `F6`/`F7` set 30% / 80%, media keys ±5%. Laptop panel via `brightnessctl`, external monitor via `ddcutil` (DDC/CI, needs the one-time i2c setup in [INSTALL.md](INSTALL.md#6-external-monitor-brightness-optional))

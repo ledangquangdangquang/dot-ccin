@@ -1,6 +1,7 @@
 {
   pkgs,
   menu,
+  hostMain,
   ...
 }: let
   baseInputs = with pkgs; [
@@ -89,41 +90,6 @@
     '';
   };
 
-  # Auto: external monitor only when one is connected, else the laptop panel
-  autoScript = pkgs.writeShellApplication {
-    runtimeInputs = scriptInputs ++ [onlyScript];
-    name = "display-auto";
-    text = ''
-      mapfile -t outputs < <(display-outputs)
-      internal="" external=""
-      for out in "''${outputs[@]}"; do
-        case "$out" in
-          eDP* | LVDS*) internal="''${internal:-$out}" ;;
-          *) external="''${external:-$out}" ;;
-        esac
-      done
-      target="''${external:-$internal}"
-      [[ -n "$target" ]] && display-only "$target"
-    '';
-  };
-
-  # Re-runs display-auto when a monitor is plugged in or removed. Polls:
-  # the NVIDIA HDMI port emits no udev/RandR hotplug events, only a forced
-  # probe (xrandr --query, ~0.1-0.3s) notices the change.
-  hotplugScript = pkgs.writeShellApplication {
-    runtimeInputs = [autoScript connectedOutputs pkgs.coreutils];
-    name = "display-hotplug";
-    text = ''
-      last="$(display-outputs)"
-      while sleep 3; do
-        now="$(display-outputs)"
-        [[ "$now" == "$last" ]] && continue
-        last="$now"
-        display-auto || true
-      done
-    '';
-  };
-
   # Interactive menu: Extend / Duplicate / Only / Pick primary
   displayMenu = pkgs.writeShellApplication {
     name = "display-menu";
@@ -175,8 +141,11 @@ in {
     extendScript
     duplicateScript
     onlyScript
-    autoScript
-    hotplugScript
     displayMenu
   ];
+
+  # Included by dotfiles/i3/config; keeps machine-specific values in flake.nix
+  xdg.configFile."i3/host.conf".text = ''
+    exec --no-startup-id xrandr ${hostMain.xrandrLayout}
+  '';
 }
