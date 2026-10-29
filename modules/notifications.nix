@@ -112,6 +112,7 @@
       gammastep
       gawk
       libnotify
+      procps
       pulseaudio
       xset
     ];
@@ -129,6 +130,24 @@
           --hint="string:x-canonical-private-synchronous:$tag" \
           --hint="int:value:$value" \
           "$title" "$value%"
+      }
+
+      # icon follows the actual level, not the key pressed
+      notify_volume() {
+        local value icon
+        value="$(pactl get-sink-volume @DEFAULT_SINK@ | awk 'match($0, /[0-9]+%/) { print substr($0, RSTART, RLENGTH - 1); exit }')"
+        if ((value == 0)); then
+          icon=audio-volume-muted-symbolic
+        elif ((value < 34)); then
+          icon=audio-volume-low-symbolic
+        elif ((value < 67)); then
+          icon=audio-volume-medium-symbolic
+        else
+          icon=audio-volume-high-symbolic
+        fi
+        notify_level volume "$icon" "Volume" "$value"
+        # i3status-rust volume block refreshes on SIGRTMIN+1
+        pkill -RTMIN+1 i3status-rs || true
       }
 
       # $1: brightnessctl value (laptop panel), rest: ddcutil value (external monitor via DDC/CI)
@@ -155,13 +174,11 @@
           ;;
         volume-up)
           pactl set-sink-volume @DEFAULT_SINK@ +5%
-          value="$(pactl get-sink-volume @DEFAULT_SINK@ | awk 'match($0, /[0-9]+%/) { print substr($0, RSTART, RLENGTH - 1); exit }')"
-          notify_level volume audio-volume-high-symbolic "Volume" "$value"
+          notify_volume
           ;;
         volume-down)
           pactl set-sink-volume @DEFAULT_SINK@ -5%
-          value="$(pactl get-sink-volume @DEFAULT_SINK@ | awk 'match($0, /[0-9]+%/) { print substr($0, RSTART, RLENGTH - 1); exit }')"
-          notify_level volume audio-volume-low-symbolic "Volume" "$value"
+          notify_volume
           ;;
         volume-mute)
           pactl set-sink-mute @DEFAULT_SINK@ toggle
@@ -169,9 +186,9 @@
             notify-send --app-name="System" --expire-time=1500 \
               --hint="string:x-canonical-private-synchronous:volume" \
               --icon=audio-volume-muted-symbolic "Volume" "Muted"
+            pkill -RTMIN+1 i3status-rs || true
           else
-            value="$(pactl get-sink-volume @DEFAULT_SINK@ | awk 'match($0, /[0-9]+%/) { print substr($0, RSTART, RLENGTH - 1); exit }')"
-            notify_level volume audio-volume-high-symbolic "Volume" "$value"
+            notify_volume
           fi
           ;;
         caps-lock)

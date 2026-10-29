@@ -68,17 +68,24 @@ command = '''bluetoothctl show | grep -q 'Powered: yes' || { echo " 󰂲 "; exit
 button = "left"
 cmd = "alacritty --class bluetui -e bluetui"
 
+# custom instead of "sound": Bluetooth hw-volume sinks emit no pulse change events, so the sound block goes stale
 [[block]]
-block = "sound"
-format = " $icon {$volume|} "
-[block.icons_overrides]
-volume_muted = "󰝟"
+block = "custom"
+interval = 2
+signal = 1
+command = '''pactl get-sink-mute @DEFAULT_SINK@ | grep -q yes && { echo " 󰝟 "; exit; }; v=$(pactl get-sink-volume @DEFAULT_SINK@ | grep -o '[0-9]*%' | head -1 | tr -d %); if [ "$v" -lt 34 ]; then i=""; elif [ "$v" -lt 67 ]; then i=""; else i=""; fi; echo " $i $v% "'''
 [[block.click]]
 button = "left"
 cmd = "pavucontrol"
 [[block.click]]
 button = "right"
-action = "toggle_mute"
+cmd = "system-control volume-mute"
+[[block.click]]
+button = "up"
+cmd = "system-control volume-up"
+[[block.click]]
+button = "down"
+cmd = "system-control volume-down"
 
 [[block]]
 block = "battery"
