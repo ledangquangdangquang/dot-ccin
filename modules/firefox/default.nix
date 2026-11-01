@@ -106,11 +106,6 @@ in {
           install_url = "https://addons.mozilla.org/firefox/downloads/file/4562769/bitwarden_password_manager-2025.8.1.xpi";
           installation_mode = "force_installed";
         };
-        # Stylus
-        "{7a7a4a92-a2a0-41d1-9fd7-1e92480d612d}" = {
-          install_url = "https://addons.mozilla.org/firefox/downloads/file/4554444/styl_us-2.3.16.xpi";
-          installation_mode = "force_installed";
-        };
         # Tampermonkey
         "firefox@tampermonkey.net" = {
           install_url = "https://addons.mozilla.org/firefox/downloads/file/4405733/tampermonkey-5.3.3.xpi";
