@@ -28,6 +28,7 @@
     ./clipboard.nix
     ./menu.nix
     ./yazi.nix
+    ./grayscale.nix
     # --- Folder ---
     ./firefox
   ];

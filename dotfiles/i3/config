@@ -105,6 +105,8 @@ for_window [class="^(wifitui|bluetui|htop|pavucontrol)$"] floating enable, resiz
 bindsym $mod+m exec lofi pick
 # Lofi repeat current track on/off
 bindsym $mod+Ctrl+m exec lofi loop
+# Grayscale filter toggle (picom shader)
+bindsym $mod+Ctrl+c exec --no-startup-id grayscale-toggle
 
 # exec --no-startup-id feh --bg-fill --no-fehbg ~/dot-ccin/Wallpapers/catppuccin-abstract-eclipse-1920x1080.png
 exec --no-startup-id feh --bg-fill --no-fehbg "$(cat ~/.wallpaper 2>/dev/null || echo ~/dot-ccin/Wallpapers/wallpaper.png)"
