@@ -14,6 +14,7 @@
       password=0
       prompt_only=""
       with_nth=""
+      custom=0
       while [ $# -gt 0 ]; do
         case "$1" in
           --dmenu) ;;
@@ -22,6 +23,7 @@
           --lines=*) lines="''${1#--lines=}" ;;
           --width=*) width="''${1#--width=}" ;;
           --password) password=1 ;;
+          --custom) custom=1 ;;
           --prompt-only=*) prompt_only="''${1#--prompt-only=}" ;;
         esac
         shift
@@ -51,6 +53,11 @@
         exit 0
       fi
       # Exact match on the shown column; ENVIRON avoids awk -v backslash escapes.
+      # --custom: unmatched typed text is printed as-is (no tab field).
+      if [[ "$custom" = 1 ]] && ! S="$selected" awk -F '\t' -v n="''${with_nth:-1}" '$n == ENVIRON["S"] { f = 1; exit } END { exit !f }' "$tmpdir/rows"; then
+        printf '%s\n' "$selected"
+        exit 0
+      fi
       S="$selected" awk -F '\t' -v n="''${with_nth:-1}" '$n == ENVIRON["S"] { print; f = 1; exit } END { exit !f }' "$tmpdir/rows"
     '';
   };

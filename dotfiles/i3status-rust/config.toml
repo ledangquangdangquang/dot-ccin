@@ -17,15 +17,15 @@ pomodoro = ""
 [[block]]
 block = "custom"
 command = "pomodoro-task show"
-watch_files = ["~/.cache/pomodoro-task"]
+watch_files = ["~/.cache/pomodoro-task", "~/.cache/pomodoro-tasks"]
 interval = "once"
 format = " $text "
 [[block.click]]
 button = "left"
-cmd = "pomodoro-task set"
+cmd = "pomodoro-task pick"
 [[block.click]]
 button = "right"
-cmd = "pomodoro-task clear"
+cmd = "pomodoro-task done"
 
 [[block]]
 block = "custom"

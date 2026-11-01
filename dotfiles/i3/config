@@ -105,6 +105,8 @@ for_window [class="^(wifitui|bluetui|htop|pavucontrol)$"] floating enable, resiz
 bindsym $mod+m exec lofi pick
 # Lofi repeat current track on/off
 bindsym $mod+Ctrl+m exec lofi loop
+# Pomodoro task list
+bindsym $mod+t exec --no-startup-id pomodoro-task pick
 # Grayscale filter toggle (picom shader)
 bindsym $mod+Ctrl+c exec --no-startup-id grayscale-toggle
 
@@ -185,8 +187,8 @@ bar {
   padding 0 4px
   workspace_min_width 28
   tray_padding 2
-  # touch: watch_files needs ~/.cache/pomodoro-task to exist or the task block errors
-  status_command sh -c 'touch -a ~/.cache/pomodoro-task; exec i3status-rs ~/.config/i3status-rust/config.toml'
+  # touch: watch_files needs ~/.cache/pomodoro-task{,s} to exist or the task block errors
+  status_command sh -c 'touch -a ~/.cache/pomodoro-task ~/.cache/pomodoro-tasks; exec i3status-rs ~/.config/i3status-rust/config.toml'
 
   colors {
     background         #11111b

@@ -20,6 +20,7 @@ Mod + w                 Open Wi-Fi manager (wifitui)
 Mod + Shift + w         Open Bluetooth manager (bluetui)
 Mod + m                 Open lofi track picker
 Mod + Ctrl + m          Toggle lofi repeat current track
+Mod + t                 Open pomodoro task menu
 Mod + Ctrl + c          Toggle grayscale filter
 
 NOTIFICATIONS AND SCREENSHOTS
