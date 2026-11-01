@@ -93,6 +93,9 @@ interval = 10
 format = " $icon $percentage "
 full_format = " $icon $percentage "
 missing_format = ""
+[[block.click]]
+button = "left"
+cmd = "battery-menu"
 
 [[block]]
 block = "time"

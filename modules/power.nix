@@ -47,6 +47,47 @@
       esac
     '';
   };
+  # Battery block click: no-sleep toggle (screensaver/lock off) + power profile (Ubuntu's power-profiles-daemon)
+  batteryMenu = pkgs.writeShellApplication {
+    name = "battery-menu";
+    runtimeInputs = with pkgs; [
+      gawk
+      libnotify
+      menu
+      xset
+    ];
+    text = ''
+      ppctl=/usr/bin/powerprofilesctl
+      timeout="$(xset q | awk '/timeout:/ { print $2 }')"
+      profile="$($ppctl get 2>/dev/null || echo balanced)"
+      mark() { [[ "$1" == "$2" ]] && printf ' ✓' || true; }
+      [[ "$timeout" == 0 ]] && nosleep=on || nosleep=off
+
+      choice="$({
+        printf '󰅶  No sleep%s\tnosleep\n' "$(mark "$nosleep" on)"
+        printf '󰌪  Power saver%s\tpower-saver\n' "$(mark "$profile" power-saver)"
+        printf '󰾅  Balanced%s\tbalanced\n' "$(mark "$profile" balanced)"
+        printf '󰓅  Performance%s\tperformance\n' "$(mark "$profile" performance)"
+      } | menu --dmenu --with-nth=1 --prompt='Battery ❯ ' --lines=4 --width=36)" || exit 0
+
+      IFS=$'\t' read -r _ action <<< "$choice"
+
+      case "$action" in
+        nosleep)
+          if [[ "$nosleep" == on ]]; then
+            xset s 3600 3600
+            notify-send -a Battery -t 1500 -h string:x-dunst-stack-tag:battery-mode "No sleep off" "Lock after 1 hour"
+          else
+            xset s off
+            notify-send -a Battery -t 1500 -h string:x-dunst-stack-tag:battery-mode "No sleep on" "Screen won't lock"
+          fi
+          ;;
+        power-saver | balanced | performance)
+          $ppctl set "$action" && notify-send -a Battery -t 1500 -h string:x-dunst-stack-tag:battery-mode "Power profile" "$action"
+          ;;
+      esac
+    '';
+  };
 in {
-  home.packages = [powerMenu];
+  home.packages = [powerMenu batteryMenu];
 }
