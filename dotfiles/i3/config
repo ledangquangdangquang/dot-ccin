@@ -55,56 +55,56 @@ bindsym $mod+Escape exec --no-startup-id xset s activate
 
 # Basic keybindings
 # Launch alacritty terminal
-bindsym $mod+Return exec alacritty
+bindsym $mod+Return exec --no-startup-id alacritty
 # Launch Nautilus file manager
 # bindsym $mod+e exec alacritty -e zsh -ic spf
 # bindsym $mod+e exec nautilus
-bindsym $mod+e exec thunar
+bindsym $mod+e exec --no-startup-id thunar
 # Launch Firefox
-bindsym $mod+Shift+f exec firefox
+bindsym $mod+Shift+f exec --no-startup-id firefox
 # Zathura for documentation
-bindsym $mod+Shift+z exec zathura
+bindsym $mod+Shift+z exec --no-startup-id zathura
 # Close focused window
 bindsym $mod+q kill
 # Power menu
-bindsym $mod+x exec power-menu
+bindsym $mod+x exec --no-startup-id power-menu
 # Launch menu (rofi)
-bindsym $mod+space exec menu-launcher
+bindsym $mod+space exec --no-startup-id menu-launcher
 # bindsym $mod+space exec menu-launcher
 # Clipboard history
-bindsym $mod+v exec clipboard-menu
-bindsym $mod+Shift+v exec clipboard-clear
+bindsym $mod+v exec --no-startup-id clipboard-menu
+bindsym $mod+Shift+v exec --no-startup-id clipboard-clear
 # Reload i3 config
 bindsym $mod+Shift+r reload
 # Key shortcut reference
-bindsym $mod+i exec ~/.config/i3/show-keyshortcuts.sh
+bindsym $mod+i exec --no-startup-id ~/.config/i3/show-keyshortcuts.sh
 # Notifications
-bindsym $mod+n exec dunstctl history-pop
-bindsym $mod+Shift+n exec dunstctl set-paused toggle
+bindsym $mod+n exec --no-startup-id dunstctl history-pop
+bindsym $mod+Shift+n exec --no-startup-id dunstctl set-paused toggle
 # Screenshots
-bindsym F8 exec ~/.config/i3/fkeys-media.sh F8 screenshot region
-bindsym Shift+F8 exec screenshot full
-bindsym Ctrl+F8 exec screenshot copy
+bindsym F8 exec --no-startup-id ~/.config/i3/fkeys-media.sh F8 screenshot region
+bindsym Shift+F8 exec --no-startup-id screenshot full
+bindsym Ctrl+F8 exec --no-startup-id screenshot copy
 # popup/menu grabs keyboard so F8 is dead while open: press this, then open the popup within 3s
-bindsym $mod+F8 exec screenshot full 3
+bindsym $mod+F8 exec --no-startup-id screenshot full 3
 # Toggle 4000K night light
-bindsym F9 exec ~/.config/i3/fkeys-media.sh F9 system-control night-light
+bindsym F9 exec --no-startup-id ~/.config/i3/fkeys-media.sh F9 system-control night-light
 # Wallpaper picker
-bindsym $mod+p exec wallpaper-menu
+bindsym $mod+p exec --no-startup-id wallpaper-menu
 # Display management
-bindsym $mod+Shift+m exec display-menu
+bindsym $mod+Shift+m exec --no-startup-id display-menu
 # Audio output picker
-bindsym $mod+Shift+o exec audio-menu
+bindsym $mod+Shift+o exec --no-startup-id audio-menu
 # Task manager popup
-bindsym Ctrl+Shift+Escape exec alacritty --class htop -e htop
+bindsym Ctrl+Shift+Escape exec --no-startup-id alacritty --class htop -e htop
 # Wi-Fi / Bluetooth (own class: escapes the alacritty -> workspace 1 rule, floats)
-bindsym $mod+w exec alacritty --class wifitui -e wifitui
-bindsym $mod+Shift+w exec alacritty --class bluetui -e bluetui
+bindsym $mod+w exec --no-startup-id alacritty --class wifitui -e wifitui
+bindsym $mod+Shift+w exec --no-startup-id alacritty --class bluetui -e bluetui
 for_window [class="^(wifitui|bluetui|htop|pavucontrol)$"] floating enable, resize set 960 600, move position center
 # Lofi track picker
-bindsym $mod+m exec lofi pick
+bindsym $mod+m exec --no-startup-id lofi pick
 # Lofi repeat current track on/off
-bindsym $mod+Ctrl+m exec lofi loop
+bindsym $mod+Ctrl+m exec --no-startup-id lofi loop
 # Pomodoro task list
 bindsym $mod+t exec --no-startup-id pomodoro-task pick
 # Grayscale filter toggle (picom shader)
@@ -143,23 +143,23 @@ bindsym $mod+g gaps outer current toggle 60
 
 # Brightness
 # Increase brightness
-bindsym XF86MonBrightnessUp exec system-control brightness-up
+bindsym XF86MonBrightnessUp exec --no-startup-id system-control brightness-up
 # Decrease brightness
-bindsym XF86MonBrightnessDown exec system-control brightness-down
+bindsym XF86MonBrightnessDown exec --no-startup-id system-control brightness-down
 # Volume
-bindsym XF86AudioRaiseVolume exec system-control volume-up
-bindsym XF86AudioLowerVolume exec system-control volume-down
-bindsym XF86AudioMute exec system-control volume-mute
+bindsym XF86AudioRaiseVolume exec --no-startup-id system-control volume-up
+bindsym XF86AudioLowerVolume exec --no-startup-id system-control volume-down
+bindsym XF86AudioMute exec --no-startup-id system-control volume-mute
 # Function-key media controls
-bindsym F1 exec ~/.config/i3/fkeys-media.sh F1 system-control volume-mute
-bindsym F2 exec ~/.config/i3/fkeys-media.sh F2 system-control volume-down
-bindsym F3 exec ~/.config/i3/fkeys-media.sh F3 system-control volume-up
-bindsym F6 exec ~/.config/i3/fkeys-media.sh F6 system-control brightness-set 5
-bindsym F7 exec ~/.config/i3/fkeys-media.sh F7 system-control brightness-set 80
+bindsym F1 exec --no-startup-id ~/.config/i3/fkeys-media.sh F1 system-control volume-mute
+bindsym F2 exec --no-startup-id ~/.config/i3/fkeys-media.sh F2 system-control volume-down
+bindsym F3 exec --no-startup-id ~/.config/i3/fkeys-media.sh F3 system-control volume-up
+bindsym F6 exec --no-startup-id ~/.config/i3/fkeys-media.sh F6 system-control brightness-set 5
+bindsym F7 exec --no-startup-id ~/.config/i3/fkeys-media.sh F7 system-control brightness-set 80
 # Toggle F-key media functions on/off (F1-F3, F6-F9 pass through when off)
-bindsym $mod+F1 exec ~/.config/i3/fkeys-toggle.sh
+bindsym $mod+F1 exec --no-startup-id ~/.config/i3/fkeys-toggle.sh
 # Caps Lock status
-bindsym --release Caps_Lock exec system-control caps-lock
+bindsym --release Caps_Lock exec --no-startup-id system-control caps-lock
 
 # Workspace
 # Open it while starting up
