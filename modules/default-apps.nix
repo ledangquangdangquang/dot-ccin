@@ -10,6 +10,12 @@
     Exec=${config.home.profileDirectory}/bin/Thunar --gapplication-service
   '';
 
+  # Flatpak apps: HM's XDG_DATA_DIRS (session + environment.d) drops Flatpak export dirs, so rofi/drun can't see them
+  xdg.systemDirs.data = [
+    "${config.home.homeDirectory}/.local/share/flatpak/exports/share"
+    "/var/lib/flatpak/exports/share"
+  ];
+
   # GLib (Terminal=true apps like nvim.desktop) tries xdg-terminal-exec first, else Ubuntu's broken gnome-terminal
   home.packages = [pkgs.xdg-terminal-exec];
   xdg.configFile."xdg-terminals.list" = {
