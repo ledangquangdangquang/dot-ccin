@@ -63,7 +63,7 @@ cmd = "alacritty --class wifitui -e wifitui"
 [[block]]
 block = "custom"
 interval = 5
-command = '''bluetoothctl show | grep -q 'Powered: yes' || { echo " 󰂲 "; exit; }; d=$(bluetoothctl devices Connected | cut -d' ' -f3- | head -1); [ -n "$d" ] && echo " 󰂱 $d " || echo " 󰂯 "'''
+command = '''bluetoothctl show | grep -q 'Powered: yes' || { echo " 󰂲 "; exit; }; d=$(bluetoothctl devices Connected | sed 's/\x1b\[[0-9;]*m//g' | cut -d' ' -f3- | head -1); [ -n "$d" ] && echo " 󰂱 $d " || echo " 󰂯 "'''
 [[block.click]]
 button = "left"
 cmd = "alacritty --class bluetui -e bluetui"
