@@ -72,7 +72,7 @@ bindsym $mod+x exec --no-startup-id power-menu
 bindsym $mod+space exec --no-startup-id menu-launcher
 # bindsym $mod+space exec menu-launcher
 # Clipboard history
-bindsym $mod+v exec --no-startup-id clipboard-menu
+bindsym $mod+v exec --no-startup-id float-term clipboard-history clipboard-history
 bindsym $mod+Shift+v exec --no-startup-id clipboard-clear
 # Reload i3 config
 bindsym $mod+Shift+r reload
@@ -95,17 +95,21 @@ bindsym $mod+Shift+m exec --no-startup-id display-menu
 # Audio output picker
 bindsym $mod+Shift+o exec --no-startup-id audio-menu
 # Task manager popup
-bindsym Ctrl+Shift+Escape exec --no-startup-id alacritty --class htop -e htop
+bindsym Ctrl+Shift+Escape exec --no-startup-id float-term htop htop
 # Wi-Fi / Bluetooth (own class: escapes the alacritty -> workspace 1 rule, floats)
-bindsym $mod+w exec --no-startup-id alacritty --class wifitui -e wifitui
-bindsym $mod+Shift+w exec --no-startup-id alacritty --class bluetui -e bluetui
-for_window [class="^(wifitui|bluetui|htop|pavucontrol)$"] floating enable, resize set 960 600, move position center
+bindsym $mod+w exec --no-startup-id float-term wifitui wifitui
+bindsym $mod+Shift+w exec --no-startup-id float-term bluetui bluetui
+for_window [class="^(wifitui|bluetui|htop|pavucontrol|pomodoro-task|lofi-player|clipboard-history)$"] floating enable, resize set 960 600, move position center
+# Sized in cells by float-term --size (fits the calendar on any monitor DPI)
+for_window [class="^lunar-calendar$"] floating enable, move position center
 # Lofi track picker
-bindsym $mod+m exec --no-startup-id lofi pick
+bindsym $mod+m exec --no-startup-id float-term lofi-player lofi-player
 # Lofi repeat current track on/off
 bindsym $mod+Ctrl+m exec --no-startup-id lofi loop
 # Pomodoro task list
-bindsym $mod+t exec --no-startup-id pomodoro-task pick
+bindsym $mod+t exec --no-startup-id float-term pomodoro-task pomodoro-task
+# Lunar calendar (same as clicking the bar clock)
+bindsym $mod+c exec --no-startup-id float-term --size 46x23 lunar-calendar lunar-calendar
 # Grayscale filter toggle (picom shader)
 bindsym $mod+Ctrl+c exec --no-startup-id grayscale-toggle
 
@@ -186,8 +190,8 @@ bar {
   padding 0 4px
   workspace_min_width 28
   tray_padding 2
-  # touch: watch_files needs ~/.cache/pomodoro-task{,s} to exist or the task block errors
-  status_command sh -c 'touch -a ~/.cache/pomodoro-task ~/.cache/pomodoro-tasks; exec i3status-rs ~/.config/i3status-rust/config.toml'
+  # touch: watch_files needs ~/.cache/pomodoro-tasks to exist or the task block errors
+  status_command sh -c 'touch -a ~/.cache/pomodoro-tasks; exec i3status-rs ~/.config/i3status-rust/config.toml'
 
   colors {
     background         #11111b

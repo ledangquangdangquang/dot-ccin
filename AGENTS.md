@@ -8,21 +8,23 @@ The active window manager is i3. Treat `dotfiles/i3/` as the window manager conf
 
 **App configuration priority**: Add packages to `modules/packages.nix` first. For app configuration files, create `dotfiles/<app>/` and link it via `configApps` in `modules/dotfiles.nix`. Home Manager declarative modules (e.g., `programs.rofi`, `services.dunst`) should only be used when they offer deep integration that a simple config file cannot replicate (e.g., systemd services, generated configs).
 
+**Custom TUIs**: When a rofi menu is too limiting (multi-step or stateful UI), write a Rust TUI with `ratatui` instead (example: `modules/pomodoro/`). Layout: `modules/<name>/{Cargo.toml,Cargo.lock,src/,default.nix}`, with `default.nix` using `pkgs.rustPlatform.buildRustPackage` + `cargoLock.lockFile = ./Cargo.lock`. Cargo is not installed: run it via `nix shell --inputs-from . nixpkgs#cargo nixpkgs#rustc nixpkgs#gcc -c cargo ...` with `CARGO_TARGET_DIR` outside the repo. Use Catppuccin Mocha colors. Launch it as a floating popup with `float-term <class> <cmd>` and add the class to the floating `for_window` rule in `dotfiles/i3/config`.
+
 - `flake.nix` defines inputs, the user-named Home Manager configuration, and shared arguments. Machine-specific values (`hostMain`: state version, xrandr layout) live here.
 - `home.nix` is the minimal Home Manager entrypoint. It sets the user, home directory, state version, Catppuccin integration, and imports `./modules`.
 - `modules/default.nix` is the module index. Register every new Home Manager module there.
 - `modules/packages.nix` contains the shared package list. Feature-specific packages should remain in their owning module.
 - `modules/dotfiles.nix` maps selected folders from `dotfiles/` into `~/.config`. Its `configApps` list is the place to register newly linked application folders.
 - `modules/fcitx.nix` configures Fcitx5, the Ngó Sen input method (flake input `fcitx5-ngosen`), and input-method environment variables.
-- Wi-Fi and Bluetooth use on-demand TUIs `wifitui` (`Mod+w`) and `bluetui` (`Mod+Shift+w`) in floating Alacritty windows, bound in `dotfiles/i3/config`; no tray applets run.
+- Wi-Fi and Bluetooth use on-demand TUIs `wifitui` (`Mod+w`) and `bluetui` (`Mod+Shift+w`) in floating Alacritty windows (via `float-term`), bound in `dotfiles/i3/config`; no tray applets run.
 - `modules/lock.nix` provides `lock-screen` (blurred wallpaper + Ubuntu's `/usr/bin/i3lock`), triggered by `xss-lock`.
 - `modules/notifications.nix` configures dunst notification daemon.
 - `modules/screenshot.nix` provides the maim + Satty screenshot workflow.
 - `modules/fuzzyvim.nix` provides the Fzf-based project/file picker.
 - `modules/default-apps.nix` sets MIME defaults, Thunar prefs (xfconf), and the terminal used by Thunar/GLib (`xdg-terminal-exec` → Alacritty).
 - `modules/menu-util.nix` defines the shared rofi `menu` wrapper (passed to modules as the `menu` arg); `modules/menu.nix` installs it with `menu-launcher`.
-- `modules/display.nix` provides `display-menu` (xrandr extend/duplicate/only) and writes `~/.config/i3/host.conf` from `hostMain`.
-- `modules/clipboard.nix` (cliphist), `wallpaper.nix`, `power.nix`, `pomodoro.nix`, `lofi.nix`, `calendar.nix` (Vietnamese lunar date), `vlc.nix`, and `yazi.nix` provide their respective commands/config.
+- `modules/display.nix` provides `display-menu` (xrandr extend/duplicate/only), `popup-toggle` (second launch closes the window), `float-term` (toggling floating Alacritty popups that stay centered across monitors with different DPI), and writes `~/.config/i3/host.conf` from `hostMain`.
+- `modules/clipboard/` (cliphist watcher + Rust TUI history), `wallpaper.nix`, `power.nix`, `pomodoro/` (Rust TUI task list), `lofi/` (mpv script + Rust TUI player), `calendar/` (Rust TUI lunar calendar), `vlc.nix`, and `yazi.nix` provide their respective commands/config.
 - `modules/tmux.nix`, `zsh.nix`, `git.nix`, `gtk.nix`, `bash.nix`, and `nix-cleanup.nix` contain their respective focused Home Manager configuration.
 - `modules/firefox/` contains the Firefox Home Manager module, policies, profile settings, CSS, and related assets.
 - `dotfiles/` stores application configuration directories, for example `i3/`, `rofi/`, `alacritty/`, `nvim/`, `fastfetch/`, and `yazi/`.

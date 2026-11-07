@@ -56,14 +56,14 @@ with its runtime dependencies and exposes the resulting command through
 | `menu` / `menu-launcher` | `modules/menu-util.nix`, `modules/menu.nix` | Shared rofi dmenu wrapper and app launcher |
 | `power-menu` | `modules/power.nix` | Lock, suspend, or confirm session and power actions |
 | `lock-screen` | `modules/lock.nix` | Blurred wallpaper + Ubuntu `/usr/bin/i3lock`, triggered by `xss-lock` |
-| `clipboard-watcher` | `modules/clipboard.nix` | Store X11 text and image clipboard history with Cliphist |
-| `clipboard-menu` | `modules/clipboard.nix` | Select a clipboard entry with rofi and copy it again |
-| `clipboard-clear` | `modules/clipboard.nix` | Confirm and clear clipboard history |
+| `clipboard-watcher` | `modules/clipboard/` | Store X11 text and image clipboard history with Cliphist |
+| `clipboard-history` | `modules/clipboard/` | Rust TUI clipboard history with text/image preview |
+| `clipboard-clear` | `modules/clipboard/` | Confirm and clear clipboard history |
 | `display-menu` | `modules/display.nix` | Extend, duplicate, or pick outputs with xrandr |
 | `wallpaper-menu` | `modules/wallpaper.nix` | Pick a wallpaper from `Wallpapers/` with feh |
-| `pomodoro-task` | `modules/pomodoro.nix` | Set/show the current task for the i3status-rust pomodoro block |
-| `lofi` | `modules/lofi.nix` | Toggle a local lofi playlist in mpv |
-| `calendar-popup` / `lunar-date` | `modules/calendar.nix` | Month calendar with Vietnamese lunar date |
+| `pomodoro-task` | `modules/pomodoro/` | Rust TUI todo/doing/done task list, also feeds the i3status-rust bar |
+| `lofi` / `lofi-player` | `modules/lofi/` | Toggle a local lofi playlist in mpv; Rust TUI player |
+| `lunar-calendar` | `modules/calendar/` | Rust TUI month calendar with Vietnamese lunar dates |
 | `screenshot` | `modules/screenshot.nix` | Capture with maim, edit with Satty, or copy an image |
 | `fuzzyvim` | `modules/fuzzyvim.nix` | Find a project file with ripgrep/Fzf and open it in Neovim |
 | `notification-sound` | `modules/notifications.nix` | Duck active audio, play the notification sound, then restore volume |

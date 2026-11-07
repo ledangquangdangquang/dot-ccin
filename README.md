@@ -36,14 +36,15 @@
 | Shell | Zsh + Starship |
 | Terminal | Alacritty (Kitty also installed) |
 | Launcher | Rofi (`Mod+space`: run / drun / ssh) |
-| Quick menus | Rofi-driven power, clipboard, display, audio, wallpaper, and pomodoro-task pickers |
+| Quick menus | Rofi-driven power, display, audio, and wallpaper pickers |
+| Popup TUIs (Rust) | Task list + pomodoro timer, lunar calendar, lofi player, clipboard history with image preview |
 | Wi-Fi / Bluetooth | wifitui (`Mod+w`) and bluetui (`Mod+Shift+w`) in floating terminals, no tray applets |
 | Notifications | dunst (sound + volume ducking on notify, silent volume/brightness OSD, Caps Lock state), login/logout sounds, USB plug/unplug alerts |
 | File Manager | Thunar (archive plugin + xarchiver: zip/7z/rar/tar), Yazi (smart-enter, full-border, jump-to-char, git, mount plugins) |
 | Browser | Firefox (Catppuccin CSS, managed extensions, tilde-style start page) |
 | Editor | Neovim + fuzzyvim (`Ctrl+F` fzf file picker with preview) |
 | Screenshot | maim + Satty |
-| Clipboard History | cliphist |
+| Clipboard History | cliphist + Rust TUI |
 | Input Method | Fcitx5 + Unikey |
 | Multiplexer | Tmux (Catppuccin, resurrect, continuum) |
 | System Monitor | Btop |

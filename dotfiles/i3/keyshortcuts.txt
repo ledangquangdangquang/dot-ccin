@@ -18,9 +18,10 @@ Mod + Shift + o         Open audio output menu
 Ctrl + Shift + Escape   Open htop task manager
 Mod + w                 Open Wi-Fi manager (wifitui)
 Mod + Shift + w         Open Bluetooth manager (bluetui)
-Mod + m                 Open lofi track picker
+Mod + m                 Open lofi player
 Mod + Ctrl + m          Toggle lofi repeat current track
-Mod + t                 Open pomodoro task menu
+Mod + t                 Open task list
+Mod + c                 Open lunar calendar
 Mod + Ctrl + c          Toggle grayscale filter
 
 NOTIFICATIONS AND SCREENSHOTS

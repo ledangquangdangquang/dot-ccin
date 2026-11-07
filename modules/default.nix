@@ -16,16 +16,16 @@
     ./fcitx.nix
     ./fuzzyvim.nix
     ./screenshot.nix
-    ./pomodoro.nix
-    ./lofi.nix
-    ./calendar.nix
+    ./pomodoro
+    ./lofi
+    ./calendar
     ./wallpaper.nix
     ./notifications.nix
     ./power.nix
     ./lock.nix
     ./display.nix
     ./audio.nix
-    ./clipboard.nix
+    ./clipboard
     ./menu.nix
     ./yazi.nix
     ./grayscale.nix

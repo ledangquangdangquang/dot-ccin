@@ -1,0 +1,10 @@
+[package]
+name = "pomodoro-task"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+ratatui = "0.29"
+
+[profile.release]
+strip = true

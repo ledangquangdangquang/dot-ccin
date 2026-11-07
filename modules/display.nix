@@ -134,8 +134,55 @@
       esac
     '';
   };
+  # popup-toggle CLASS CMD...: close the window with that i3 class if open, else run CMD
+  popupToggle = pkgs.writeShellApplication {
+    runtimeInputs = [pkgs.jq];
+    name = "popup-toggle";
+    text = ''
+      class="$1"
+      shift
+      # i3-msg comes from the externally installed i3
+      if i3-msg -t get_tree | jq -e --arg c "$class" 'any(.. | .window_properties?.class? // empty; . == $c)' >/dev/null; then
+        exec i3-msg "[class=\"^$class\$\"] kill" >/dev/null
+      fi
+      exec "$@"
+    '';
+  };
+
+  # Floating Alacritty popup (toggles): float-term [--size COLSxLINES] CLASS CMD...
+  # --size sizes the window in cells so it fits the content on any monitor; its i3
+  # for_window rule must then skip "resize set".
+  # winit rescales a window when i3 moves it to a monitor with another DPI, shrinking it
+  # off-center after i3's "move position center". Pin the scale to the focused monitor's,
+  # using winit's X11 formula (1/12 steps, min 1).
+  floatTerm = pkgs.writeShellApplication {
+    runtimeInputs = baseInputs ++ [pkgs.jq popupToggle];
+    name = "float-term";
+    text = ''
+      size=()
+      if [ "$1" = "--size" ]; then
+        size=(-o "window.dimensions.columns=''${2%x*}" -o "window.dimensions.lines=''${2#*x}")
+        shift 2
+      fi
+      class="$1"
+      shift
+      out="$(i3-msg -t get_workspaces | jq -r '.[] | select(.focused).output')"
+      scale="$(xrandr --query | awk -v o="$out" '$1 == o {
+        for (i = 1; i <= NF; i++) {
+          if ($i ~ /^[0-9]+x[0-9]+\+/) { split($i, r, /[x+]/); w = r[1]; h = r[2] }
+          if ($i ~ /^[0-9]+mm$/) { if (!wmm) wmm = $i + 0; else hmm = $i + 0 }
+        }
+        f = 1
+        if (wmm && hmm) { f = int(sqrt(w * h / (wmm * hmm)) * 12 * 25.4 / 96 + 0.5) / 12; if (f < 1) f = 1 }
+        printf "%.4f\n", f
+      }')"
+      WINIT_X11_SCALE_FACTOR="''${scale:-1}" exec popup-toggle "$class" alacritty --class "$class" "''${size[@]}" -e "$@"
+    '';
+  };
 in {
   home.packages = [
+    popupToggle
+    floatTerm
     connectedOutputs
     setPrimary
     extendScript

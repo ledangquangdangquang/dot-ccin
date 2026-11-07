@@ -1,11 +1,22 @@
 {
   pkgs,
-  menu,
+  lib,
   ...
 }: let
+  # Rust TUI: track list + now playing, drives the `lofi` script below
+  lofiPlayer = pkgs.rustPlatform.buildRustPackage {
+    pname = "lofi-player";
+    version = "0.1.0";
+    src = lib.fileset.toSource {
+      root = ./.;
+      fileset = lib.fileset.unions [./Cargo.toml ./Cargo.lock ./src];
+    };
+    cargoLock.lockFile = ./Cargo.lock;
+  };
+
   lofi = pkgs.writeShellApplication {
     name = "lofi";
-    runtimeInputs = with pkgs; [mpv procps util-linux socat jq menu];
+    runtimeInputs = with pkgs; [mpv procps util-linux socat jq];
     text = ''
       marker="lofi-stream"
       dir="$HOME/Music/Lofi"
@@ -57,23 +68,16 @@
           refresh
           ;;
         click)
-          if running; then exec "$0" toggle; else exec "$0" pick; fi
+          # float-term comes from modules/display.nix
+          if running; then exec "$0" toggle; else exec float-term lofi-player lofi-player; fi
           ;;
-        pick)
-          rows=$'\xef\x81\xb4 Shuffle all\t'"$dir"$'\n'
-          while IFS= read -r file; do
-            rows+="$(basename "$file")"$'\t'"$file"$'\n'
-          done < <(find "$dir" -maxdepth 1 -type f | sort)
-
-          choice="$(printf '%s' "$rows" | menu --dmenu --with-nth=1 --prompt='Lofi ❯ ' --lines=14 --width=55)" || exit 0
-          IFS=$'\t' read -r _ file <<< "$choice"
-          [ -n "$file" ] || exit 0
-
+        play)
+          # play: shuffle the folder; play FILE: that track first, then the rest, looping
+          file="''${2:-}"
           flock -n 9 || exit 0
-          if [ "$file" = "$dir" ]; then
+          if [ -z "$file" ]; then
             start --shuffle "$dir"
           else
-            # Picked track first, then the rest of the folder, looping.
             mapfile -t rest < <(find "$dir" -maxdepth 1 -type f | sort | grep -vxF -- "$file")
             start "$file" "''${rest[@]}"
           fi
@@ -97,5 +101,5 @@
     '';
   };
 in {
-  home.packages = [lofi];
+  home.packages = [lofi lofiPlayer];
 }
