@@ -79,8 +79,7 @@ bindsym $mod+Shift+r reload
 # Key shortcut reference
 bindsym $mod+i exec --no-startup-id ~/.config/i3/show-keyshortcuts.sh
 # Notifications
-bindsym $mod+n exec --no-startup-id dunstctl history-pop
-bindsym $mod+Shift+n exec --no-startup-id dunstctl set-paused toggle
+bindsym $mod+Shift+n exec --no-startup-id system-control dnd
 # Screenshots
 bindsym F8 exec --no-startup-id ~/.config/i3/fkeys-media.sh F8 screenshot region
 bindsym Shift+F8 exec --no-startup-id screenshot full

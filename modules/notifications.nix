@@ -109,6 +109,7 @@
       brightnessctl
       coreutils
       ddcutil
+      dunst
       gammastep
       gawk
       libnotify
@@ -225,8 +226,23 @@
             fi
           fi
           ;;
+        dnd)
+          if [[ "$(dunstctl is-paused)" == true ]]; then
+            dunstctl set-paused false
+            state="On"
+            icon="notifications-symbolic"
+          else
+            dunstctl set-paused true
+            state="Paused"
+            icon="notifications-disabled-symbolic"
+          fi
+          # stack_tag "dnd" overrides the pause via the dunst rule below
+          notify-send --app-name="System" --expire-time=1500 \
+            --hint="string:x-dunst-stack-tag:dnd" \
+            --icon="$icon" "Notifications" "$state"
+          ;;
         *)
-          echo "Usage: system-control {brightness-up|brightness-down|brightness-set N|volume-up|volume-down|volume-mute|caps-lock|night-light}" >&2
+          echo "Usage: system-control {brightness-up|brightness-down|brightness-set N|volume-up|volume-down|volume-mute|caps-lock|night-light|dnd}" >&2
           exit 2
           ;;
       esac
@@ -261,6 +277,11 @@ in {
         transparency = 10;
         separator_height = 2;
         notification_limit = 10;
+        history_length = 0;
+      };
+      dnd = {
+        stack_tag = "dnd";
+        override_pause_level = 100;
       };
       urgency_low = {
         background = "#1e1e2e";

@@ -25,7 +25,6 @@ Mod + Ctrl + c          Toggle grayscale filter
 
 NOTIFICATIONS AND SCREENSHOTS
 ────────────────────────────────────────────────────────────
-Mod + n                 Show previous notification
 Mod + Shift + n         Toggle Do Not Disturb
 F8                      Capture region and open Satty
 Shift + F8              Capture full screen and open Satty
