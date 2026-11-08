@@ -36,6 +36,11 @@ in {
             run = "plugin mount";
             desc = "Mount manager";
           }
+          {
+            on = "<Esc>";
+            run = "plugin popup-esc";
+            desc = "Cancel, or quit the popup when nothing is left to cancel";
+          }
         ];
         theme = theme;
       };
@@ -45,6 +50,7 @@ in {
         jump-to-char = pkgs.yaziPlugins.jump-to-char;
         git = pkgs.yaziPlugins.git;
         mount = pkgs.yaziPlugins.mount;
+        popup-esc = ../dotfiles/yazi/popup-esc.yazi;
       };
       initLua = ../dotfiles/yazi/init.lua;
       extraPackages = [pkgs.udisks2];

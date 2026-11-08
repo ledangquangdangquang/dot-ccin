@@ -21,8 +21,22 @@
     tree-sitter
     nil
     btop
-    htop
-    wifitui # Wi-Fi TUI (NetworkManager), replaces nm-applet
+    # Esc quits, after first cancelling a follow/search
+    (htop.overrideAttrs (old: {
+      postPatch =
+        (old.postPatch or "")
+        + "substituteInPlace MainPanel.c --replace-fail '(ch == 27)' '(ch == 27 && host->activeTable->following != -1)'";
+    }))
+    # Wi-Fi TUI (NetworkManager), replaces nm-applet. Esc quits, after first clearing a filter
+    (wifitui.overrideAttrs (old: {
+      postPatch =
+        (old.postPatch or "")
+        + ''
+          substituteInPlace internal/tui/list.go \
+            --replace-fail 'case "q":' 'case "q", "esc":' \
+            --replace-fail 'm.list.FilterState() != list.Filtering' 'msg.String() == "q" || m.list.FilterState() == list.Unfiltered'
+        '';
+    }))
     gcc
     alacritty
     starship

@@ -29,6 +29,7 @@
     ./menu.nix
     ./yazi.nix
     ./grayscale.nix
+    ./grub.nix
     # --- Folder ---
     ./firefox
   ];

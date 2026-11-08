@@ -59,7 +59,7 @@ bindsym $mod+Return exec --no-startup-id alacritty
 # Launch Nautilus file manager
 # bindsym $mod+e exec alacritty -e zsh -ic spf
 # bindsym $mod+e exec nautilus
-bindsym $mod+e exec --no-startup-id popup-toggle yazi-popup kitty --class yazi-popup yazi
+bindsym $mod+e exec --no-startup-id popup-toggle yazi-popup kitty --class yazi-popup env YAZI_POPUP=1 yazi
 bindsym $mod+Tab focus mode_toggle
 # Launch Firefox
 bindsym $mod+Shift+f exec --no-startup-id firefox

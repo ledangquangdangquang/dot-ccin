@@ -18,6 +18,7 @@
     "zsh"
     "wireplumber"
     "Thunar"
+    "bluetui"
   ];
 in {
   xdg.configFile =
