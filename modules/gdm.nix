@@ -43,7 +43,7 @@ in {
           background-size: cover;
           background-position: center; }
         EOF
-        cp --no-preserve=mode ${../Wallpapers/noone.png} "$work/background.png"
+        cp --no-preserve=mode ${../Wallpapers/wallpaper.png} "$work/background.png"
         entries+="<file>background.png</file>"
 
         shell_libs=/usr/lib/gnome-shell:$(echo /usr/lib/x86_64-linux-gnu/mutter-*)
