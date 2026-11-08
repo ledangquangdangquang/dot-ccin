@@ -30,6 +30,7 @@
     ./yazi.nix
     ./grayscale.nix
     ./grub.nix
+    ./gdm.nix
     # --- Folder ---
     ./firefox
   ];
