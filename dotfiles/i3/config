@@ -51,7 +51,7 @@ exec --no-startup-id xset dpms 0 0 0
 # lock-screen (modules/lock.nix) wraps Ubuntu's /usr/bin/i3lock (system PAM).
 exec --no-startup-id xset s 3600 3600
 exec --no-startup-id xss-lock --transfer-sleep-lock -- lock-screen
-bindsym $mod+Escape exec --no-startup-id xset s activate
+bindsym $mod+Escape exec --no-startup-id loginctl lock-session
 
 # Basic keybindings
 # Launch alacritty terminal
@@ -59,7 +59,8 @@ bindsym $mod+Return exec --no-startup-id alacritty
 # Launch Nautilus file manager
 # bindsym $mod+e exec alacritty -e zsh -ic spf
 # bindsym $mod+e exec nautilus
-bindsym $mod+e exec --no-startup-id thunar
+bindsym $mod+e exec --no-startup-id popup-toggle yazi-popup kitty --class yazi-popup yazi
+bindsym $mod+Tab focus mode_toggle
 # Launch Firefox
 bindsym $mod+Shift+f exec --no-startup-id firefox
 # Zathura for documentation
@@ -99,7 +100,7 @@ bindsym Ctrl+Shift+Escape exec --no-startup-id float-term htop htop
 # Wi-Fi / Bluetooth (own class: escapes the alacritty -> workspace 1 rule, floats)
 bindsym $mod+w exec --no-startup-id float-term wifitui wifitui
 bindsym $mod+Shift+w exec --no-startup-id float-term bluetui bluetui
-for_window [class="^(wifitui|bluetui|htop|pavucontrol|pomodoro-task|lofi-player|clipboard-history)$"] floating enable, resize set 960 600, move position center
+for_window [class="^(wifitui|bluetui|htop|pavucontrol|pomodoro-task|lofi-player|clipboard-history|yazi-popup)$"] floating enable, resize set 960 600, move position center
 # Sized in cells by float-term --size (fits the calendar on any monitor DPI)
 for_window [class="^lunar-calendar$"] floating enable, move position center
 # Lofi track picker
