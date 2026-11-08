@@ -91,4 +91,4 @@ if $ddc; then
 fi
 
 step "Done"
-echo "Check hostMain (xrandrLayout) in flake.nix for this machine, then reboot and pick i3 from the GDM gear icon."
+echo "Set hostMain in flake.nix for this machine (monitor layout, gitName, gitEmail), then rebuild, reboot and pick i3 from the GDM gear icon."

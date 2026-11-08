@@ -58,8 +58,12 @@ in {
 
         # HDMI is primary in this layout; mutter ignores it when HDMI is unplugged and falls back to the laptop
         greeter_config=/var/lib/gdm3/seat0/config
-        sudo install -m644 "$HOME/.config/monitors.xml" "$greeter_config/monitors.xml"
-        sudo chown --reference="$greeter_config" "$greeter_config/monitors.xml"
+        if [ -f "$HOME/.config/monitors.xml" ] && [ -d "$greeter_config" ]; then
+          sudo install -m644 "$HOME/.config/monitors.xml" "$greeter_config/monitors.xml"
+          sudo chown --reference="$greeter_config" "$greeter_config/monitors.xml"
+        else
+          echo "Skipped monitor layout: needs ~/.config/monitors.xml and $greeter_config (GDM 49+)."
+        fi
         echo "Done: applies the next time the login screen starts."
       '';
     })

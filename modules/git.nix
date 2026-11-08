@@ -1,4 +1,8 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  hostMain,
+  ...
+}: {
   programs.delta = {
     enable = true;
     enableGitIntegration = true;
@@ -8,8 +12,8 @@
     enable = true;
     settings = {
       user = {
-        name = "ledangquangdangquang";
-        email = "quang.ld224113@sis.hust.edu.vn";
+        name = hostMain.gitName;
+        email = hostMain.gitEmail;
       };
       init.defaultBranch = "main";
       credential.helper = "${pkgs.git-credential-manager}/bin/git-credential-manager";

@@ -26,7 +26,11 @@
     hostMain = {
       stateVersion = "25.11";
       # Machine-specific; written to ~/.config/i3/host.conf by modules/display.nix
+      # Applied only while xrandrOutput is connected, so the only screen never gets turned off
+      xrandrOutput = "HDMI-1-0";
       xrandrLayout = "--output eDP-1 --off --output HDMI-1-0 --auto";
+      gitName = "ledangquangdangquang";
+      gitEmail = "quang.ld224113@sis.hust.edu.vn";
     };
     pkgs = import nixpkgs {
       inherit system;

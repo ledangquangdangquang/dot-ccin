@@ -193,6 +193,6 @@ in {
 
   # Included by dotfiles/i3/config; keeps machine-specific values in flake.nix
   xdg.configFile."i3/host.conf".text = ''
-    exec --no-startup-id xrandr ${hostMain.xrandrLayout}
+    exec --no-startup-id xrandr | grep -q '^${hostMain.xrandrOutput} connected' && xrandr ${hostMain.xrandrLayout}
   '';
 }
