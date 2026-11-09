@@ -3,6 +3,7 @@ i3 — Mod is the Super/Windows key
 Mod + i                 Show this shortcut list
 Mod + Return            Open Alacritty terminal
 Mod + e                 Open Yazi popup (kitty)
+C (in Yazi)             Zip selected files (type the archive name)
 Mod + Tab               Toggle focus popup / tiled windows
 Esc / q                 Close popup TUI (Esc cancels search/selection first)
 Mod + Shift + f         Open Firefox

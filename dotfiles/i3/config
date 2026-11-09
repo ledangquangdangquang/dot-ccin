@@ -35,6 +35,7 @@ exec --no-startup-id fcitx5 -d
 exec --no-startup-id alacritty
 exec --no-startup-id picom --config ~/.config/picom/picom.conf
 exec --no-startup-id clipboard-watcher
+exec --no-startup-id xbanish
 # Wi-Fi/Bluetooth: on-demand TUIs (Mod+w / Mod+Shift+w) instead of tray applets (~500 MB idle)
 # exec --no-startup-id nm-applet
 # exec --no-startup-id blueman-applet

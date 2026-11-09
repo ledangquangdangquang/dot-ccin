@@ -60,6 +60,7 @@
     picom
     pavucontrol # volume mixer (bar sound block left-click)
     xdotool # replay real F-key press when media F-keys are toggled off
+    xbanish # hide mouse cursor while typing
     (python3.withPackages (ps: [ps.i3ipc]))
   ];
 }

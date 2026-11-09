@@ -37,6 +37,12 @@ in {
             desc = "Mount manager";
           }
           {
+            on = "C";
+            # %s expands to absolute paths; strip them so the zip doesn't nest home/user/...
+            run = ''shell 'set -- %s; zip -r .zip "''${@##*/}"' --interactive --cursor=18'';
+            desc = "Zip selected files";
+          }
+          {
             on = "<Esc>";
             run = "plugin popup-esc";
             desc = "Cancel, or quit the popup when nothing is left to cancel";

@@ -176,7 +176,7 @@
         if (wmm && hmm) { f = int(sqrt(w * h / (wmm * hmm)) * 12 * 25.4 / 96 + 0.5) / 12; if (f < 1) f = 1 }
         printf "%.4f\n", f
       }')"
-      WINIT_X11_SCALE_FACTOR="''${scale:-1}" exec popup-toggle "$class" alacritty --class "$class" "''${size[@]}" -e "$@"
+      WINIT_X11_SCALE_FACTOR="''${scale:-1}" exec popup-toggle "$class" alacritty --class "$class" -o font.size=10 "''${size[@]}" -e "$@"
     '';
   };
 in {
