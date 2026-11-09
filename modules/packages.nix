@@ -20,6 +20,11 @@
     stylua
     tree-sitter
     nil
+    pyright
+    clang-tools
+    matlab-language-server
+    vscode-langservers-extracted
+    vtsls
     btop
     # Esc quits, after first cancelling a follow/search
     (htop.overrideAttrs (old: {
