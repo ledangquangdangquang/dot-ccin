@@ -19,6 +19,7 @@ The active window manager is i3. Treat `dotfiles/i3/` as the window manager conf
 - Wi-Fi and Bluetooth use on-demand TUIs `wifitui` (`Mod+w`) and `bluetui` (`Mod+Shift+w`) in floating Alacritty windows (via `float-term`), bound in `dotfiles/i3/config`; no tray applets run.
 - `modules/lock.nix` provides `lock-screen` (blurred wallpaper + Ubuntu's `/usr/bin/i3lock`), triggered by `xss-lock`.
 - `modules/notifications.nix` configures dunst notification daemon.
+- `modules/touchpad.nix` provides `touchpad-setup` (tap to click, natural scrolling, 2-finger right click, pointer speed), run by i3.
 - `modules/screenshot.nix` provides the maim + Satty screenshot workflow.
 - `modules/fuzzyvim.nix` provides the Fzf-based project/file picker.
 - `modules/default-apps.nix` sets MIME defaults, Thunar prefs (xfconf), and the terminal used by Thunar/GLib (`xdg-terminal-exec` → Alacritty).

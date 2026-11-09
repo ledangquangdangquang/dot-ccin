@@ -24,6 +24,7 @@
     ./power.nix
     ./lock.nix
     ./display.nix
+    ./touchpad.nix
     ./audio.nix
     ./clipboard
     ./menu.nix

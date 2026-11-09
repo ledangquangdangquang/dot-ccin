@@ -153,10 +153,10 @@
   # --size sizes the window in cells so it fits the content on any monitor; its i3
   # for_window rule must then skip "resize set".
   # winit rescales a window when i3 moves it to a monitor with another DPI, shrinking it
-  # off-center after i3's "move position center". Pin the scale to the focused monitor's,
-  # using winit's X11 formula (1/12 steps, min 1).
+  # off-center after i3's "move position center". Pin the scale to 1 so popups keep
+  # the same pixel size on every monitor.
   floatTerm = pkgs.writeShellApplication {
-    runtimeInputs = baseInputs ++ [pkgs.jq popupToggle];
+    runtimeInputs = [popupToggle];
     name = "float-term";
     text = ''
       size=()
@@ -166,17 +166,7 @@
       fi
       class="$1"
       shift
-      out="$(i3-msg -t get_workspaces | jq -r '.[] | select(.focused).output')"
-      scale="$(xrandr --query | awk -v o="$out" '$1 == o {
-        for (i = 1; i <= NF; i++) {
-          if ($i ~ /^[0-9]+x[0-9]+\+/) { split($i, r, /[x+]/); w = r[1]; h = r[2] }
-          if ($i ~ /^[0-9]+mm$/) { if (!wmm) wmm = $i + 0; else hmm = $i + 0 }
-        }
-        f = 1
-        if (wmm && hmm) { f = int(sqrt(w * h / (wmm * hmm)) * 12 * 25.4 / 96 + 0.5) / 12; if (f < 1) f = 1 }
-        printf "%.4f\n", f
-      }')"
-      WINIT_X11_SCALE_FACTOR="''${scale:-1}" exec popup-toggle "$class" alacritty --class "$class" -o font.size=10 "''${size[@]}" -e "$@"
+      WINIT_X11_SCALE_FACTOR=1 exec popup-toggle "$class" alacritty --class "$class" -o font.size=15 "''${size[@]}" -e "$@"
     '';
   };
 in {
