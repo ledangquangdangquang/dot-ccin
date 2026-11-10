@@ -16,55 +16,51 @@
     };
   };
 
-  outputs =
-    inputs@{
-      nixpkgs,
-      home-manager,
-      ...
-    }:
-    let
-      system = "x86_64-linux";
-      user = "quang";
-      hostMain = {
-        stateVersion = "25.11";
-        # Machine-specific; written to ~/.config/i3/host.conf by modules/display.nix
-        # Applied only while xrandrOutput is connected, so the only screen never gets turned off
-        xrandrOutput = "HDMI-1-0";
-        xrandrLayout = "--output eDP-1 --off --output HDMI-1-0 --auto";
-        gitName = "ledangquangdangquang";
-        gitEmail = "quang.ld224113@sis.hust.edu.vn";
-      };
-      pkgs = import nixpkgs {
-        inherit system;
-        config.allowUnfree = true;
-      };
-
-      mkHome =
-        targetUser:
-        home-manager.lib.homeManagerConfiguration {
-          inherit pkgs;
-          extraSpecialArgs = {
-            inherit inputs hostMain;
-            user = targetUser;
-          };
-          modules = [
-            ./home.nix
-          ];
-        };
-    in
-    {
-      formatter.${system} = pkgs.writeShellApplication {
-        name = "nix-fmt";
-        runtimeInputs = [ pkgs.alejandra ];
-        text = ''
-          if [ "$#" -eq 0 ]; then
-            exec alejandra .
-          else
-            exec alejandra "$@"
-          fi
-        '';
-      };
-
-      homeConfigurations."${user}" = mkHome user;
+  outputs = inputs @ {
+    nixpkgs,
+    home-manager,
+    ...
+  }: let
+    system = "x86_64-linux";
+    user = "quang";
+    hostMain = {
+      stateVersion = "25.11";
+      # Machine-specific; written to ~/.config/i3/host.conf by modules/display.nix
+      # Applied only while xrandrOutput is connected, so the only screen never gets turned off
+      xrandrOutput = "HDMI-1-0";
+      xrandrLayout = "--output eDP-1 --off --output HDMI-1-0 --auto";
+      gitName = "ledangquangdangquang";
+      gitEmail = "quang.ld224113@sis.hust.edu.vn";
     };
+    pkgs = import nixpkgs {
+      inherit system;
+      config.allowUnfree = true;
+    };
+
+    mkHome = targetUser:
+      home-manager.lib.homeManagerConfiguration {
+        inherit pkgs;
+        extraSpecialArgs = {
+          inherit inputs hostMain;
+          user = targetUser;
+        };
+        modules = [
+          ./home.nix
+        ];
+      };
+  in {
+    formatter.${system} = pkgs.writeShellApplication {
+      name = "nix-fmt";
+      runtimeInputs = [pkgs.alejandra];
+      text = ''
+        if [ "$#" -eq 0 ]; then
+          exec alejandra .
+        else
+          exec alejandra "$@"
+        fi
+      '';
+    };
+
+    homeConfigurations."${user}" = mkHome user;
+  };
 }

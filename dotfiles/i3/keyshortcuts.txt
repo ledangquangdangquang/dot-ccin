@@ -85,3 +85,4 @@ Alt + h/j/k/l           Focus Tmux pane without prefix
 Alt + Shift + h/j/k/l   Resize Tmux pane without prefix
 Alt+a, Ctrl+s           Save session with Resurrect
 Alt+a, Ctrl+r           Restore session with Resurrect
+F5 (Nvim, by filetype)  Save and run file (html/md: live preview in browser)
