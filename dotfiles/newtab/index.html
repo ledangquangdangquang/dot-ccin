@@ -1148,6 +1148,7 @@
     for (const [name, feed] of Object.entries(edition.feeds)) {
       if ($(`[data-feed="${name}"]`)) renderFeed(name, feed);
     }
+    $('#weather').textContent = edition.feeds.weather?.items?.[0]?.title ?? '';
     $('#updated').textContent = `Updated ${new Date(edition.at * 1000).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}`;
   }
 
@@ -1183,10 +1184,6 @@
       year: 'numeric',
     });
     $('#issue').textContent = `No. ${dayOfYear}`;
-    $('#clock').textContent = now.toLocaleTimeString('en-GB', {
-      hour: '2-digit',
-      minute: '2-digit',
-    });
   }
 
   // colophon index: the launcher's named commands, so the keys stay discoverable
@@ -1199,7 +1196,6 @@
   );
 
   setDateline();
-  setInterval(setDateline, 10000);
   loadEdition();
 
   const themeButton = $('#theme');
@@ -1383,7 +1379,7 @@
     <span id="date"></span>
     <span id="issue"></span>
     <span class="mast-end">
-      <span id="clock"></span>
+      <span id="weather"></span>
       <button class="theme-btn" id="theme" type="button" aria-pressed="false">Newsprint</button>
     </span>
   </p>

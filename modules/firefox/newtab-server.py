@@ -113,6 +113,18 @@ def trendshift():
     return items[:10]
 
 
+def weather():
+    """Current weather in Hanoi (Open-Meteo, no key), as a one-item feed."""
+    now = json.loads(get(
+        "https://api.open-meteo.com/v1/forecast?latitude=21.03&longitude=105.85&current=temperature_2m,weather_code"
+    ))["current"]
+    # WMO weather codes: the first threshold a code falls under names the sky
+    skies = [(0, "Clear"), (1, "Mostly clear"), (2, "Partly cloudy"), (3, "Overcast"), (48, "Fog"), (57, "Drizzle"),
+             (67, "Rain"), (77, "Snow"), (82, "Showers"), (86, "Snow showers"), (99, "Thunderstorm")]
+    sky = next(name for limit, name in skies if now["weather_code"] <= limit)
+    return [{"title": f"Hanoi {round(now['temperature_2m'])}°C, {sky.lower()}", "url": "https://open-meteo.com/"}]
+
+
 def world():
     items = rss("https://news.google.com/rss/headlines/section/topic/WORLD?hl=en-US&gl=US&ceid=US:en", 12)
     for item in items:  # Google News titles end in " - Publisher"
@@ -127,6 +139,7 @@ SOURCES = {
     # Google News stands in for r/worldnews: Reddit refuses both this server and cross-origin browser requests
     "world": world,
     "trendshift": trendshift,
+    "weather": weather,
     "arch": lambda: rss("https://archlinux.org/feeds/news/", 5),
 }
 
