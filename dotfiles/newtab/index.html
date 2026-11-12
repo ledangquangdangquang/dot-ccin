@@ -1,108 +1,509 @@
 <!doctype html>
+<html lang="en">
 <meta charset="utf-8" />
-<meta name="color-scheme" content="dark light" />
 <meta name="robots" content="noindex" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Home</title>
-<!-- fetch at parse time: the dial lives in shadow DOM, which would request the font late -->
-<link rel="preload" href="DepartureMono-Regular.woff2" as="font" type="font/woff2" crossorigin />
+<title>The Daily Tab</title>
+<script>
+  // before first paint, so the paper theme never flashes dark
+  try {
+    if (localStorage.getItem('newtab-theme') === 'paper') document.documentElement.dataset.theme = 'paper';
+  } catch {}
+</script>
+<link rel="preload" href="NotoSerifDisplay-Bold.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="NotoSerif-Regular.woff2" as="font" type="font/woff2" crossorigin />
 
 <style>
-  /* tilde (github.com/xvvvyz/tilde), Catppuccin Mocha + bundled pixel font:
-     Firefox can't see Nix-profile system fonts */
+  /* Hallmark · genre: editorial · macrostructure: Ecosystem Index · theme: Newsprint, recoloured to the repo's Catppuccin Mocha
+   * tone: soft · anchor hue: peach · enrichment: none (typography only) · nav: N6 masthead · footer: Ft4 dense colophon
+   * pre-emit critique: P4 H4 E4 S5 R4 V4
+   * Old page (tilde dial): index.old.html. News comes from /feeds.json (modules/firefox/newtab-server.py). */
+
+  /* bundled subsets (Latin + Vietnamese): Firefox can't see Nix-profile system fonts */
   @font-face {
-    font-family: 'Departure Mono';
-    src: url('DepartureMono-Regular.woff2') format('woff2');
+    font-family: 'Noto Serif Display';
+    font-weight: 700;
+    src: url('NotoSerifDisplay-Bold.woff2') format('woff2');
     font-display: block; /* local file: brief invisible text beats a fallback-font flash */
+  }
+  @font-face {
+    font-family: 'Noto Serif';
+    font-weight: 400;
+    src: url('NotoSerif-Regular.woff2') format('woff2');
+    font-display: block;
+  }
+  @font-face {
+    font-family: 'Noto Serif';
+    font-weight: 700;
+    src: url('NotoSerif-Bold.woff2') format('woff2');
+    font-display: block;
   }
 
   :root {
-    /* Catppuccin Mocha; mantle matches the Firefox toolbar (userChrome.css) */
-    --color-background: #181825;
-    --color-text-subtle: #7f849c;
-    --color-text: #cdd6f4;
-    --font-family: 'Departure Mono', monospace;
-    /* pixel font: only multiples of 11px land on its grid */
-    --font-size: 22px;
-    --color-accent: #f38ba8;
-    --transition-speed: 200ms;
-    /* names used by the background popup */
-    --bg-mantle: #181825;
-    --rule: #45475a;
-    --muted: #a6adc8;
-    --subtext: #bac2de;
-    --accent: #cba6f7;
-    --space-xs: 0.25rem;
-    --space-sm: 0.5rem;
+    /* Catppuccin Mocha; paper matches the New Tab Override background (modules/firefox/default.nix) */
+    --color-paper: #1e1e2e; /* base */
+    --color-paper-2: #181825; /* mantle */
+    --color-ink: #cdd6f4; /* text */
+    --color-ink-2: #bac2de; /* subtext1 */
+    --color-ink-3: #a6adc8; /* subtext0 */
+    --color-muted: #7f849c; /* overlay1 */
+    --color-rule: #45475a; /* surface1 */
+    --color-rule-soft: #313244; /* surface0 */
+    --color-accent: #fab387; /* peach */
+    --color-scrim: color-mix(in srgb, var(--color-paper-2) 94%, transparent);
+    color-scheme: dark;
+
+    --font-display: 'Noto Serif Display', 'Noto Serif', serif;
+    --font-body: 'Noto Serif', serif;
+
+    --text-xs: 0.75rem;
+    --text-sm: 0.8125rem;
+    --text-base: 0.9375rem;
+    --text-md: 1.0625rem;
+    --text-lg: 1.3125rem;
+    --text-lead: clamp(1.75rem, 1.1rem + 1.7vw, 2.625rem);
+    --text-mast: clamp(2.5rem, 1rem + 6.4vw, 5.5rem);
+
+    --space-2xs: 0.25rem;
+    --space-xs: 0.5rem;
+    --space-sm: 0.75rem;
     --space-md: 1rem;
+    --space-lg: 1.5rem;
+    --space-xl: 2rem;
+    --space-2xl: 3rem;
+    --page-gutter: clamp(1rem, 3vw, 2.5rem);
+
+    --rule-hair: 1px;
+    --rule-thick: 2px;
+    --dur: 150ms;
+    --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   }
 
-  /* popup buttons */
-  .btns {
+  /* newsprint: warm paper, brown-black ink, brick accent (the one light exception to Mocha) */
+  :root[data-theme='paper'] {
+    --color-paper: #f1ead9;
+    --color-paper-2: #e7dec9;
+    --color-ink: #2b2622;
+    --color-ink-2: #453e37;
+    --color-ink-3: #655c52;
+    --color-muted: #72685c;
+    --color-rule: #b9ae9a;
+    --color-rule-soft: #d8ceb9;
+    --color-accent: #a3411e;
+    color-scheme: light;
+  }
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html,
+  body {
+    overflow-x: clip;
+  }
+
+  html {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    font-size: 130%; /* every size is in rem, so this scales the whole paper */
+    line-height: 1.5;
+    font-synthesis: none;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    margin: 0 auto;
+    max-width: 90rem;
+    padding: var(--space-lg) var(--page-gutter) var(--space-xl);
+  }
+
+  h1,
+  h2,
+  h3,
+  p,
+  ol,
+  ul {
+    margin: 0;
+    padding: 0;
+  }
+
+  ol,
+  ul {
+    list-style: none;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+    text-underline-offset: 0.18em;
+    text-decoration-thickness: var(--rule-hair);
+    transition: color var(--dur) var(--ease-out);
+  }
+  a:hover {
+    color: var(--color-accent);
+    text-decoration-line: underline;
+  }
+  a:active {
+    color: var(--color-ink-2);
+  }
+  a:focus-visible {
+    outline: var(--rule-thick) solid var(--color-accent);
+    outline-offset: 2px;
+    transition: none;
+  }
+
+  /* ── masthead ─────────────────────────────────────────── */
+  .mast {
+    text-align: center;
+  }
+  .mast-line {
     display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--space-2xs) var(--space-md);
+    padding-bottom: var(--space-xs);
+    border-bottom: var(--rule-hair) solid var(--color-rule);
+    color: var(--color-ink-3);
+    font-size: var(--text-sm);
+    font-variant-numeric: tabular-nums;
+  }
+  .mast-line span {
+    white-space: nowrap;
+  }
+  .mast-end {
+    display: inline-flex;
+    align-items: baseline;
     gap: var(--space-sm);
   }
-  .btn {
+  .theme-btn {
+    padding: 0 var(--space-xs);
+    border: var(--rule-hair) solid var(--color-rule);
+    border-radius: 3px;
     background: none;
-    border: 1px solid var(--rule);
-    border-radius: 999px;
-    color: var(--muted);
-    font-family: var(--font-family);
-    font-size: 0.5rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    padding: 0.3em 0.9em;
+    color: inherit;
+    font: inherit;
+    white-space: nowrap;
     cursor: pointer;
-    transition: color var(--transition-speed), border-color var(--transition-speed);
+    transition: color var(--dur) var(--ease-out), border-color var(--dur) var(--ease-out);
   }
-  .btn:hover,
-  .btn:focus-visible {
-    color: var(--accent);
-    border-color: var(--accent);
+  .theme-btn:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+  }
+  .theme-btn:active {
+    color: var(--color-ink);
+  }
+  .theme-btn:focus-visible {
+    outline: var(--rule-thick) solid var(--color-accent);
+    outline-offset: 2px;
+    transition: none;
+  }
+  .mast-name {
+    padding: var(--space-sm) 0 0.22em; /* em: clears the descenders at every size */
+    font-family: var(--font-display);
+    font-size: var(--text-mast);
+    font-style: normal;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    line-height: 1;
+    overflow-wrap: anywhere;
+    min-width: 0;
+  }
+  .rule-double {
+    height: 5px;
+    margin: 0;
+    border: 0;
+    border-top: var(--rule-thick) solid var(--color-ink-3);
+    border-bottom: var(--rule-hair) solid var(--color-ink-3);
   }
 
-  /* custom background layer, tuned from the settings popup */
-  .bg {
-    position: fixed;
-    inset: 0;
-    z-index: -1;
-    background: center / cover no-repeat;
-    transform: scale(1.06); /* hide blurred edges */
-    pointer-events: none;
-  }
-
-  .bg-menu {
-    position: fixed;
-    top: var(--space-md);
-    right: var(--space-md);
-    z-index: 1;
-  }
-  #bg-open { display: grid; place-items: center; padding: 0.45em; }
-  .bg-panel {
-    position: absolute;
-    top: calc(100% + var(--space-sm));
-    right: 0;
-    width: 16rem;
-    padding: var(--space-md);
+  /* ── pages: column rules between sections ─────────────── */
+  .front,
+  .back {
     display: grid;
+    margin-top: var(--space-lg);
+  }
+  .front {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 4fr) minmax(0, 3fr);
+  }
+  .back {
+    grid-template-columns: minmax(0, 6fr) minmax(0, 3fr) minmax(0, 3fr);
+    padding-top: var(--space-lg);
+    border-top: var(--rule-hair) solid var(--color-rule);
+  }
+  .front > section,
+  .back > section {
+    min-width: 0;
+    padding: 0 var(--space-lg);
+    border-left: var(--rule-hair) solid var(--color-rule);
+  }
+  .front > section:first-child,
+  .back > section:first-child {
+    padding-left: 0;
+    border-left: 0;
+  }
+  .front > section:last-child,
+  .back > section:last-child {
+    padding-right: 0;
+  }
+
+  .sec-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
     gap: var(--space-md);
-    background: var(--bg-mantle);
-    border: 1px solid var(--rule);
-    border-radius: 12px;
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+    padding-top: var(--space-xs);
+    border-top: var(--rule-thick) solid var(--color-ink-3);
   }
-  .bg-panel[hidden] { display: none; }
-  .bg-panel label {
-    display: grid;
-    gap: var(--space-xs);
-    font-size: 0.5rem;
-    letter-spacing: 0.16em;
+  .sec-head h2 {
+    color: var(--color-accent);
+    font-size: var(--text-sm);
+    font-style: normal;
+    font-weight: 700;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--muted);
+    white-space: nowrap;
   }
-  .bg-panel label div { display: flex; justify-content: space-between; }
-  .bg-panel label span { color: var(--subtext); text-transform: none; }
-  .bg-panel input[type="range"] { width: 100%; accent-color: var(--accent); }
+  .sec-head a {
+    color: var(--color-ink-3);
+    font-size: var(--text-xs);
+    white-space: nowrap;
+  }
+  .sec-head a:hover {
+    color: var(--color-accent);
+  }
+
+  /* ── stories ──────────────────────────────────────────── */
+  .stories li {
+    padding: var(--space-sm) 0;
+    border-top: var(--rule-hair) solid var(--color-rule-soft);
+    break-inside: avoid;
+  }
+  .stories li:first-child {
+    border-top: 0;
+  }
+  .stories h3 {
+    font-size: var(--text-base);
+    font-style: normal;
+    font-weight: 700;
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+    text-wrap: pretty;
+  }
+  .stories h3 a:visited {
+    color: var(--color-ink-3); /* already read */
+  }
+  .stories h3 a:visited:hover {
+    color: var(--color-accent);
+  }
+  .deck {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+    margin-top: var(--space-2xs);
+    color: var(--color-ink-2);
+    font-size: var(--text-sm);
+    line-height: 1.55;
+  }
+  .meta {
+    margin-top: var(--space-2xs);
+    color: var(--color-ink-3);
+    font-size: var(--text-xs);
+    font-variant-numeric: tabular-nums;
+  }
+  .meta:empty {
+    display: none;
+  }
+  .note {
+    padding: var(--space-sm) 0;
+    color: var(--color-ink-3);
+    font-size: var(--text-sm);
+  }
+  .note:empty {
+    display: none;
+  }
+
+  /* lead story: the first world item carries the page */
+  .lead li:first-child {
+    padding-bottom: var(--space-md);
+  }
+  .lead li:first-child h3 {
+    font-family: var(--font-display);
+    font-size: var(--text-lead);
+    letter-spacing: -0.01em;
+    line-height: 1.12;
+  }
+  .lead li:first-child .deck {
+    display: block;
+    margin-top: var(--space-xs);
+    font-size: var(--text-md);
+  }
+  .lead li:nth-child(2) h3,
+  .lead li:nth-child(3) h3 {
+    font-size: var(--text-lg);
+    line-height: 1.25;
+  }
+
+  /* Hacker News: rank numerals in the margin */
+  .ranked {
+    counter-reset: rank;
+  }
+  .ranked li {
+    display: grid;
+    grid-template-columns: 2.25rem minmax(0, 1fr);
+    counter-increment: rank;
+  }
+  .ranked li::before {
+    content: counter(rank);
+    grid-row: span 2;
+    color: var(--color-muted);
+    font-family: var(--font-display);
+    font-size: var(--text-lg);
+    font-weight: 700;
+    line-height: 1.2;
+    font-variant-numeric: tabular-nums;
+  }
+  .ranked li > * {
+    grid-column: 2;
+  }
+
+  .owner {
+    color: var(--color-ink-3);
+    font-weight: 400;
+  }
+
+  .wide .stories {
+    columns: 2;
+    column-gap: calc(var(--space-lg) * 2);
+    column-rule: var(--rule-hair) solid var(--color-rule);
+  }
+  /* the hairline above a column's first story can't be told apart in multicol, so rules sit below instead */
+  .wide .stories li {
+    border-top: 0;
+    border-bottom: var(--rule-hair) solid var(--color-rule-soft);
+  }
+
+  /* ── colophon ─────────────────────────────────────────── */
+  .colophon {
+    margin-top: var(--space-xl);
+    padding-top: var(--space-sm);
+    color: var(--color-ink-3);
+    font-size: var(--text-sm);
+  }
+  .colophon .rule-double {
+    margin-bottom: var(--space-sm);
+  }
+  .index {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2xs) var(--space-md);
+  }
+  .index a {
+    display: inline-block;
+    padding: var(--space-2xs) 0;
+    white-space: nowrap;
+  }
+  .index kbd {
+    display: inline-block;
+    min-width: 1.4em;
+    margin-right: var(--space-2xs);
+    border: var(--rule-hair) solid var(--color-rule);
+    border-radius: 3px;
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    font-size: var(--text-xs);
+    font-weight: 700;
+    line-height: 1.5;
+    text-align: center;
+  }
+  .index a:hover kbd {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+  }
+  .fine {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2xs) var(--space-md);
+    margin-top: var(--space-sm);
+    color: var(--color-muted);
+    font-size: var(--text-xs);
+    font-variant-numeric: tabular-nums;
+  }
+  .fine > * {
+    white-space: nowrap;
+  }
+
+  /* ── narrower i3 tiles ────────────────────────────────── */
+  @media (max-width: 68rem) {
+    .front {
+      grid-template-columns: minmax(0, 4fr) minmax(0, 3fr);
+      row-gap: var(--space-lg);
+    }
+    .front > .lead {
+      grid-column: 1 / -1;
+      padding-right: 0;
+    }
+    .front > section:nth-child(2) {
+      padding-left: 0;
+      border-left: 0;
+    }
+    .back {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      row-gap: var(--space-lg);
+    }
+    .back > .wide {
+      grid-column: 1 / -1;
+      padding-right: 0;
+    }
+    .back > section:nth-child(2) {
+      padding-left: 0;
+      border-left: 0;
+    }
+    .lead .stories {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      column-gap: var(--space-xl);
+    }
+    .lead li:first-child {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (max-width: 44rem) {
+    .front,
+    .back {
+      grid-template-columns: minmax(0, 1fr);
+      row-gap: var(--space-lg);
+    }
+    .back {
+      padding-top: 0;
+      border-top: 0;
+    }
+    .front > section,
+    .back > section {
+      padding: 0;
+      border-left: 0;
+    }
+    .lead .stories {
+      display: block;
+    }
+    .wide .stories {
+      columns: 1;
+    }
+    .mast-line {
+      justify-content: center;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      transition-duration: 0.01ms !important;
+    }
+  }
 </style>
 
 <script type="module">
@@ -115,7 +516,7 @@
     suggestionLimit: 4,
   };
 
-  // named entries appear on the dial, in insertion order. suggestions are curated.
+  // named entries appear in the colophon index, in insertion order. suggestions are curated.
   /** @type {Map<string, Command>} */
   // prettier-ignore
   const COMMANDS = new Map([
@@ -196,8 +597,6 @@
   }
 
   const TEMPLATES = {
-    command: getTemplate('command-template'),
-    commands: getTemplate('commands-template'),
     match: getTemplate('match-template'),
     search: getTemplate('search-template'),
     suggestion: getTemplate('suggestion-template'),
@@ -369,110 +768,6 @@
     });
   }
 
-  class CommandRing extends HTMLElement {
-    #clockInterval = null;
-
-    constructor() {
-      super();
-      this.attachShadow({ mode: 'open' });
-      const componentFragment = TEMPLATES.commands.content.cloneNode(true);
-      const commands = componentFragment.querySelector('.commands');
-
-      const entries = [...COMMANDS.entries()].filter(
-        ([, { name, url }]) => name && url
-      );
-
-      const total = entries.length;
-
-      commands.style.setProperty(
-        '--item-size',
-        Math.sin(Math.PI / total) / 0.8
-      );
-
-      for (const [index, [key, { name, url }]] of entries.entries()) {
-        const commandFragment = TEMPLATES.command.content.cloneNode(true);
-        const item = commandFragment.querySelector('li');
-        const angle = (index / total) * 2 * Math.PI - Math.PI / 2;
-        item.style.setProperty('--x', 0.5 + 0.5 * Math.cos(angle));
-        item.style.setProperty('--y', 0.5 + 0.5 * Math.sin(angle));
-
-        const commandLink = commandFragment.querySelector('.command');
-        commandLink.href = url;
-        commandLink.setAttribute('aria-label', name);
-        if (CONFIG.openLinksInNewTab) commandLink.target = '_blank';
-        commandFragment.querySelector('.key').textContent = key;
-        commandFragment.querySelector('.name').textContent = name;
-        commands.append(commandFragment);
-      }
-
-      this.shadowRoot.append(componentFragment);
-      const items = commands.querySelectorAll('li');
-
-      for (const [index] of entries.entries()) {
-        const item = items[index];
-
-        item.addEventListener('mouseenter', () => {
-          for (const [otherIndex] of entries.entries()) {
-            const distance = Math.min(
-              Math.abs(otherIndex - index),
-              total - Math.abs(otherIndex - index)
-            );
-
-            if (distance === 0) {
-              items[otherIndex].style.transform =
-                'translate(-50%, -50%) scale(1)';
-            } else if (distance === 1) {
-              items[otherIndex].style.opacity = '0.25';
-            } else if (distance === 2) {
-              items[otherIndex].style.opacity = '0.5';
-            } else if (distance === 3) {
-              items[otherIndex].style.opacity = '0.75';
-            }
-          }
-        });
-
-        item.addEventListener('mouseleave', () => {
-          for (const otherItem of items) {
-            otherItem.style.opacity = '';
-            otherItem.style.transform = '';
-          }
-        });
-      }
-    }
-
-    connectedCallback() {
-      this.#startClock();
-    }
-
-    disconnectedCallback() {
-      if (this.#clockInterval === null) return;
-
-      clearInterval(this.#clockInterval);
-      this.#clockInterval = null;
-    }
-
-    #startClock() {
-      if (this.#clockInterval !== null) return;
-
-      const hour = this.shadowRoot.querySelector('.hand--hour');
-      const minute = this.shadowRoot.querySelector('.hand--minute');
-      const second = this.shadowRoot.querySelector('.hand--second');
-
-      const tick = () => {
-        const now = new Date();
-        const hours = now.getHours() % 12;
-        const minutes = now.getMinutes();
-        const seconds = now.getSeconds();
-        second.style.transform = `rotate(${seconds * 6}deg)`;
-        minute.style.transform = `rotate(${(minutes + seconds / 60) * 6}deg)`;
-        hour.style.transform = `rotate(${(hours + minutes / 60) * 30}deg)`;
-      };
-
-      tick();
-      this.#clockInterval = setInterval(tick, 1000);
-    }
-  }
-
   class SearchOverlay extends HTMLElement {
     #dialog;
     #form;
@@ -641,7 +936,15 @@
     };
 
     #onKeydown = (event) => {
-      if (event.target.closest?.('.bg-menu')) return;
+      // leave scrolling, link tabbing and browser shortcuts to the page
+      if (
+        !this.#dialog.classList.contains('visible') &&
+        (event.ctrlKey ||
+          event.altKey ||
+          event.metaKey ||
+          /^(Tab|Enter| |Arrow.+|Page.+|Home|End)$/.test(event.key))
+      )
+        return;
 
       if (!this.#dialog.classList.contains('visible')) {
         if (event.key === 'Escape') {
@@ -744,164 +1047,185 @@
     }
   }
 
-  // render the dial only once the pixel font is ready (no fallback-font flash)
-  await document.fonts.load("1rem 'Departure Mono'").catch(() => {});
-  customElements.define('commands-component', CommandRing);
+  // ── the paper ────────────────────────────────────────────
+  const $ = (selector) => document.querySelector(selector);
+
+  // new tabs open constantly: paint the last edition from localStorage first, then refresh
+  const store = {
+    get(key) {
+      try {
+        return JSON.parse(localStorage.getItem(key));
+      } catch {
+        return null;
+      }
+    },
+    set(key, value) {
+      try {
+        localStorage.setItem(key, JSON.stringify(value));
+      } catch {}
+    },
+  };
+
+  function el(tag, props = {}, ...children) {
+    const node = Object.assign(document.createElement(tag), props);
+    node.append(...children.flat().filter(Boolean));
+    return node;
+  }
+
+  // trust boundary: a feed URL becomes an href only when it is http(s)
+  function link(url, ...children) {
+    return /^https?:\/\//.test(url || '')
+      ? el('a', { href: url, rel: 'noopener noreferrer' }, ...children)
+      : el('span', {}, ...children);
+  }
+
+  function ago(seconds) {
+    const minutes = Math.max(1, Math.round(Date.now() / 60000 - seconds / 60));
+    if (minutes < 60) return `${minutes} min ago`;
+    if (minutes < 1440) return `${Math.round(minutes / 60)} h ago`;
+    return `${Math.round(minutes / 1440)} d ago`;
+  }
+
+  const comments = (item) =>
+    item.comments != null && link(item.discuss, `${item.comments} comments`);
+
+  const META = {
+    vnexpress: (item) => [item.ts && ago(item.ts)],
+    hn: (item) => [item.points != null && `${item.points} points`, comments(item)],
+    github: (item) => [
+      item.lang,
+      item.stars && `${item.stars} stars`,
+      item.today && `+${item.today} today`,
+    ],
+    world: (item) => [item.source, item.ts && ago(item.ts)],
+    trendshift: (item) => [item.stars && `${item.stars} stars`],
+    arch: (item) => [
+      item.ts &&
+        new Date(item.ts * 1000).toLocaleDateString('en-GB', {
+          day: 'numeric',
+          month: 'long',
+          year: 'numeric',
+        }),
+    ],
+  };
+
+  function headline(name, item) {
+    if (!['github', 'trendshift'].includes(name) || !item.title.includes('/')) return item.title;
+    const [owner, repo] = item.title.split('/');
+    return [el('span', { className: 'owner' }, `${owner}/`), repo];
+  }
+
+  function renderFeed(name, feed) {
+    const section = $(`[data-feed="${name}"]`);
+    const items = feed?.items ?? [];
+
+    if (items.length) {
+      section.querySelector('.stories').replaceChildren(
+        ...items.map((item) => {
+          const meta = el('p', { className: 'meta' });
+          for (const part of META[name](item).filter(Boolean)) {
+            meta.append(meta.hasChildNodes() ? ' · ' : '', part);
+          }
+          return el(
+            'li',
+            {},
+            el('h3', {}, link(item.url, headline(name, item))),
+            item.desc && el('p', { className: 'deck' }, item.desc),
+            meta
+          );
+        })
+      );
+    }
+
+    section.querySelector('.note').textContent = items.length
+      ? ''
+      : feed?.error
+        ? 'Could not fetch this section right now.'
+        : 'Fetching…';
+  }
+
+  function renderEdition(edition) {
+    for (const [name, feed] of Object.entries(edition.feeds)) {
+      if ($(`[data-feed="${name}"]`)) renderFeed(name, feed);
+    }
+    $('#updated').textContent = `Updated ${new Date(edition.at * 1000).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}`;
+  }
+
+  async function loadEdition() {
+    const cached = store.get('newtab-feeds');
+    if (cached?.feeds) renderEdition(cached);
+    try {
+      const response = await fetch('feeds.json');
+      if (!response.ok) throw new Error(response.status);
+      const edition = await response.json();
+      store.set('newtab-feeds', edition);
+      renderEdition(edition);
+    } catch {
+      if (!cached?.feeds) {
+        for (const name of ['vnexpress', 'hn', 'github', 'world', 'trendshift', 'arch']) {
+          renderFeed(name, { error: true });
+        }
+      }
+    }
+  }
+
+  function setDateline() {
+    const now = new Date();
+    const dayOfYear = Math.round(
+      (Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()) -
+        Date.UTC(now.getFullYear(), 0, 0)) /
+        86400000
+    );
+    $('#date').textContent = now.toLocaleDateString('en-GB', {
+      weekday: 'long',
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    });
+    $('#issue').textContent = `No. ${dayOfYear}`;
+    $('#clock').textContent = now.toLocaleTimeString('en-GB', {
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+  }
+
+  // colophon index: the launcher's named commands, so the keys stay discoverable
+  $('#index').append(
+    ...[...COMMANDS]
+      .filter(([, { name, url }]) => name && url)
+      .map(([key, { name, url }]) =>
+        el('li', {}, el('a', { href: url, rel: 'noopener noreferrer' }, el('kbd', {}, key), name))
+      )
+  );
+
+  setDateline();
+  setInterval(setDateline, 10000);
+  loadEdition();
+
+  const themeButton = $('#theme');
+  function setTheme(paper) {
+    document.documentElement.toggleAttribute('data-theme', paper);
+    if (paper) document.documentElement.dataset.theme = 'paper';
+    themeButton.textContent = paper ? 'Night ink' : 'Newsprint'; // names the theme it switches to
+    themeButton.setAttribute('aria-pressed', String(paper));
+  }
+  setTheme(document.documentElement.dataset.theme === 'paper');
+  themeButton.addEventListener('click', () => {
+    const paper = document.documentElement.dataset.theme !== 'paper';
+    setTheme(paper);
+    try {
+      localStorage.setItem('newtab-theme', paper ? 'paper' : 'mocha');
+    } catch {}
+  });
   customElements.define('search-component', SearchOverlay);
 </script>
-
-<template id="commands-template">
-  <style>
-    nav {
-      --dial-size: min(55vh, 55vw);
-      align-items: center;
-      box-sizing: border-box;
-      display: flex;
-      justify-content: center;
-      min-height: 100dvh;
-      position: relative;
-      width: 100%;
-    }
-
-    .commands {
-      aspect-ratio: 1;
-      height: var(--dial-size);
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      position: relative;
-    }
-
-    .commands li {
-      border-radius: 50%;
-      height: calc(var(--item-size) * 100%);
-      left: calc(var(--x) * 100%);
-      position: absolute;
-      top: calc(var(--y) * 100%);
-      transform: translate(-50%, -50%) scale(0.8);
-      transition:
-        opacity var(--transition-speed),
-        transform var(--transition-speed);
-      width: calc(var(--item-size) * 100%);
-    }
-
-    .command {
-      align-items: center;
-      border-radius: 50%;
-      color: var(--color-text);
-      display: flex;
-      height: 100%;
-      justify-content: center;
-      outline: 0;
-      position: relative;
-      text-align: center;
-      text-decoration: none;
-      width: 100%;
-    }
-
-    .key {
-      color: var(--color-text-subtle);
-      position: absolute;
-      transition:
-        opacity var(--transition-speed),
-        transform var(--transition-speed);
-    }
-
-    .command:where(:focus, :hover) .key {
-      opacity: 0;
-      pointer-events: none;
-      transform: translateY(1.5em) scale(0.9);
-    }
-
-    .name {
-      opacity: 0;
-      pointer-events: none;
-      transform: translateY(-1.5em) scale(0.9);
-      transition:
-        opacity var(--transition-speed),
-        transform var(--transition-speed);
-    }
-
-    .command:where(:focus, :hover) .name {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .clock {
-      aspect-ratio: 1;
-      height: calc(var(--dial-size) * 0.85);
-      left: 50%;
-      pointer-events: none;
-      position: absolute;
-      top: 50%;
-      transform: translate(-50%, -50%);
-    }
-
-    .hand {
-      background: var(--color-text);
-      border-radius: 2px;
-      bottom: 50%;
-      left: 50%;
-      position: absolute;
-      transform-origin: bottom center;
-    }
-
-    .hand--hour {
-      height: 30%;
-      width: 3px;
-      margin-left: -1.5px;
-    }
-
-    .hand--minute {
-      height: 40%;
-      width: 2px;
-      margin-left: -1px;
-    }
-
-    .hand--second {
-      background: var(--color-accent);
-      height: 45%;
-      width: 1px;
-      margin-left: -0.5px;
-    }
-
-    .dot {
-      background: var(--color-text);
-      border-radius: 50%;
-      height: 6px;
-      left: 50%;
-      position: absolute;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      width: 6px;
-    }
-  </style>
-  <nav>
-    <menu class="commands"></menu>
-    <div class="clock">
-      <div class="hand hand--hour"></div>
-      <div class="hand hand--minute"></div>
-      <div class="hand hand--second"></div>
-      <div class="dot"></div>
-    </div>
-  </nav>
-</template>
-
-<template id="command-template">
-  <li>
-    <a class="command" rel="noopener noreferrer" aria-label="">
-      <span class="key" aria-hidden="true"></span>
-      <span class="name"></span>
-    </a>
-  </li>
-</template>
 
 <template id="search-template">
   <style>
     input,
     button {
       -moz-appearance: none;
-      font-family: var(--font-family);
+      font-family: var(--font-display);
       -webkit-appearance: none;
       background: transparent;
       border: 0;
@@ -911,7 +1235,7 @@
 
     .dialog {
       align-items: center;
-      background: rgba(24, 24, 37, 0.92);
+      background: var(--color-scrim);
       border: none;
       display: none;
       flex-direction: column;
@@ -920,12 +1244,14 @@
       left: 0;
       opacity: 0;
       padding: 0;
+      position: fixed; /* stay in view when the paper is scrolled */
       top: 0;
       transform: translateY(10px);
       transition:
-        opacity var(--transition-speed),
-        transform var(--transition-speed);
+        opacity var(--dur) var(--ease-out),
+        transform var(--dur) var(--ease-out);
       width: 100%;
+      z-index: 10;
     }
 
     .dialog[open] {
@@ -952,7 +1278,7 @@
     }
 
     .input {
-      color: var(--color-text);
+      color: var(--color-ink);
       font-size: 2rem;
       padding: 0;
       text-align: center;
@@ -972,26 +1298,26 @@
     }
 
     .suggestion {
-      color: var(--color-text);
+      color: var(--color-ink);
       cursor: pointer;
       font-size: 1rem;
       padding: 1rem;
       position: relative;
-      transition: color var(--transition-speed);
+      transition: color var(--dur) var(--ease-out);
       white-space: nowrap;
       z-index: 1;
     }
 
     .suggestion:where(:focus, :hover) {
-      color: var(--color-background);
+      color: var(--color-paper);
     }
 
     .suggestions:hover .suggestion:focus:not(:hover) {
-      color: var(--color-text);
+      color: var(--color-ink);
     }
 
     .suggestion::before {
-      background-color: var(--color-text);
+      background-color: var(--color-ink);
       border-radius: 1em;
       content: ' ';
       inset: 0.8em 0.4em;
@@ -999,8 +1325,8 @@
       position: absolute;
       transform: translateY(0.3em) scale(0.9);
       transition:
-        opacity var(--transition-speed),
-        transform var(--transition-speed);
+        opacity var(--dur) var(--ease-out),
+        transform var(--dur) var(--ease-out);
       z-index: -1;
     }
 
@@ -1015,16 +1341,16 @@
     }
 
     .match {
-      color: var(--color-text-subtle);
-      transition: color var(--transition-speed);
+      color: var(--color-muted);
+      transition: color var(--dur) var(--ease-out);
     }
 
     .suggestion:where(:focus, :hover) .match {
-      color: var(--color-background);
+      color: var(--color-paper);
     }
 
     .suggestions:hover .suggestion:focus:not(:hover) .match {
-      color: var(--color-text-subtle);
+      color: var(--color-muted);
     }
 
     @media (min-width: 700px) {
@@ -1052,114 +1378,88 @@
   <span class="match"></span>
 </template>
 
-<style>
-  html {
-    background-color: var(--color-background);
-    font-family: var(--font-family);
-    font-size: var(--font-size);
-    line-height: 1.4;
-    user-select: none;
-    font-synthesis: none; /* no fake bold on the pixel font */
-  }
+<header class="mast">
+  <p class="mast-line">
+    <span id="date"></span>
+    <span id="issue"></span>
+    <span class="mast-end">
+      <span id="clock"></span>
+      <button class="theme-btn" id="theme" type="button" aria-pressed="false">Newsprint</button>
+    </span>
+  </p>
+  <h1 class="mast-name">The Daily Tab</h1>
+  <hr class="rule-double" aria-hidden="true" />
+</header>
 
-  body {
-    margin: 0;
-  }
-</style>
+<main>
+  <div class="front">
+    <section class="lead" data-feed="world" aria-labelledby="h-world">
+      <header class="sec-head">
+        <h2 id="h-world">World</h2>
+        <a href="https://news.google.com/topics/CAAqJggKIiBDQkFTRWdvSUwyMHZNRGx1YlY4U0FtVnVHZ0pWVXlnQVAB">Google News</a>
+      </header>
+      <ol class="stories"></ol>
+      <p class="note">Fetching…</p>
+    </section>
 
-<div class="bg" id="bg" aria-hidden="true"></div>
+    <section data-feed="hn" aria-labelledby="h-hn">
+      <header class="sec-head">
+        <h2 id="h-hn">Hacker News</h2>
+        <a href="https://news.ycombinator.com/">Y Combinator</a>
+      </header>
+      <ol class="stories ranked"></ol>
+      <p class="note">Fetching…</p>
+    </section>
 
-<div class="bg-menu">
-  <button class="btn" id="bg-open" type="button" aria-expanded="false" aria-controls="bg-panel" aria-label="Background" title="Background"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.1-3.1a2 2 0 0 0-2.8 0L6 21"/></svg></button>
-  <div class="bg-panel" id="bg-panel" hidden>
-    <div class="btns">
-      <button class="btn" id="bg-pick" type="button">Choose image</button>
-      <button class="btn" id="bg-reset" type="button">Default</button>
-    </div>
-    <label><div>Blur <span id="bg-blur-val"></span></div>
-      <input type="range" id="bg-blur" min="0" max="30" step="1" /></label>
-    <label><div>Opacity <span id="bg-opacity-val"></span></div>
-      <input type="range" id="bg-opacity" min="0" max="100" step="1" /></label>
-    <label><div>Brightness <span id="bg-bright-val"></span></div>
-      <input type="range" id="bg-bright" min="10" max="100" step="1" /></label>
-    <input type="file" id="bg-file" accept="image/*" hidden />
+    <section data-feed="github" aria-labelledby="h-github">
+      <header class="sec-head">
+        <h2 id="h-github">GitHub Trending</h2>
+        <a href="https://github.com/trending">Today</a>
+      </header>
+      <ol class="stories"></ol>
+      <p class="note">Fetching…</p>
+    </section>
   </div>
-</div>
-<commands-component></commands-component>
+
+  <div class="back">
+    <section class="wide" data-feed="vnexpress" aria-labelledby="h-vnexpress">
+      <header class="sec-head">
+        <h2 id="h-vnexpress">Technology</h2>
+        <a href="https://vnexpress.net/khoa-hoc-cong-nghe">VnExpress</a>
+      </header>
+      <ol class="stories"></ol>
+      <p class="note">Fetching…</p>
+    </section>
+
+    <section data-feed="trendshift" aria-labelledby="h-trendshift">
+      <header class="sec-head">
+        <h2 id="h-trendshift">Trendshift</h2>
+        <a href="https://trendshift.io/">trendshift.io</a>
+      </header>
+      <ol class="stories ranked"></ol>
+      <p class="note">Fetching…</p>
+    </section>
+
+    <section data-feed="arch" aria-labelledby="h-arch">
+      <header class="sec-head">
+        <h2 id="h-arch">Arch Linux</h2>
+        <a href="https://archlinux.org/news/">archlinux.org</a>
+      </header>
+      <ol class="stories"></ol>
+      <p class="note">Fetching…</p>
+    </section>
+  </div>
+</main>
+
+<footer class="colophon">
+  <hr class="rule-double" aria-hidden="true" />
+  <ul class="index" id="index" aria-label="Shortcuts"></ul>
+  <p class="fine">
+    <span>Type anything to search</span>
+    <span id="updated"></span>
+    <a href="index.old.html">Old page</a>
+  </p>
+</footer>
+
 <search-component></search-component>
-
-<script>
-  // custom background: image Blob in Cache API (no localStorage size limit), sliders in localStorage
-  const bgEl = document.getElementById("bg");
-  const bgOpen = document.getElementById("bg-open");
-  const bgPanel = document.getElementById("bg-panel");
-  const bgPick = document.getElementById("bg-pick");
-  const bgReset = document.getElementById("bg-reset");
-  const bgFile = document.getElementById("bg-file");
-  const BG_KEY = "/__bg";
-  const BG_DEFAULTS = { blur: 0, opacity: 100, bright: 60 };
-  const BG_UNITS = { blur: "px", opacity: "%", bright: "%" };
-  let bgUrl = "";
-  let bgOpts = { ...BG_DEFAULTS };
-  try { Object.assign(bgOpts, JSON.parse(localStorage.getItem("newtab-bg") || "{}")); } catch (e) {}
-
-  function renderBgOpts() {
-    bgEl.style.filter = `blur(${bgOpts.blur}px) brightness(${bgOpts.bright}%)`;
-    bgEl.style.opacity = bgOpts.opacity / 100;
-    for (const k in BG_DEFAULTS) {
-      document.getElementById(`bg-${k}`).value = bgOpts[k];
-      document.getElementById(`bg-${k}-val`).textContent = bgOpts[k] + BG_UNITS[k];
-    }
-  }
-
-  function applyBg(blob) {
-    if (bgUrl) URL.revokeObjectURL(bgUrl);
-    bgUrl = blob ? URL.createObjectURL(blob) : "";
-    bgEl.style.backgroundImage = bgUrl ? `url("${bgUrl}")` : "none";
-  }
-
-  async function loadBg() {
-    try {
-      const res = await (await caches.open("newtab")).match(BG_KEY);
-      if (res) applyBg(await res.blob());
-    } catch (e) { /* storage unavailable: keep gradient */ }
-  }
-
-  for (const k in BG_DEFAULTS) {
-    document.getElementById(`bg-${k}`).addEventListener("input", (e) => {
-      bgOpts[k] = Number(e.target.value);
-      renderBgOpts();
-      try { localStorage.setItem("newtab-bg", JSON.stringify(bgOpts)); } catch (e) {}
-    });
-  }
-
-  function toggleBgPanel(open) {
-    bgPanel.hidden = !open;
-    bgOpen.setAttribute("aria-expanded", open);
-  }
-  bgOpen.addEventListener("click", () => toggleBgPanel(bgPanel.hidden));
-  document.addEventListener("click", (e) => {
-    if (!e.target.closest(".bg-menu")) toggleBgPanel(false);
-  });
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") toggleBgPanel(false);
-  });
-
-  bgPick.addEventListener("click", () => bgFile.click());
-  bgFile.addEventListener("change", async () => {
-    const file = bgFile.files[0];
-    bgFile.value = "";
-    if (!file) return;
-    applyBg(file);
-    try { await (await caches.open("newtab")).put(BG_KEY, new Response(file)); } catch (e) {}
-  });
-  bgReset.addEventListener("click", async () => {
-    applyBg(null);
-    bgOpts = { ...BG_DEFAULTS };
-    renderBgOpts();
-    try { localStorage.removeItem("newtab-bg"); } catch (e) {}
-    try { await (await caches.open("newtab")).delete(BG_KEY); } catch (e) {}
-  });
-  renderBgOpts();
-  loadBg();
-</script>
+</html>
