@@ -1,5 +1,6 @@
 {
   config,
+  lib,
   pkgs,
   ...
 }: {
@@ -65,6 +66,12 @@
 
   xdg.configFile."mimeapps.list".force = true;
   xdg.dataFile."applications/mimeapps.list".force = true;
+
+  # Browsers' "set as default" rewrite mimeapps.list inside the user-owned store; nix still thinks it's valid, so restore it
+  home.activation.repairMimeapps = lib.hm.dag.entryAfter ["linkGeneration"] ''
+    f=$(readlink -f ${config.xdg.configHome}/mimeapps.list)
+    nix-store --verify-path "$f" 2>/dev/null || run nix-store --repair-path "$f"
+  '';
 
   xdg.mimeApps = {
     enable = true;

@@ -114,7 +114,29 @@ gdm-catppuccin   # Catppuccin login screen, rerun after GNOME upgrades
 
 `gdm-catppuccin` also gives the login screen your `~/.config/monitors.xml` layout, if that file exists and GDM is 49+. Undo commands are in `modules/grub.nix` and `modules/gdm.nix`.
 
-## 8. Check for errors
+## 8. Family DNS filter (optional)
+
+Sets Cloudflare for Families (blocks adult content and malware) as the DNS for every network; `Domains=~.` overrides the DNS handed out by DHCP:
+
+```bash
+sudo mkdir -p /etc/systemd/resolved.conf.d && printf '[Resolve]\nDNS=1.1.1.3 1.0.0.3\nDomains=~.\n' | sudo tee /etc/systemd/resolved.conf.d/dns.conf && sudo systemctl restart systemd-resolved
+```
+
+Check with `resolvectl query pornhub.com`: it should return `0.0.0.0`. Firefox is already locked to the same filter over DoH (`modules/firefox/default.nix`). Undo: delete `dns.conf` and restart `systemd-resolved` (needed on Wi-Fi with a login page).
+
+## 9. Firmware updates (optional)
+
+BIOS/UEFI, SSD, and dock firmware come from LVFS via `fwupd` (preinstalled on Ubuntu, else `sudo apt install fwupd`):
+
+```bash
+fwupdmgr get-devices                               # what fwupd can update
+sudo fwupdmgr refresh --force && sudo fwupdmgr get-updates
+sudo fwupdmgr update                               # may ask to reboot to flash
+```
+
+Keep the laptop on AC power and don't power off during the flash. A BIOS update can reset UEFI settings (Secure Boot, boot order), so check them afterwards.
+
+## 10. Check for errors
 
 | Symptom | Check / fix |
 | --- | --- |
