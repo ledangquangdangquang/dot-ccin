@@ -8,6 +8,20 @@ in {
     (pkgs.yazi.override {
       settings = {
         yazi.mgr.sort_by = "extension";
+        yazi.opener.browser = [
+          {
+            run = "firefox %s";
+            orphan = true;
+            desc = "Browser (Firefox)";
+          }
+        ];
+        # Enter still opens in the editor; O lists Browser too
+        yazi.open.prepend_rules = [
+          {
+            url = "*.{html,htm}";
+            use = ["edit" "browser" "reveal"];
+          }
+        ];
         yazi.plugin.prepend_fetchers = [
           {
             url = "*";
