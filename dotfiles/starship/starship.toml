@@ -1,36 +1,46 @@
 "$schema" = "https://starship.rs/config-schema.json"
 
 add_newline = false
+palette = "catppuccin_mocha"
 
 format = """
-[╭─](purple) $os$directory$git_branch$python$nix_shelll$time
-[╰─](purple) $character
+[╭─](bold overlay2) $directory$git_branch$python$nix_shell
+[╰─](bold overlay2) 
 """
+# format = """
+# [╭─](overlay0) $os$directory$git_branch$python$nix_shell
+# [╰─](overlay0) 
+# """
 
+# format = """
+# [╭─](purple) $os$directory$git_branch$python$nix_shelll
+# [╰─](purple) $character
+# """
 [fill]
 disabled = false
 symbol = ' ∙'
-style = '#f5e0dc'
+style = 'rosewater'
 
 [directory]
-style = "purple"
+style = "bold mauve"
 
 [line_break]
 disabled = false
 
 [git_branch]
 symbol = " "
-style = "purple"
+style = "peach"
+format = "[- ](bold overlay2)[$symbol$branch]($style) "
 
 [os]
 disabled = false
-style = 'purple'
+style = 'mauve'
 format = '[$symbol ]($style)'
 
 [python]
 symbol = " "
 style = "yellow"
-format = "via [${symbol}${version}( ($virtualenv))]($style) "
+format = "[- ](bold overlay2)[${symbol}${version}( ($virtualenv))]($style) "
 version_format = "v${raw}"
 python_binary = ["python3", "python"]
 detect_extensions = ["py", "ipynb"]
@@ -49,18 +59,18 @@ generic_venv_names = [".venv", "venv"]
 
 [nix_shell]
 symbol = " "
-style = "blue"
-format = "via [$symbol$state( ($name))]($style) "
+style = "sapphire"
+format = "[- ](bold overlay2)[$symbol$state( ($name))]($style) "
 heuristic = false
 
 [time]
 disabled = false
 time_format = '%R'
-style = '#f5e0dc'
+style = 'rosewater'
 format = '[ $time]($style)'
 
 [character]
-success_symbol = "[󰄛](purple)"
+success_symbol = "[󰄛](green)"
 error_symbol = "[󰄛](red)"
 
 [localip]
@@ -96,3 +106,15 @@ FreeBSD     = ''
 Elementary  = ''
 Zorin       = ''
 Unknown     = '󰋖'
+
+[palettes.catppuccin_mocha]
+rosewater = "#f5e0dc"
+red = "#f38ba8"
+peach = "#fab387"
+yellow = "#f9e2af"
+green = "#a6e3a1"
+sapphire = "#74c7ec"
+blue = "#89b4fa"
+mauve = "#cba6f7"
+overlay0 = "#6c7086"
+overlay2 = "#9399b2"

@@ -22,6 +22,7 @@ Ctrl + Shift + Escape   Open htop task manager
 Mod + w                 Open Wi-Fi manager (wifitui)
 Mod + Shift + w         Open Bluetooth manager (bluetui)
 Mod + m                 Open lofi player
+Mod + n                 Toggle sticky note (~/notes/sticky.md)
 Mod + Ctrl + m          Toggle lofi repeat current track
 Mod + t                 Open task list
 Mod + c                 Open lunar calendar

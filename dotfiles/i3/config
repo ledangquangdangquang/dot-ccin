@@ -113,6 +113,10 @@ bindsym $mod+Ctrl+m exec --no-startup-id lofi loop
 bindsym $mod+t exec --no-startup-id float-term pomodoro-task pomodoro-task
 # Lunar calendar (same as clicking the bar clock)
 bindsym $mod+c exec --no-startup-id float-term --size 46x23 lunar-calendar lunar-calendar
+# Sticky note (autosaves on every edit; popup toggle kills nvim)
+# float-term pins font.size=15; call popup-toggle directly for a smaller font
+bindsym $mod+n exec --no-startup-id env WINIT_X11_SCALE_FACTOR=1 popup-toggle sticky-note alacritty --class sticky-note -o font.size=12 -e sh -c 'mkdir -p ~/notes && exec nvim -S ~/.config/nvim/sticky.lua ~/notes/sticky.md'
+for_window [class="^sticky-note$"] floating enable, sticky enable, resize set 25 ppt 30 ppt, move position 74 ppt 3 ppt, move to output primary
 # Grayscale filter toggle (picom shader)
 bindsym $mod+Ctrl+c exec --no-startup-id grayscale-toggle
 
