@@ -17,7 +17,7 @@ from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 PORT = int(os.environ.get("NEWTAB_PORT", "8918"))
 DIRECTORY = os.environ.get("NEWTAB_DIR", os.path.expanduser("~/.config/newtab"))
 UA = "newtab-feed/1.0 (personal start page)"
-TTL = 15 * 60  # seconds a fetched set of feeds is reused
+TTL = 5 * 60  # seconds a fetched set of feeds is reused
 
 
 def get(url):
@@ -85,7 +85,9 @@ def github():
 
 def hackernews():
     hits = json.loads(get("https://hn.algolia.com/api/v1/search?tags=front_page&hitsPerPage=30"))["hits"]
-    hits.sort(key=lambda hit: hit.get("points") or 0, reverse=True)
+    # HN's own front-page ranking (points decayed by age), so fresh stories surface
+    now = time.time()
+    hits.sort(key=lambda hit: (hit.get("points") or 0) / ((now - hit["created_at_i"]) / 3600 + 2) ** 1.8, reverse=True)
     return [
         {
             "title": hit.get("title") or "",

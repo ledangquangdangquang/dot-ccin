@@ -121,11 +121,6 @@
   visibility: none !important;
 }
 
-/* All tabs (v-like) button */
-#alltabs-button {
-  display: none !important;
-}
-
 #identity-box {
   display: flex !important;
   visibility: visible !important;
@@ -237,3 +232,20 @@
 #tabbrowser-arrowscrollbox {max-height: 34px !important;}
 /* Tab hover preview anchors to the 68px tab box, not the 34px visible row */
 #tab-preview-panel {margin-top: -34px !important;}
+
+/* Tabs inside a tab group: hidden (hover the group label for the list), active one icon only */
+tab-group .tabbrowser-tab:not([pinned], [selected]) {
+  display: none !important;
+}
+tab-group .tabbrowser-tab:not([pinned]) {
+  min-width: 36px !important;
+  max-width: 36px !important;
+  flex: 0 0 36px !important;
+}
+tab-group .tabbrowser-tab:not([pinned]) :is(.tab-label-container, .tab-close-button) {
+  display: none !important;
+}
+tab-group .tabbrowser-tab:not([pinned]) .tab-content {
+  justify-content: center !important;
+  padding-inline: 0 !important;
+}

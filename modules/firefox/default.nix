@@ -36,7 +36,11 @@
         };
     };
 
-  firefoxWithFcitx = wrapFirefox pkgs.firefox;
+  firefoxWithFcitx = wrapFirefox (pkgs.firefox.override {
+    # Chrome JS via autoconfig (mozilla.cfg); needs the sandbox off.
+    extraAutoConfig = ''pref("general.config.sandbox_enabled", false);'';
+    extraPrefsFiles = ["${./tabgroup-click.js}"]; # interpolate so the file is copied to the store
+  });
 
   newtabPort = 8918;
   newtabUrl = "http://127.0.0.1:${toString newtabPort}/";
