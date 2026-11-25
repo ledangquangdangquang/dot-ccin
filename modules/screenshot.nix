@@ -10,7 +10,7 @@
     ];
     text = ''
       mode="''${1:-region}"
-      # Delay in seconds before capturing. A rofi/dmenu popup keyboard-grabs
+      # Delay in seconds before capturing. An app menu (e.g. a Firefox dropdown) keyboard-grabs
       # while open, so the screenshot keybind can't reach i3; use a delay to
       # trigger the capture before opening such a popup instead.
       delay="''${2:-0}"

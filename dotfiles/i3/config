@@ -87,7 +87,7 @@ bindsym $mod+Shift+n exec --no-startup-id system-control dnd
 bindsym F8 exec --no-startup-id ~/.config/i3/fkeys-media.sh F8 screenshot region
 bindsym Shift+F8 exec --no-startup-id screenshot full
 bindsym Ctrl+F8 exec --no-startup-id screenshot copy
-# popup/menu grabs keyboard so F8 is dead while open: press this, then open the popup within 3s
+# app menus (firefox dropdowns...) grab the keyboard so F8 is dead while open: press this, then open the menu within 3s
 bindsym $mod+F8 exec --no-startup-id screenshot full 3
 # Toggle 4000K night light
 bindsym F9 exec --no-startup-id ~/.config/i3/fkeys-media.sh F9 system-control night-light
@@ -103,6 +103,8 @@ bindsym Ctrl+Shift+Escape exec --no-startup-id float-term htop htop
 bindsym $mod+w exec --no-startup-id float-term wifitui wifitui
 bindsym $mod+Shift+w exec --no-startup-id float-term bluetui bluetui
 for_window [class="^(wifitui|bluetui|htop|pavucontrol|pomodoro-task|lofi-player|clipboard-history|yazi-popup)$"] floating enable, resize set 960 600, move position center
+# rofi runs with -normal-window (see modules/menu-util.nix) so F8 can screenshot it
+for_window [class="^Rofi$"] floating enable, border none, move position center
 # Sized in cells by float-term --size (fits the calendar on any monitor DPI)
 for_window [class="^lunar-calendar$"] floating enable, move position center
 # Lofi track picker
@@ -111,17 +113,18 @@ bindsym $mod+m exec --no-startup-id float-term lofi-player lofi-player
 bindsym $mod+Ctrl+m exec --no-startup-id lofi loop
 # Pomodoro task list
 bindsym $mod+t exec --no-startup-id float-term pomodoro-task pomodoro-task
-# Lunar calendar (same as clicking the bar clock)
-bindsym $mod+c exec --no-startup-id float-term --size 46x23 lunar-calendar lunar-calendar
 # Sticky note (autosaves on every edit; popup toggle kills nvim)
 # float-term pins font.size=15; call popup-toggle directly for a smaller font
 bindsym $mod+n exec --no-startup-id env WINIT_X11_SCALE_FACTOR=1 popup-toggle sticky-note alacritty --class sticky-note -o font.size=12 -e sh -c 'mkdir -p ~/notes && exec nvim -S ~/.config/nvim/sticky.lua ~/notes/sticky.md'
 for_window [class="^sticky-note$"] floating enable, sticky enable, resize set 25 ppt 30 ppt, move position 74 ppt 3 ppt, move to output primary
+# Lunar calendar (same as clicking the bar clock)
+bindsym $mod+c exec --no-startup-id float-term --size 46x23 lunar-calendar lunar-calendar
 # Grayscale filter toggle (picom shader)
 bindsym $mod+Ctrl+c exec --no-startup-id grayscale-toggle
 
 # exec --no-startup-id feh --bg-fill --no-fehbg ~/dot-ccin/Wallpapers/catppuccin-abstract-eclipse-1920x1080.png
 exec --no-startup-id feh --bg-fill --no-fehbg "$(cat ~/.wallpaper 2>/dev/null || echo ~/dot-ccin/Wallpapers/wallpaper.png)"
+exec --no-startup-id [ -e ~/.wallpaper-slideshow ] && exec wallpaper-slideshow
 
 default_orientation horizontal
 
@@ -190,12 +193,12 @@ client.urgent           #f38ba8 #1e1e2e #f38ba8 #f38ba8 #f38ba8
 client.background       #1e1e2e
 bar {
   position top
-  height 34
+  height 20
   # mode hide
   # pixel font: only 11px/22px land on its grid (pt sizes blur)
   font pango:DepartureMono Nerd Font 18px
-  padding 0 4px
-  workspace_min_width 28
+  padding 0 10px
+  workspace_min_width 20
   tray_padding 2
   # touch: watch_files needs ~/.cache/pomodoro-tasks to exist or the task block errors
   status_command sh -c 'touch -a ~/.cache/pomodoro-tasks; exec i3status-rs ~/.config/i3status-rust/config.toml'

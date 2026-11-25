@@ -38,7 +38,8 @@
         awk -F '\t' '{ print $1 }' "$tmpdir/rows" > "$tmpdir/display"
       fi
 
-      rargs=(-dmenu -i)
+      # -normal-window: no keyboard grab, so i3 binds (F8 screenshot) work while the menu is open
+      rargs=(-dmenu -i -normal-window)
       rprompt="''${prompt_only:-$prompt}"
       [[ -n "$rprompt" ]] && rargs+=(-p "$rprompt")
       rargs+=(-lines "$lines" -width "$width")
@@ -66,7 +67,7 @@
     name = "menu-launcher";
     runtimeInputs = with pkgs; [rofi];
     text = ''
-      exec rofi -show drun
+      exec rofi -show drun -normal-window
     '';
   };
 in {
