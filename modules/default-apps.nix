@@ -98,19 +98,6 @@
       "application/x-zstd-compressed-tar" = ["xarchiver.desktop"];
       "application/gzip" = ["xarchiver.desktop"];
 
-      # office files subclass application/zip; pin them or they inherit xarchiver
-      "application/msword" = ["libreoffice-writer.desktop"];
-      "application/vnd.openxmlformats-officedocument.wordprocessingml.document" = ["libreoffice-writer.desktop"];
-      "application/vnd.oasis.opendocument.text" = ["libreoffice-writer.desktop"];
-      "application/rtf" = ["libreoffice-writer.desktop"];
-      "application/vnd.ms-excel" = ["libreoffice-calc.desktop"];
-      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" = ["libreoffice-calc.desktop"];
-      "application/vnd.oasis.opendocument.spreadsheet" = ["libreoffice-calc.desktop"];
-      "text/csv" = ["libreoffice-calc.desktop"];
-      "application/vnd.ms-powerpoint" = ["libreoffice-impress.desktop"];
-      "application/vnd.openxmlformats-officedocument.presentationml.presentation" = ["libreoffice-impress.desktop"];
-      "application/vnd.oasis.opendocument.presentation" = ["libreoffice-impress.desktop"];
-
       "text/html" = ["firefox.desktop"];
       "application/xhtml+xml" = ["firefox.desktop"];
       "application/x-extension-htm" = ["firefox.desktop"];

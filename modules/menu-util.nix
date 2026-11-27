@@ -70,6 +70,24 @@
       exec rofi -show drun -normal-window
     '';
   };
+
+  # Enter opens the file, Alt+Enter opens its folder
+  file-search = pkgs.writeShellApplication {
+    name = "file-search";
+    runtimeInputs = with pkgs; [coreutils fd rofi xdg-utils];
+    text = ''
+      cd "$HOME"
+      rc=0
+      sel="$(fd --type f --type d . | rofi -dmenu -i -normal-window -p "file" \
+        -mesg "Enter: open · Alt+Enter: open file location" \
+        -kb-accept-alt "" -kb-custom-1 "Alt+Return")" || rc=$?
+      [[ -z "$sel" ]] && exit 0
+      case "$rc" in
+        0) exec xdg-open "$HOME/$sel" ;;
+        10) exec xdg-open "$(dirname "$HOME/$sel")" ;;
+      esac
+    '';
+  };
 in {
-  inherit menu menu-launcher;
+  inherit menu menu-launcher file-search;
 }

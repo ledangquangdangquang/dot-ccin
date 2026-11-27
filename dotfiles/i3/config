@@ -73,6 +73,7 @@ bindsym $mod+q kill
 bindsym $mod+x exec --no-startup-id power-menu
 # Launch menu (rofi)
 bindsym $mod+space exec --no-startup-id menu-launcher
+bindsym $mod+Shift+space exec --no-startup-id file-search
 # bindsym $mod+space exec menu-launcher
 # Clipboard history
 bindsym $mod+v exec --no-startup-id float-term clipboard-history clipboard-history

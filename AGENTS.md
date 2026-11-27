@@ -26,6 +26,7 @@ The active window manager is i3. Treat `dotfiles/i3/` as the window manager conf
 - `modules/menu-util.nix` defines the shared rofi `menu` wrapper (passed to modules as the `menu` arg); `modules/menu.nix` installs it with `menu-launcher`.
 - `modules/display.nix` provides `display-menu` (xrandr extend/duplicate/only), `popup-toggle` (second launch closes the window), `float-term` (toggling floating Alacritty popups that stay centered across monitors with different DPI), and writes `~/.config/i3/host.conf` from `hostMain`.
 - `modules/clipboard/` (cliphist watcher + Rust TUI history), `wallpaper.nix`, `power.nix`, `pomodoro/` (Rust TUI task list), `lofi/` (mpv script + Rust TUI player), `calendar/` (Rust TUI lunar calendar), `vlc.nix`, and `yazi.nix` provide their respective commands/config.
+- `modules/wifimanager/` runs `app.py` (nmcli web UI, `python3 test_app.py` self-check) as a user service on `127.0.0.1:8765`, opened from the Firefox new tab via `w`.
 - `modules/grub.nix` provides `grub-catppuccin`, a one-shot sudo script that installs the Catppuccin Mocha GRUB theme (system-level, not applied by the switch).
 - `modules/gdm.nix` provides `gdm-catppuccin`, the same kind of one-shot sudo script for the login screen; re-run it after GNOME upgrades.
 - `modules/tmux.nix`, `zsh.nix`, `git.nix`, `gtk.nix`, `bash.nix`, and `nix-cleanup.nix` contain their respective focused Home Manager configuration.

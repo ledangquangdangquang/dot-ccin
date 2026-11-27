@@ -9,6 +9,7 @@ Esc / q                 Close popup TUI (Esc cancels search/selection first)
 Mod + Shift + f         Open Firefox
 Mod + Shift + z         Open Zathura
 Mod + Space             Open App launcher (Rofi)
+Mod + Shift + Space     Search files (Alt+Enter: open file location)
 Mod + v                 Open clipboard history
 Mod + Shift + v         Clear clipboard history
 Mod + q                 Close focused window

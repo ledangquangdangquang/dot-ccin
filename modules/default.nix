@@ -27,6 +27,7 @@
     ./touchpad.nix
     ./audio.nix
     ./clipboard
+    ./wifimanager
     ./menu.nix
     ./yazi.nix
     ./grayscale.nix
