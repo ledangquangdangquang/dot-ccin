@@ -1,5 +1,6 @@
-{pkgs, ...}: {
+{ pkgs, ... }: {
   home.packages = with pkgs; [
+    astroterm
     i3status-rust
     nerd-fonts.fira-code
     fum
@@ -34,13 +35,11 @@
     }))
     # Wi-Fi TUI (NetworkManager), replaces nm-applet. Esc quits, after first clearing a filter
     (wifitui.overrideAttrs (old: {
-      postPatch =
-        (old.postPatch or "")
-        + ''
-          substituteInPlace internal/tui/list.go \
-            --replace-fail 'case "q":' 'case "q", "esc":' \
-            --replace-fail 'm.list.FilterState() != list.Filtering' 'msg.String() == "q" || m.list.FilterState() == list.Unfiltered'
-        '';
+      postPatch = (old.postPatch or "") + ''
+        substituteInPlace internal/tui/list.go \
+          --replace-fail 'case "q":' 'case "q", "esc":' \
+          --replace-fail 'm.list.FilterState() != list.Filtering' 'msg.String() == "q" || m.list.FilterState() == list.Unfiltered'
+      '';
     }))
     gcc
     alacritty
@@ -56,7 +55,9 @@
     (thunar.override {
       thunarPlugins = [
         (thunar-archive-plugin.overrideAttrs (old: {
-          postInstall = (old.postInstall or "") + "cp ${xarchiver}/libexec/thunar-archive-plugin/xarchiver.tap $out/libexec/thunar-archive-plugin/";
+          postInstall =
+            (old.postInstall or "")
+            + "cp ${xarchiver}/libexec/thunar-archive-plugin/xarchiver.tap $out/libexec/thunar-archive-plugin/";
         }))
       ];
     })
@@ -66,6 +67,6 @@
     pavucontrol # volume mixer (bar sound block left-click)
     xdotool # replay real F-key press when media F-keys are toggled off
     xbanish # hide mouse cursor while typing
-    (python3.withPackages (ps: [ps.i3ipc]))
+    (python3.withPackages (ps: [ ps.i3ipc ]))
   ];
 }

@@ -12,4 +12,20 @@
 	<startup-notify />
 	<directories />
 </action>
-<action><icon>document-save-as</icon><name>Convert with Filee</name><unique-id>filee-convert</unique-id><command>'/home/quang/.local/share/filee/application/Filee' --convert %F</command><description>Convert with Filee</description><patterns>*</patterns><audio-files /><image-files /><other-files /><text-files /><video-files /></action></actions>
+<action><icon>document-save-as</icon><name>Convert with Filee</name><unique-id>filee-convert</unique-id><command>'/home/quang/.local/share/filee/application/Filee' --convert %F</command><description>Convert with Filee</description><patterns>*</patterns><audio-files /><image-files /><other-files /><text-files /><video-files /></action><action>
+	<icon>nectarlink</icon>
+	<name>Send to Quang&apos;s A33 (NectarLink)</name>
+	<submenu></submenu>
+	<unique-id>nectarlink-send-dcimnthifjrnn1g6hei5f6t8mpnji5w3drzjargnhrxzg7pus5ro</unique-id>
+	<command>&apos;/usr/lib/nectarlink/nectarlink-desktop&apos; --send-to dcimnthifjrnn1g6hei5f6t8mpnji5w3drzjargnhrxzg7pus5ro %F</command>
+	<description>Send to Quang&apos;s A33 with NectarLink</description>
+	<range></range>
+	<patterns>*</patterns>
+	<directories/>
+	<audio-files/>
+	<image-files/>
+	<other-files/>
+	<text-files/>
+	<video-files/>
+</action>
+</actions>

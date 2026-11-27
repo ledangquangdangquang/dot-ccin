@@ -7,6 +7,7 @@
       maim
       satty
       xclip
+      (tesseract.override {enableLanguages = ["eng" "vie"];})
     ];
     text = ''
       mode="''${1:-region}"
@@ -34,8 +35,17 @@
             "Screenshot copied" \
             "The selected region is in the clipboard"
           ;;
+        ocr)
+          text="$(maim -d "$delay" -s | tesseract -l vie+eng stdin stdout 2>/dev/null)"
+          if [ -z "''${text//[[:space:]]/}" ]; then
+            notify-send --app-name="Screenshot" --expire-time=2500 "OCR" "No text found"
+            exit 1
+          fi
+          printf '%s' "$text" | xclip -selection clipboard
+          notify-send --app-name="Screenshot" --expire-time=4000 "OCR copied" "$(printf '%s' "$text" | head -c 200)"
+          ;;
         *)
-          echo "Usage: screenshot {region|full|copy} [delay_seconds]" >&2
+          echo "Usage: screenshot {region|full|copy|ocr} [delay_seconds]" >&2
           exit 2
           ;;
       esac

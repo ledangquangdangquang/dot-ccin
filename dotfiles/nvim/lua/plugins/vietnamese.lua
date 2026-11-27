@@ -4,5 +4,8 @@ return {
     "sontungexpt/bim.nvim",
   },
   event = "InsertEnter",
+  keys = {
+    { "<M-v>", "<cmd>VietnameseToggle<cr>", mode = { "n", "i" }, desc = "Toggle Vietnamese input" },
+  },
   opts = {},
 }

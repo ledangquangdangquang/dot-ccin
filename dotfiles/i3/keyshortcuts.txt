@@ -35,6 +35,7 @@ Mod + Shift + n         Toggle Do Not Disturb
 F8                      Capture region and open Satty
 Shift + F8              Capture full screen and open Satty
 Ctrl + F8               Capture region directly to clipboard
+Alt + F8                OCR region (vie+eng) to clipboard
 Mod + F8                Capture full screen after 3s delay
 
 WINDOWS AND PANES
@@ -88,3 +89,4 @@ Alt + Shift + h/j/k/l   Resize Tmux pane without prefix
 Alt+a, Ctrl+s           Save session with Resurrect
 Alt+a, Ctrl+r           Restore session with Resurrect
 F5 (Nvim, by filetype)  Save and run file (html/md: live preview, tex: VimTeX)
+Alt+v (Nvim)            Toggle Vietnamese input (vietnamese.nvim)
