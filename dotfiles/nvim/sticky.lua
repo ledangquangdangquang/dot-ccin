@@ -1,4 +1,4 @@
--- Sticky note (Mod+n): bare text, autosave. Sourced with `nvim -S` after LazyVim init.
+-- Sticky note (Mod+n, pick with Mod+Ctrl+n): bare text, autosave. Sourced with `nvim -S` after LazyVim init.
 -- lualine (VeryLazy) restores laststatus from this global, so set both.
 vim.g.lualine_laststatus = 0
 vim.o.laststatus = 0

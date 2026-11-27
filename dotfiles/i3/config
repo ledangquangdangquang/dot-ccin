@@ -108,7 +108,7 @@ for_window [class="^(wifitui|bluetui|htop|pavucontrol|pomodoro-task|lofi-player|
 # rofi runs with -normal-window (see modules/menu-util.nix) so F8 can screenshot it
 for_window [class="^Rofi$"] floating enable, border none, move position center
 # Sized in cells by float-term --size (fits the calendar on any monitor DPI)
-for_window [class="^lunar-calendar$"] floating enable, move position center
+for_window [class="^(lunar-calendar|note-picker)$"] floating enable, move position center
 # Lofi track picker
 bindsym $mod+m exec --no-startup-id float-term lofi-player lofi-player
 # Lofi repeat current track on/off
@@ -117,7 +117,9 @@ bindsym $mod+Ctrl+m exec --no-startup-id lofi loop
 bindsym $mod+t exec --no-startup-id float-term pomodoro-task pomodoro-task
 # Sticky note (autosaves on every edit; popup toggle kills nvim)
 # float-term pins font.size=15; call popup-toggle directly for a smaller font
-bindsym $mod+n exec --no-startup-id env WINIT_X11_SCALE_FACTOR=1 popup-toggle sticky-note alacritty --class sticky-note -o font.size=12 -e sh -c 'mkdir -p ~/notes && exec nvim -S ~/.config/nvim/sticky.lua ~/notes/sticky.md'
+bindsym $mod+n exec --no-startup-id sticky-note
+# Pick/create another note in ~/notes (becomes the one Mod+n toggles)
+bindsym $mod+Ctrl+n exec --no-startup-id float-term --size 110x28 note-picker sticky-note pick
 for_window [class="^sticky-note$"] floating enable, border pixel 1, sticky enable, resize set 25 ppt 30 ppt, move position 74 ppt 3 ppt, move to output primary
 # Lunar calendar (same as clicking the bar clock)
 bindsym $mod+c exec --no-startup-id float-term --size 46x23 lunar-calendar lunar-calendar

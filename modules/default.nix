@@ -16,6 +16,7 @@
     ./fcitx.nix
     ./fuzzyvim.nix
     ./screenshot.nix
+    ./notes.nix
     ./pomodoro
     ./lofi
     ./calendar
